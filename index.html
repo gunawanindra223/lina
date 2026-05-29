@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASISTEN LINA</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="shortcut icon" href="./lina.png" type="image/x-icon">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand-area">
+      <img src="https://lh3.googleusercontent.com/u/0/d/1NUrhmJO3z7j89HwsUv3noHP1GwWQ-x2i" alt="Logo LINA" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-title">ASISTEN LINA</span>
+        <span class="brand-subtitle">BERBASIS RAPOR MUTU</span>
+      </div>
+    </div>
+    
+    <nav>
+      <ul class="nav-links">
+        <li><a onclick="switchPage('dashboard')" id="nav-dashboard" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard Kelas</a></li>
+        
+        <li class="dropdown">
+          <a id="nav-belajar" class="dropdown-toggle"><i class="fa-solid fa-book-open"></i> Mulai Belajar <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
+          <ul class="dropdown-menu">
+            <li><a onclick="switchPage('belajar')"><i class="fa-solid fa-pen-to-square"></i> Setor Jurnal Literasi</a></li>
+            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i>Latihan Numerasi</a></li>
+          </ul>
+        </li>
+
+        <li><a onclick="switchPage('tentang')" id="nav-tentang"><i class="fa-solid fa-circle-info"></i>Tentang Kami</a></li>
+      </ul>
+    </nav>
+
+    <button id="theme-toggle" onclick="toggleTheme()" aria-label="Ubah Mode Layar">
+      <i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>
+    </button>
+  </header>
+
+  <main class="container">
+    
+    <section id="section-dashboard" class="page-section active">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-square-poll-vertical text-accent"></i> Dashboard Perkembangan Kelas</h2>
+        <p>Perkembangan literasi siswa secara real-time.</p>
+      </div>
+
+      <div class="grid-dashboard">
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-chart-area"></i>Grafik Perkembangan Literasi</h3>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartKelas"></canvas>
+          </div>
+        </div>
+
+        <div class="card leaderboard-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-trophy text-gold"></i> Papan Peringkat Literasi</h3>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama Siswa</th>
+                  <th>Jumlah Buku</th>
+                  <th>Skor Rata-rata</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-data">
+                <tr>
+                  <td colspan="3" class="text-center">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan ke database spreadsheet...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-belajar" class="page-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-pen-to-square text-accent"></i> Ruang Setor Jurnal Literasi</h2>
+        <p>Silakan pilih nama dan tuangkan pemikiran kritis hasil bacaanmu di bawah ini.</p>
+      </div>
+
+      <div class="grid-form">
+        <div class="card">
+          <form id="jurnalForm" onsubmit="kirimJurnal(event)">
+            <div class="form-group">
+              <label for="namaSiswa">👤 Pilih Namamu</label>
+              <select id="namaSiswa" required>
+                <option value="">-- Cari & Klik Namamu di Sini --</option>
+                <option value="ADZKIA NUR SAUFA">ADZKIA NUR SAUFA</option>
+                <option value="AISYAH HASANAH PUTRI">AISYAH HASANAH PUTRI</option>
+                <option value="ALVARO GABRIL">ALVARO GABRIL</option>
+                <option value="AMOURA SEENJANY ARIES">AMOURA SEENJANY ARIES</option>
+                <option value="ARSY SAPUTRI">ARSY SAPUTRI</option>
+                <option value="ASYIFA AYURA PUTRI">ASYIFA AYURA PUTRI</option>
+                <option value="AZ-ZAHIR ATTALLAH">AZ-ZAHIR ATTALLAH</option>
+                <option value="AZARINE PUTRI AFIFAH S">AZARINE PUTRI AFIFAH S</option>
+                <option value="DHIRA AZZAHRA">DHIRA AZZAHRA</option>
+                <option value="FADILLAH IZZATUN SHAFFA">FADILLAH IZZATUN SHAFFA</option>
+                <option value="FAIZA AZHARA">FAIZA AZHARA</option>
+                <option value="FAQIH AKBAR AL MUBARROQ">FAQIH AKBAR AL MUBARROQ</option>
+                <option value="FELISHA AZKA AULIA">FELISHA AZKA AULIA</option>
+                <option value="FILLIO FARZANA AVERROES">FILLIO FARZANA AVERROES</option>
+                <option value="HAUZAN IRHAB NABIL">HAUZAN IRHAB NABIL</option>
+                <option value="IKLAS BUNGA HIDUP NDRURU">IKLAS BUNGA HIDUP NDRURU</option>
+                <option value="KHAIRUNNISA SYAFITRI">KHAIRUNNISA SYAFITRI</option>
+                <option value="M.FHAJAR ADIVO">M.FHAJAR ADIVO</option>
+                <option value="MUHAMMAD ALIF">MUHAMMAD ALIF</option>
+                <option value="MUHAMMAD GILANG">MUHAMMAD GILANG</option>
+                <option value="MUHAMMAD YOGA PRANATA">MUHAMMAD YOGA PRANATA</option>
+                <option value="NAIRA PUTRI INDYANY">NAIRA PUTRI INDYANY</option>
+                <option value="NAZWA GUNA PUTRI">NAZWA GUNA PUTRI</option>
+                <option value="RATU HANA ZASKIA">RATU HANA ZASKIA</option>
+                <option value="SOVIA NUR AYUNDA">SOVIA NUR AYUNDA</option>
+                <option value="T. RASYAD AR-RAHMAN">T. RASYAD AR-RAHMAN</option>
+                <option value="WAHYU PUTRA PRATAMA">WAHYU PUTRA PRATAMA</option>
+                <option value="ZAKHDAN HAFIZ HAZIZAN">ZAKHDAN HAFIZ HAZIZAN</option>
+                <option value="ZHAHIRA BAHRI">ZHAHIRA BAHRI</option>
+                <option value="ZIVANNA LETHISSA">ZIVANNA LETHISSA</option>
+              </select>
+            </div>
+
+            <div class="form-grid-two">
+              <div class="form-group">
+                <label for="judulBuku">📚 Judul Buku Bacaan</label>
+                <input type="text" id="judulBuku" placeholder="Contoh: Laskar Pelangi" required>
+              </div>
+              <div class="form-group">
+                <label for="waInput">📱 No. WhatsApp Orang Tua</label>
+                <input type="tel" id="waInput" placeholder="Contoh: 6281234567xxx" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="isiJurnal">✏️ Tuliskan Ringkasan & Tanggapan Esaimu</label>
+              <textarea id="isiJurnal" rows="7" placeholder="Gambarkan alur cerita, watak tokoh, pesan moral, atau opini kritis Anda terhadap buku ini..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">
+              <i class="fa-solid fa-paper-plane"></i> Kirim Jurnal ke ASISTEN LINA
+            </button>
+          </form>
+        </div>
+
+        <div id="feedbackContainer" class="card feedback-card" style="display: none;">
+          <div class="feedback-header">
+            <h3><i class="fa-solid fa-wand-magic-sparkles text-magic"></i> Hasil Analisis Asisten LINA</h3>
+          </div>
+          <div class="feedback-body">
+            <div class="fb-item text-success">
+              <h4><i class="fa-solid fa-heart"></i> Apresiasi</h4>
+              <p id="txtApresiasi"></p>
+            </div>
+            <div class="fb-item text-info">
+              <h4><i class="fa-solid fa-star"></i> Kelebihan Tulisan (PBD)</h4>
+              <p id="txtBagus"></p>
+            </div>
+            <div class="fb-item text-warning">
+              <h4><i class="fa-solid fa-triangle-exclamation"></i> Saran Pendampingan Intervensi</h4>
+              <p id="txtPerbaikan"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-tentang" class="page-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-circle-info text-accent"></i> Mengenal Rekayasa Inovasi</h2>
+        <p>Landasan ilmiah dan metodologi tata kelola data penjaminan mutu literasi kelas.</p>
+      </div>
+      <div class="card tentang-card">
+        <p><strong>ASISTEN LINA</strong> kami hadirkan sebagai solusi cerdas untuk membantu meningkatkan kegiatan literasi di sekolah. Melalui platform ini, kami mendiagnosis langsung kualitas tulisan dan kedalaman pemahaman membaca siswa secara objektif, lalu memberikan umpan balik yang tepat sasaran demi kemajuan belajar anak.</p>
+        <ul class="about-list">
+          <li><strong>A.1.1:</strong> Kompetensi membaca teks informasi (fakta vs opini).</li>
+          <li><strong>A.1.2:</strong> Kompetensi membaca teks sastra (refleksi watak & nilai).</li>
+          <li><strong>A.1.3:</strong> Kemampuan menemukan informasi eksplisit (L1).</li>
+          <li><strong>A.1.4:</strong> Kemampuan membuat simpulan logis tersirat (L2).</li>
+          <li><strong>A.1.5:</strong> Kemampuan berpikir kritis dan reflektif tingkat tinggi (L3/HOTS).</li>
+        </ul>
+        <p>Terintegrasi dengan mesin AI cerdas Gemini 2.5 Flash, setiap untaian kalimat siswa didiagnosis secara objektif, ditransformasikan menjadi matriks nilai kuantitatif berkisar antara 1-100, serta dipetakan ke dalam dashboard grafis interaktif demi memandu strategi intervensi guru secara tepat sasaran.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
