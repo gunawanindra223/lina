@@ -82,7 +82,7 @@ body {
 
 .nav-links {
   display: flex;
-  align-items: center; /* Kunci semua item menu sejajar vertikal */
+  align-items: center;
   gap: 1.5rem;
   list-style: none;
 }
@@ -146,7 +146,7 @@ button#theme-toggle:hover {
 
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Beri jarak melayang sedikit di bawah navbar */
+  top: 100%;
   left: 0;
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -155,7 +155,7 @@ button#theme-toggle:hover {
   list-style: none;
   padding: 0.5rem 0;
   min-width: 240px;
-  display: none; /* Sembunyikan awal agar tidak merusak tata letak */
+  display: none;
   z-index: 1000;
 }
 
@@ -183,7 +183,7 @@ button#theme-toggle:hover {
 
 /* TRIGGER HOVER SINKRON */
 .dropdown:hover .dropdown-menu {
-  display: block; /* Muncul melayang tanpa mendorong navbar */
+  display: block;
 }
 
 .dropdown:hover .dist-arrow {
@@ -207,7 +207,7 @@ button#theme-toggle:hover {
 }
 
 .section-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .section-header h2 {
@@ -409,7 +409,7 @@ input:focus, select:focus, textarea:focus {
     font-size: 0.65rem;
   }
   .nav-links {
-    gap: 0.5rem; /* Lebih dirapatkan agar muat satu baris */
+    gap: 0.5rem;
   }
   .nav-links a {
     font-size: 0.85rem;
@@ -441,7 +441,7 @@ input:focus, select:focus, textarea:focus {
   }
 
   .nav-links {
-    flex-direction: column; /* Menu berbaris rapi dari atas ke bawah */
+    flex-direction: column;
     width: 100%;
     gap: 0.5rem;
     padding: 0;
@@ -459,20 +459,19 @@ input:focus, select:focus, textarea:focus {
     padding: 0.6rem;
   }
 
-  /* KUNCI PERBAIKAN: Mengubah dropdown melayang jadi dropdown dorong (relatif) */
   .dropdown {
-    flex-direction: column; /* Supaya menu di dalamnya turun ke bawah, bukan ke samping */
+    flex-direction: column;
     width: 100%;
   }
 
   .dropdown-menu { 
-    position: relative !important; /* TIDAK MELAYANG LAGI */
+    position: relative !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
     box-shadow: none !important; 
     border: none !important;
-    background-color: rgba(0, 0, 0, 0.02) !important; /* Beri background tipis penanda kontainer */
+    background-color: rgba(0, 0, 0, 0.02) !important;
     margin-top: 0.25rem;
     border-radius: 6px;
     padding: 0;
@@ -494,7 +493,6 @@ input:focus, select:focus, textarea:focus {
     margin-top: 0.5rem;
   }
 
-  /* Layout Dashboard & Form otomatis jadi 1 kolom murni */
   .grid-dashboard, .grid-form { 
     grid-template-columns: 1fr; 
   }
@@ -524,4 +522,27 @@ textarea#isiJurnal + ::after {
   font-weight: 500;
   margin-top: 0.4rem;
   font-style: italic;
+}
+
+/* Pengaturan gambar alur lokal milik bapak */
+.alur-gambar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.02); /* Bingkai latar transparan tipis */
+  border-radius: 8px;
+}
+
+[data-theme="dark"] .alur-gambar-wrapper {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.alur-img-lokal {
+  max-width: 100%;    /* Gambar otomatis responsif tidak melebihi kotak */
+  height: auto;       /* Menjaga rasio gambar agar tidak gepeng */
+  max-height: 380px;  /* Batas tinggi maksimal agar pas dipandang mata */
+  object-fit: contain;
+  border-radius: 15px;
 }

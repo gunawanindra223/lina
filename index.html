@@ -26,14 +26,25 @@
         <li><a onclick="switchPage('dashboard')" id="nav-dashboard" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard Kelas</a></li>
         
         <li class="dropdown">
-          <a id="nav-belajar" class="dropdown-toggle"><i class="fa-solid fa-book-open"></i> Mulai Belajar <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
+          <a id="nav-ruang-murid" class="dropdown-toggle"><i class="fa-solid fa-graduation-cap"></i> Ruang Murid <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
           <ul class="dropdown-menu">
-            <li><a onclick="switchPage('belajar')"><i class="fa-solid fa-pen-to-square"></i> Setor Jurnal Literasi</a></li>
-            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i>Latihan Numerasi</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=9844ece3-c34c-4bbf-8419-76e6099dabb4" target="_blank">🧮 Matematika</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=7cdba1c1-13a6-40d0-97fd-4774c3263a0d" target="_blank">🇮🇩 B. Indonesia</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=72df5da7-38d6-4993-a568-3927c2fd0681" target="_blank">🌱 IPAS</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=e005d77a-7349-41ea-b0d6-733eaca39705" target="_blank">🦅 Pancasila</a></li>
+            <li><a href="https://s.id/teacher_indra" target="_blank">🌴 Budaya Melayu Riau</a></li>
           </ul>
         </li>
 
-        <li><a onclick="switchPage('tentang')" id="nav-tentang"><i class="fa-solid fa-circle-info"></i>Tentang Kami</a></li>
+        <li class="dropdown">
+          <a id="nav-belajar" class="dropdown-toggle"><i class="fa-solid fa-book-open"></i> Mulai Belajar <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
+          <ul class="dropdown-menu">
+            <li><a onclick="switchPage('belajar')"><i class="fa-solid fa-pen-to-square"></i> Setor Jurnal Literasi</a></li>
+            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i> Latihan Numerasi</a></li>
+          </ul>
+        </li>
+
+        <li><a onclick="switchPage('tentang')" id="nav-tentang"><i class="fa-solid fa-circle-info"></i> Petunjuk</a></li>
       </ul>
     </nav>
 
@@ -178,11 +189,18 @@
 
     <section id="section-tentang" class="page-section">
       <div class="section-header">
-        <h2><i class="fa-solid fa-circle-info text-accent"></i> Mengenal Rekayasa Inovasi</h2>
-        <p>Landasan ilmiah dan metodologi tata kelola data penjaminan mutu literasi kelas.</p>
+        <h2><i class="fa-solid fa-circle-info text-accent"></i> Alur Penggunaan LINA</h2>
       </div>
       <div class="card tentang-card">
         <p><strong>ASISTEN LINA</strong> kami hadirkan sebagai solusi cerdas untuk membantu meningkatkan kegiatan literasi di sekolah. Melalui platform ini, kami mendiagnosis langsung kualitas tulisan dan kedalaman pemahaman membaca siswa secara objektif, lalu memberikan umpan balik yang tepat sasaran demi kemajuan belajar anak.</p>
+        
+        <div class="alur-gambar-wrapper">
+          <img src="./alur.png" alt="Gambar Alur Penggunaan LINA" class="alur-img-lokal">
+        </div>
+        
+        <p>Alur pemanfaatan platform ini dirancang dengan sangat sistematis. Siswa diwajibkan mengakses menu <strong>Ruang Murid</strong> terlebih dahulu untuk memilih dan mendalami materi mata pelajaran yang disediakan. Setelah selesai membaca, siswa diarahkan ke menu Mulai Belajar untuk melakukan <strong>Setor Jurnal Literasi</strong> guna menuangkan ringkasan serta tanggapan kritis mereka.</p>
+
+        <p>Melalui naskah jurnal yang disetorkan, sistem mengukur indikator capaian berikut:</p>
         <ul class="about-list">
           <li><strong>A.1.1:</strong> Kompetensi membaca teks informasi (fakta vs opini).</li>
           <li><strong>A.1.2:</strong> Kompetensi membaca teks sastra (refleksi watak & nilai).</li>
