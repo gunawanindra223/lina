@@ -48,9 +48,15 @@
       </ul>
     </nav>
 
-    <button id="theme-toggle" onclick="toggleTheme()" aria-label="Ubah Mode Layar">
-      <i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>
-    </button>
+      <div class="theme-switch-wrapper" onclick="toggleTheme()">
+        <span class="theme-switch-text" id="label-status-tema">Mode Gelap</span>
+        <div class="switch-pill-track">
+          <div class="switch-circle-thumb">
+            <i class="fa-solid fa-moon icon-bulan"></i>
+            <i class="fa-solid fa-sun icon-matahari"></i>
+          </div>
+        </div>
+      </div>
   </header>
 
   <main class="container">

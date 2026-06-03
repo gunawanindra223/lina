@@ -21,13 +21,20 @@ function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
   
+  // 1. Set atribut tema pada dokumen (tetap mempertahankan sistem warna lama Bapak)
   document.documentElement.setAttribute('data-theme', targetTheme);
   
-  const button = document.getElementById('theme-toggle');
+  // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
   if (targetTheme === 'dark') {
-    button.innerHTML = `<i class="fa-solid fa-sun"></i> <span>Mode Terang</span>`;
+    document.body.classList.add('dark-theme-active');
   } else {
-    button.innerHTML = `<i class="fa-solid fa-moon"></i> <span>Mode Gelap</span>`;
+    document.body.classList.remove('dark-theme-active');
+  }
+  
+  // 3. Mengubah text label di samping tombol secara dinamis sesuai video
+  const labelStatus = document.getElementById('label-status-tema');
+  if (labelStatus) {
+    labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
   }
 }
 
@@ -185,4 +192,16 @@ async function muatDataDashboard() {
 // Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Dibuka
 window.onload = () => {
   muatDataDashboard();
+  
+  // Sinkronisasi tombol kapsul saat refresh halaman
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const labelStatus = document.getElementById('label-status-tema');
+  
+  if (currentTheme === 'dark') {
+    document.body.classList.add('dark-theme-active');
+    if (labelStatus) labelStatus.textContent = 'Mode Gelap';
+  } else {
+    document.body.classList.remove('dark-theme-active');
+    if (labelStatus) labelStatus.textContent = 'Mode Terang';
+  }
 };

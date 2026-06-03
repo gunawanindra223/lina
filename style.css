@@ -105,27 +105,79 @@ body {
   background-color: rgba(37, 99, 235, 0.08);
 }
 
-button#theme-toggle {
-  background: transparent;
-  color: var(--text-main);
-  border: 1px solid var(--border);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
+/* Togle tema gelap terang */
+.theme-switch-wrapper {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: background 0.2s;
+  gap: 10px;
+  background-color: var(--bg-card); 
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 30px;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
 }
 
-button#theme-toggle:hover {
-  background-color: rgba(0,0,0,0.04);
+.theme-switch-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
-[data-theme="dark"] button#theme-toggle:hover {
-  background-color: rgba(255,255,255,0.04);
+/* Jalur Lintasan Kapsul (Track) */
+.switch-pill-track {
+  width: 44px;
+  height: 24px;
+  background-color: #cbd5e1; /* Warna saat Mode Terang */
+  border-radius: 15px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+/* Lingkaran Penggeser Dalam (Thumb) */
+.switch-circle-thumb {
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Default Tampilan Icon */
+.switch-circle-thumb .icon-matahari {
+  color: #f97316; /* Warna Oranye Matahari */
+  display: block;
+}
+.switch-circle-thumb .icon-bulan {
+  color: #f59e0b; /* Warna Kuning Bulan */
+  display: none;
+}
+
+/* SINKRONISASI AKTIVASI DATA-THEME DARK */
+[data-theme="dark"] .switch-pill-track {
+  background-color: #3b82f6; /* Track berubah jadi biru di mode gelap */
+}
+
+[data-theme="dark"] .switch-circle-thumb {
+  transform: translateX(20px); /* Bulatan bergeser 20px ke kanan */
+}
+
+[data-theme="dark"] .switch-circle-thumb .icon-matahari {
+  display: none;
+}
+
+[data-theme="dark"] .switch-circle-thumb .icon-bulan {
+  display: block;
 }
 
 /* KUNCI FIX MENU DROPDOWN MELAYANG */
