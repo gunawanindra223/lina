@@ -181,7 +181,7 @@
               <p id="txtApresiasi"></p>
             </div>
             <div class="fb-item text-info">
-              <h4><i class="fa-solid fa-star"></i> Kelebihan Tulisan (PBD)</h4>
+              <h4><i class="fa-solid fa-star"></i> Kelebihan Tulisanmu</h4>
               <p id="txtBagus"></p>
             </div>
             <div class="fb-item text-warning">
@@ -217,9 +217,23 @@
         <p>Terintegrasi dengan mesin AI cerdas Gemini 2.5 Flash, setiap untaian kalimat siswa didiagnosis secara objektif, ditransformasikan menjadi matriks nilai kuantitatif berkisar antara 1-100, serta dipetakan ke dalam dashboard grafis interaktif demi memandu strategi intervensi guru secara tepat sasaran.</p>
       </div>
     </section>
-
   </main>
 
+  <!-- 🚨 Pop-Up Modal Kustom Peringatan Minimal Kata (ASISTEN LINA) -->
+    <div id="customAlertModal" class="custom-modal-overlay">
+      <div class="custom-modal-box">
+        <div class="custom-modal-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="custom-modal-title">Wah, Tulisanmu Sedikit Lagi Cukup!</h3>
+        <div class="custom-modal-body">
+          <p id="modal-warning-text">Saat ini tulisanmu baru 0 kata.</p>
+          <p>Yuk, uraikan lagi ringkasan cerita atau opinimu agar <strong>ASISTEN LINA</strong> dapat menganalisis tulisanmu dengan maksimal! ✨</p>
+          <div class="word-badge-info">Syarat minimal: 75 - 100 kata</div>
+        </div>
+        <button class="custom-modal-btn" onclick="closeCustomAlert()">Tambahkan Lagi!</button>
+      </div>
+    </div> 
   <script src="script.js"></script>
 </body>
 </html>

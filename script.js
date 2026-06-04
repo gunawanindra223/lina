@@ -47,10 +47,15 @@ async function kirimJurnal(event) {
   // Menghitung jumlah kata berdasarkan spasi
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
   
-  if (jumlahKata < 75) {
-    alert(`⚠️ Peringatan: Jumlah kata tulisanmu belum cukup!\n\nSaat ini tulisanmu baru ${jumlahKata} kata. Yuk uraikan lagi ringkasan cerita atau opini kritismu.\n\nSyarat minimal adalah 75 - 100 kata agar ASISTEN LINA dapat menganalisis jurnalmu dengan baik.`);
-    return; // STOP! Membatalkan proses kirim data jika tidak mencapai 75 kata
-  }
+  //  BAGIAN BARU (Menggunakan Pop-Up Kustom)
+if (jumlahKata < 75) {
+  // Isi text jumlah kata anak secara dinamis ke dalam pop-up modal
+  document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
+  
+  // Munculkan modal dengan menambahkan class 'modal-show'
+  document.getElementById('customAlertModal').classList.add('modal-show');
+  return; // STOP! Membatalkan pengiriman data
+}
   // ---------------------------------------
 
   const btn = document.getElementById('submitBtn');
@@ -205,3 +210,8 @@ window.onload = () => {
     if (labelStatus) labelStatus.textContent = 'Mode Terang';
   }
 };
+
+// Fungsi untuk menutup pop-up modal peringatan kata
+function closeCustomAlert() {
+  document.getElementById('customAlertModal').classList.remove('modal-show');
+}
