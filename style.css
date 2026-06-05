@@ -118,6 +118,10 @@ body {
   user-select: none;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
+
+  /* 🌟 Tambahan untuk menghilangkan kotak abu-abu di HP & Tablet 🌟 */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .theme-switch-text {
