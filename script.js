@@ -16,12 +16,12 @@ function switchPage(pageId) {
   }
 }
 
-// Fungsi Mengubah Mode Gelap / Terang (Dark Mode Toggle)
+// === SINKRONISASI NO 3: Fungsi Mengubah Mode Gelap / Terang ===
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
   
-  // 1. Set atribut tema pada dokumen (tetap mempertahankan sistem warna lama Bapak)
+  // 1. Set atribut tema pada dokumen
   document.documentElement.setAttribute('data-theme', targetTheme);
   
   // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
@@ -31,11 +31,14 @@ function toggleTheme() {
     document.body.classList.remove('dark-theme-active');
   }
   
-  // 3. Mengubah text label di samping tombol secara dinamis sesuai video
+  // 3. Mengubah text label secara dinamis dan logis (Terang saat light, Gelap saat dark)
   const labelStatus = document.getElementById('label-status-tema');
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
   }
+
+  // 4. Menyimpan pilihan user ke memori browser agar saat refresh tidak reset
+  localStorage.setItem('lina-theme', targetTheme);
 }
 
 // Fungsi Mengirim Data Jurnal Siswa ke AI & Google Sheets
@@ -131,7 +134,7 @@ async function kirimJurnal(event) {
 
       // Ambil referensi elemen target box teks bawaan website Anda
       const boxApresiasi = document.getElementById('txtApresiasi');
-      const boxBagus = document.getElementById('txtBagus');
+      const boxBagus = document.getElementById('txtBagus'); // Menghubungkan ID HTML #txtBagus
       const boxPerbaikan = document.getElementById('txtPerbaikan');
 
       // Kosongkan semua kontainer sebelum simulasi animasi dimulai
@@ -139,7 +142,7 @@ async function kirimJurnal(event) {
       boxBagus.innerHTML = "";
       boxPerbaikan.innerHTML = "";
 
-      // Eksekusi efek mengetik berantai secara berurutan beserta ikonnya
+      // === SINKRONISASI NO 2: Menghubungkan Data Berantai ke ID yang Tepat ===
       ketikFeedbackLINA(boxApresiasi, result.apresiasi, () => {
         ketikFeedbackLINA(boxBagus, result.bagian_bagus, () => {
           ketikFeedbackLINA(boxPerbaikan, result.bagian_perbaikan);
@@ -254,15 +257,18 @@ async function muatDataDashboard() {
   }
 }
 
-// Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Dibuka
+// === SINKRONISASI NO 3: Inisialisasi Pengecekan Tema Saat Pertama Kali Membuka Web ===
 window.onload = () => {
   muatDataDashboard();
   
-  // Sinkronisasi tombol kapsul saat refresh halaman
-  const currentTheme = document.documentElement.getAttribute('data-theme');
+  // Membaca preferensi tema yang tersimpan, jika tidak ada, default memakai 'light'
+  const savedTheme = localStorage.getItem('lina-theme') || 'light';
   const labelStatus = document.getElementById('label-status-tema');
   
-  if (currentTheme === 'dark') {
+  // Atur atribut data-theme awal dokumen
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  if (savedTheme === 'dark') {
     document.body.classList.add('dark-theme-active');
     if (labelStatus) labelStatus.textContent = 'Mode Gelap';
   } else {
