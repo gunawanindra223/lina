@@ -413,6 +413,51 @@ input:focus, select:focus, textarea:focus {
   gap: 1.25rem;
 }
 
+/* ==========================================================================
+   STYLING IKON LINA INTERAKTIF (EFEK MENULIS)
+   ========================================================================== */
+
+/* Wadah fleksibel untuk menyandingkan ikon LINA di sebelah kiri teks */
+.lina-chat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Desain lingkaran foto profil ASISTEN LINA */
+.lina-avatar-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--accent);
+  flex-shrink: 0; /* Mencegah gambar mengkerut */
+}
+
+/* Animasi berdenyut halus pada foto profil saat AI sedang mengetik */
+.lina-avatar-mini.lina-typing-active {
+  animation: linaDenyut 1.5s infinite ease-in-out;
+}
+
+@keyframes linaDenyut {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  50% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
+/* Efek kemunculan kalimat yang memudar halus */
+.fade-in-sentence {
+  opacity: 0;
+  animation: linaMenulis 0.6s forwards;
+  display: inline;
+}
+
+@keyframes linaMenulis {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .fb-item h4 {
   font-size: 0.95rem;
   margin-bottom: 0.25rem;

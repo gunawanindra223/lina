@@ -44,18 +44,13 @@ async function kirimJurnal(event) {
   
   // --- LOGIKA VALIDASI MINIMAL 75 KATA ---
   const isiJurnal = document.getElementById('isiJurnal').value.trim();
-  // Menghitung jumlah kata berdasarkan spasi
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
   
-  //  BAGIAN BARU (Menggunakan Pop-Up Kustom)
-if (jumlahKata < 75) {
-  // Isi text jumlah kata anak secara dinamis ke dalam pop-up modal
-  document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
-  
-  // Munculkan modal dengan menambahkan class 'modal-show'
-  document.getElementById('customAlertModal').classList.add('modal-show');
-  return; // STOP! Membatalkan pengiriman data
-}
+  if (jumlahKata < 75) {
+    document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
+    document.getElementById('customAlertModal').classList.add('modal-show');
+    return;
+  }
   // ---------------------------------------
 
   const btn = document.getElementById('submitBtn');
@@ -68,7 +63,7 @@ if (jumlahKata < 75) {
     namaSiswa: document.getElementById('namaSiswa').value,
     judulBuku: document.getElementById('judulBuku').value,
     noWaOrangTua: document.getElementById('waInput').value,
-    isiJurnal: isiJurnal // Menggunakan isi jurnal yang sudah bersih dari spasi berlebih
+    isiJurnal: isiJurnal
   };
 
   try {
@@ -80,14 +75,79 @@ if (jumlahKata < 75) {
     const result = await response.json();
     
     if (result.status === 'success') {
-      document.getElementById('txtApresiasi').innerText = result.apresiasi;
-      document.getElementById('txtBagus').innerText = result.bagian_bagus;
-      document.getElementById('txtPerbaikan').innerText = result.bagian_perbaikan;
-      
       document.getElementById('feedbackContainer').style.display = 'block';
+      document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
+
+      // === FUNGSI LOGIKA INTERNAL EFEK MENGETIK LINA + ANIMASI IKON ===
+      const ketikFeedbackLINA = (elemenTarget, teksFeedback, callbackLanjutan) => {
+        if (!teksFeedback) {
+          if (callbackLanjutan) callbackLanjutan();
+          return;
+        }
+        
+        // 1. Buat struktur layout chat row (Ikon + Kotak Teks)
+        elemenTarget.innerHTML = `
+          <div class="lina-chat-row">
+            <img src="https://lh3.googleusercontent.com/u/0/d/1NUrhmJO3z7j89HwsUv3noHP1GwWQ-x2i" class="lina-avatar-mini lina-typing-active" alt="LINA">
+            <div class="lina-text-stream"></div>
+          </div>
+        `;
+
+        const avatarIcon = elemenTarget.querySelector('.lina-avatar-mini');
+        const streamBox = elemenTarget.querySelector('.lina-text-stream');
+        
+        let kumpulanKalimat = teksFeedback.split('. ');
+        let indeksKalimat = 0;
+
+        function tampilkanPerKalimat() {
+          if (indeksKalimat < kumpulanKalimat.length) {
+            let kalimatSekarang = kumpulanKalimat[indeksKalimat].trim();
+            
+            if (kalimatSekarang.length > 0) {
+              if (indeksKalimat < kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
+                kalimatSekarang += '. ';
+              } else if (indeksKalimat === kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
+                kalimatSekarang += '.';
+              }
+
+              let spanKalimat = document.createElement('span');
+              spanKalimat.className = 'fade-in-sentence';
+              spanKalimat.innerText = kalimatSekarang + " ";
+              streamBox.appendChild(spanKalimat);
+            }
+
+            indeksKalimat++;
+            setTimeout(tampilkanPerKalimat, 1100); // Jeda antar kalimat 1.1 detik
+          } else {
+            // Ketika kalimat habis, matikan class animasi berdenyut pada ikon LINA
+            if (avatarIcon) {
+              avatarIcon.classList.remove('lina-typing-active');
+            }
+            if (callbackLanjutan) callbackLanjutan();
+          }
+        }
+        tampilkanPerKalimat();
+      };
+
+      // Ambil referensi elemen target box teks bawaan website Anda
+      const boxApresiasi = document.getElementById('txtApresiasi');
+      const boxBagus = document.getElementById('txtBagus');
+      const boxPerbaikan = document.getElementById('txtPerbaikan');
+
+      // Kosongkan semua kontainer sebelum simulasi animasi dimulai
+      boxApresiasi.innerHTML = "";
+      boxBagus.innerHTML = "";
+      boxPerbaikan.innerHTML = "";
+
+      // Eksekusi efek mengetik berantai secara berurutan beserta ikonnya
+      ketikFeedbackLINA(boxApresiasi, result.apresiasi, () => {
+        ketikFeedbackLINA(boxBagus, result.bagian_bagus, () => {
+          ketikFeedbackLINA(boxPerbaikan, result.bagian_perbaikan);
+        });
+      });
+
       document.getElementById('jurnalForm').reset();
       
-      document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
     } else {
       alert("Gagal memproses analisis AI: " + result.message);
     }
