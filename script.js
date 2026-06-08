@@ -73,23 +73,22 @@ async function kirimJurnal(event) {
     
     const result = await response.json();
     
-    if (result.status === 'success') {
-      // Tampilkan container feedback
+if (result.status === 'success') {
+      // 1. Munculkan container feedback utama bawaan HTML
       document.getElementById('feedbackContainer').style.display = 'block';
       document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
 
-      // Ambil referensi elemen asli HTML Anda
+      // 2. Ambil elemen teks penampung asli
       const boxApresiasi = document.getElementById('txtApresiasi');
       const boxBagus = document.getElementById('txtBagus');
       const boxPerbaikan = document.getElementById('txtPerbaikan');
 
-      // Kosongkan kontainer sebelum animasi teks berjalan
+      // 3. Kosongkan isinya terlebih dahulu sebelum animasi mengetik dimulai
       boxApresiasi.innerHTML = "";
       boxBagus.innerHTML = "";
       boxPerbaikan.innerHTML = "";
 
-      // === LOGIKA BARU: EFEK MENGETIK AMAN & SINKRON DENGAN CODE.GS ===
-      // Fungsi mengetik teks biasa per kalimat tanpa merusak elemen gambar/avatar
+      // 4. Fungsi mengetik teks per kalimat yang aman tanpa merusak struktur HTML
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
         if (!teksMentah) {
           if (callbackLanjutan) callbackLanjutan();
@@ -103,6 +102,7 @@ async function kirimJurnal(event) {
           if (indeksKalimat < kumpulanKalimat.length) {
             let kalimatSekarang = kumpulanKalimat[indeksKalimat].trim();
             if (kalimatSekarang.length > 0) {
+              // Pastikan tanda titik di akhir kalimat tetap terjaga
               if (indeksKalimat < kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
                 kalimatSekarang += '. ';
               } else if (indeksKalimat === kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
@@ -110,12 +110,12 @@ async function kirimJurnal(event) {
               }
 
               let span = document.createElement('span');
-              span.className = 'fade-in-sentence';
+              span.className = 'fade-in-sentence'; // Efek memunculkan kalimat secara halus
               span.innerText = kalimatSekarang + " ";
               elemenTarget.appendChild(span);
             }
             indeksKalimat++;
-            setTimeout(ketik, 1000); // Kecepatan ketik per kalimat (1 detik)
+            setTimeout(ketik, 800); // Kecepatan jeda antar kalimat (0.8 detik)
           } else {
             if (callbackLanjutan) callbackLanjutan();
           }
@@ -123,13 +123,14 @@ async function kirimJurnal(event) {
         ketik();
       };
 
-      // Jalankan efek mengetik berantai menggunakan data properti yang benar dari database Anda
+      // 5. Jalankan animasi mengetik secara berantai (Apresiasi -> Kelebihan -> Perbaikan)
       jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
         jalankanKetikTeks(boxBagus, result.bagian_bagus, () => {
           jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
         });
       });
 
+      // 6. Reset form input setelah sukses kirim
       document.getElementById('jurnalForm').reset();
       
     } else {
