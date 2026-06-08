@@ -16,28 +16,24 @@ function switchPage(pageId) {
   }
 }
 
-// === SINKRONISASI NO 3: Fungsi Mengubah Mode Gelap / Terang ===
+// Fungsi Mengubah Mode Gelap / Terang
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
   
-  // 1. Set atribut tema pada dokumen
   document.documentElement.setAttribute('data-theme', targetTheme);
   
-  // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
   if (targetTheme === 'dark') {
     document.body.classList.add('dark-theme-active');
   } else {
     document.body.classList.remove('dark-theme-active');
   }
   
-  // 3. Mengubah text label secara dinamis dan logis (Terang saat light, Gelap saat dark)
   const labelStatus = document.getElementById('label-status-tema');
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
   }
 
-  // 4. Menyimpan pilihan user ke memori browser agar saat refresh tidak reset
   localStorage.setItem('lina-theme', targetTheme);
 }
 
@@ -78,34 +74,34 @@ async function kirimJurnal(event) {
     const result = await response.json();
     
     if (result.status === 'success') {
+      // Tampilkan container feedback
       document.getElementById('feedbackContainer').style.display = 'block';
       document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
 
-      // === FUNGSI LOGIKA INTERNAL EFEK MENGETIK LINA + ANIMASI IKON ===
-      const ketikFeedbackLINA = (elemenTarget, teksFeedback, callbackLanjutan) => {
-        if (!teksFeedback) {
+      // Ambil referensi elemen asli HTML Anda
+      const boxApresiasi = document.getElementById('txtApresiasi');
+      const boxBagus = document.getElementById('txtBagus');
+      const boxPerbaikan = document.getElementById('txtPerbaikan');
+
+      // Kosongkan kontainer sebelum animasi teks berjalan
+      boxApresiasi.innerHTML = "";
+      boxBagus.innerHTML = "";
+      boxPerbaikan.innerHTML = "";
+
+      // === LOGIKA BARU: EFEK MENGETIK AMAN & SINKRON DENGAN CODE.GS ===
+      // Fungsi mengetik teks biasa per kalimat tanpa merusak elemen gambar/avatar
+      const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
+        if (!teksMentah) {
           if (callbackLanjutan) callbackLanjutan();
           return;
         }
-        
-        // 1. Buat struktur layout chat row (Ikon + Kotak Teks)
-        elemenTarget.innerHTML = `
-          <div class="lina-chat-row">
-            <img src="https://lh3.googleusercontent.com/u/0/d/1NUrhmJO3z7j89HwsUv3noHP1GwWQ-x2i" class="lina-avatar-mini lina-typing-active" alt="LINA">
-            <div class="lina-text-stream"></div>
-          </div>
-        `;
 
-        const avatarIcon = elemenTarget.querySelector('.lina-avatar-mini');
-        const streamBox = elemenTarget.querySelector('.lina-text-stream');
-        
-        let kumpulanKalimat = teksFeedback.split('. ');
+        let kumpulanKalimat = teksMentah.split('. ');
         let indeksKalimat = 0;
 
-        function tampilkanPerKalimat() {
+        function ketik() {
           if (indeksKalimat < kumpulanKalimat.length) {
             let kalimatSekarang = kumpulanKalimat[indeksKalimat].trim();
-            
             if (kalimatSekarang.length > 0) {
               if (indeksKalimat < kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
                 kalimatSekarang += '. ';
@@ -113,39 +109,24 @@ async function kirimJurnal(event) {
                 kalimatSekarang += '.';
               }
 
-              let spanKalimat = document.createElement('span');
-              spanKalimat.className = 'fade-in-sentence';
-              spanKalimat.innerText = kalimatSekarang + " ";
-              streamBox.appendChild(spanKalimat);
+              let span = document.createElement('span');
+              span.className = 'fade-in-sentence';
+              span.innerText = kalimatSekarang + " ";
+              elemenTarget.appendChild(span);
             }
-
             indeksKalimat++;
-            setTimeout(tampilkanPerKalimat, 1100); // Jeda antar kalimat 1.1 detik
+            setTimeout(ketik, 1000); // Kecepatan ketik per kalimat (1 detik)
           } else {
-            // Ketika kalimat habis, matikan class animasi berdenyut pada ikon LINA
-            if (avatarIcon) {
-              avatarIcon.classList.remove('lina-typing-active');
-            }
             if (callbackLanjutan) callbackLanjutan();
           }
         }
-        tampilkanPerKalimat();
+        ketik();
       };
 
-      // Ambil referensi elemen target box teks bawaan website Anda
-      const boxApresiasi = document.getElementById('txtApresiasi');
-      const boxBagus = document.getElementById('txtBagus'); // Menghubungkan ID HTML #txtBagus
-      const boxPerbaikan = document.getElementById('txtPerbaikan');
-
-      // Kosongkan semua kontainer sebelum simulasi animasi dimulai
-      boxApresiasi.innerHTML = "";
-      boxBagus.innerHTML = "";
-      boxPerbaikan.innerHTML = "";
-
-      // === SINKRONISASI NO 2: Menghubungkan Data Berantai ke ID yang Tepat ===
-      ketikFeedbackLINA(boxApresiasi, result.apresiasi, () => {
-        ketikFeedbackLINA(boxBagus, result.bagian_bagus, () => {
-          ketikFeedbackLINA(boxPerbaikan, result.bagian_perbaikan);
+      // Jalankan efek mengetik berantai menggunakan data properti yang benar dari database Anda
+      jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
+        jalankanKetikTeks(boxBagus, result.bagian_bagus, () => {
+          jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
         });
       });
 
@@ -175,17 +156,14 @@ async function muatDataDashboard() {
       return;
     }
 
-    // 1. OLAH DATA UNTUK LEADERBOARD & GRAFIK
     const rekapSiswa = {};
     const arraySkorKelas = [];
     const arrayLabelGrafik = [];
     
     data.forEach((item, index) => {
-      // Data Tren Grafik Kolektif Kelas
       arraySkorKelas.push(Number(item.skorUtama));
       arrayLabelGrafik.push(`Jurnal ${index + 1}`);
 
-      // Data Akumulasi Per Individu Siswa
       if (!rekapSiswa[item.namaSiswa]) {
         rekapSiswa[item.namaSiswa] = { buku: 0, totalSkor: 0 };
       }
@@ -193,13 +171,12 @@ async function muatDataDashboard() {
       rekapSiswa[item.namaSiswa].totalSkor += Number(item.skorUtama);
     });
 
-    // 2. TAMPILKAN MATRIKS PAPAN PERINGKAT (LEADERBOARD)
     tbody.innerHTML = "";
     const listSiswaUrut = Object.keys(rekapSiswa).map(nama => ({
       nama: nama,
       buku: rekapSiswa[nama].buku,
       rataNilai: Math.round(rekapSiswa[nama].totalSkor / rekapSiswa[nama].buku)
-    })).sort((a, b) => b.rataNilai - a.rataNilai); // Urutkan berdasarkan kualitas esai tertinggi
+    })).sort((a, b) => b.rataNilai - a.rataNilai);
 
     listSiswaUrut.forEach(siswa => {
       tbody.innerHTML += `
@@ -211,7 +188,6 @@ async function muatDataDashboard() {
       `;
     });
 
-    // 3. BANGUN GRAFIK TREN KELAS DENGAN CHART.JS
     const ctx = document.getElementById('chartKelas').getContext('2d');
     if (currentChart) {
       currentChart.destroy();
@@ -240,14 +216,8 @@ async function muatDataDashboard() {
           legend: { display: false }
         },
         scales: {
-          y: {
-            min: 0,
-            max: 100,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' }
-          },
-          x: {
-            grid: { display: false }
-          }
+          y: { min: 0, max: 100, grid: { color: 'rgba(0, 0, 0, 0.05)' } },
+          x: { grid: { display: false } }
         }
       }
     });
@@ -257,15 +227,13 @@ async function muatDataDashboard() {
   }
 }
 
-// === SINKRONISASI NO 3: Inisialisasi Pengecekan Tema Saat Pertama Kali Membuka Web ===
+// Inisialisasi Pengecekan Tema Saat Pertama Kali Membuka Web
 window.onload = () => {
   muatDataDashboard();
   
-  // Membaca preferensi tema yang tersimpan, jika tidak ada, default memakai 'light'
   const savedTheme = localStorage.getItem('lina-theme') || 'light';
   const labelStatus = document.getElementById('label-status-tema');
   
-  // Atur atribut data-theme awal dokumen
   document.documentElement.setAttribute('data-theme', savedTheme);
 
   if (savedTheme === 'dark') {
