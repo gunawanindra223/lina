@@ -1,6 +1,7 @@
 // URL Google Apps Script Web App Resmi ASISTEN LINA
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnFQtzINgJX7ntTG3w0psg8B_JAFnXzrwBgJpDnumEFOvfcoMDkukGqYW3DSEc12D/exec";
 let currentChart = null;
+
 // Fungsi Menangani Perpindahan Halaman Menu (SPA)
 function switchPage(pageId) {
   document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
@@ -32,7 +33,6 @@ function toggleTheme() {
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
   }
-
 }
 
 // Fungsi Mengirim Data Jurnal Siswa ke AI & Google Sheets
@@ -44,15 +44,15 @@ async function kirimJurnal(event) {
   // Menghitung jumlah kata berdasarkan spasi
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
 
-  //  BAGIAN BARU (Menggunakan Pop-Up Kustom)
-if (jumlahKata < 75) {
-  // Isi text jumlah kata anak secara dinamis ke dalam pop-up modal
-  document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
+  // BAGIAN BARU (Menggunakan Pop-Up Kustom)
+  if (jumlahKata < 75) {
+    // Isi text jumlah kata anak secara dinamis ke dalam pop-up modal
+    document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
 
-  // Munculkan modal dengan menambahkan class 'modal-show'
-  document.getElementById('customAlertModal').classList.add('modal-show');
-  return; // STOP! Membatalkan pengiriman data
-}
+    // Munculkan modal dengan menambahkan class 'modal-show'
+    document.getElementById('customAlertModal').classList.add('modal-show');
+    return; // STOP! Membatalkan pengiriman data
+  }
   // ---------------------------------------
 
   const btn = document.getElementById('submitBtn');
@@ -74,13 +74,83 @@ if (jumlahKata < 75) {
     });
 
     const result = await response.json();
+    
+    // === 🌟 PERUBAHAN LOGIKA UTAMA DI SINI (BLOK SUKSES) 🌟 ===
     if (result.status === 'success') {
-      document.getElementById('txtApresiasi').innerText = result.apresiasi;
-      document.getElementById('txtBagus').innerText = result.bagian_bagus;
-      document.getElementById('txtPerbaikan').innerText = result.bagian_perbaikan;
+      // 1. Tampilkan container feedback utama & scroll secara halus
       document.getElementById('feedbackContainer').style.display = 'block';
-      document.getElementById('jurnalForm').reset();
       document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
+
+      // 2. Ambil referensi elemen penampung status loader dan kotak teks asli
+      const statusLoader = document.getElementById('linaThinkingStatus');
+      const boxApresiasi = document.getElementById('txtApresiasi');
+      const boxBagus = document.getElementById('txtBagus');
+      const boxPerbaikan = document.getElementById('txtPerbaikan');
+
+      // 3. Kosongkan semua teks kotak lama sebelum simulasi dimulai
+      boxApresiasi.innerHTML = "";
+      boxBagus.innerHTML = "";
+      boxPerbaikan.innerHTML = "";
+
+      // 4. Masukkan struktur animasi berpikir LINA (Menggunakan foto ./lina.png Bapak)
+      statusLoader.innerHTML = `
+        <div class="lina-status-loader">
+          <img src="./lina.png" class="lina-avatar-thinking" alt="LINA">
+          <span><i class="fa-solid fa-ellipsis fa-bounce"></i> LINA sedang menulis feedback untukmu...</span>
+        </div>
+      `;
+
+      // 5. Fungsi internal untuk mengetik teks secara halus per kalimat
+      const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
+        if (!teksMentah) {
+          if (callbackLanjutan) callbackLanjutan();
+          return;
+        }
+
+        let kumpulanKalimat = teksMentah.split('. ');
+        let indeksKalimat = 0;
+
+        function ketik() {
+          if (indeksKalimat < kumpulanKalimat.length) {
+            let kalimatSekarang = kumpulanKalimat[indeksKalimat].trim();
+            if (kalimatSekarang.length > 0) {
+              // Pertahankan titik di akhir kalimat agar rapi
+              if (indeksKalimat < kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
+                kalimatSekarang += '. ';
+              } else if (indeksKalimat === kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
+                kalimatSekarang += '.';
+              }
+
+              let span = document.createElement('span');
+              span.className = 'fade-in-sentence';
+              span.innerText = kalimatSekarang + " ";
+              elemenTarget.appendChild(span);
+            }
+            indeksKalimat++;
+            setTimeout(ketik, 900); // Kecepatan memunculkan kalimat (0.9 detik)
+          } else {
+            if (callbackLanjutan) callbackLanjutan();
+          }
+        }
+        ketik();
+      };
+
+      // 6. Jalankan jeda simulasi berpikir selama 2.5 detik
+      setTimeout(() => {
+        // Hapus tulisan status loader berpikir karena LINA sudah siap menuangkan teks
+        statusLoader.innerHTML = "";
+
+        // Mulai ketik berantai (Apresiasi -> Kelebihan -> Intervensi Pendampingan)
+        jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
+          jalankanKetikTeks(boxBagus, result.bagian_bagus, () => {
+            jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
+          });
+        });
+      }, 2500); // Durasi LINA berpikir (2500ms = 2.5 detik)
+
+      // 7. Reset form input jurnal
+      document.getElementById('jurnalForm').reset();
+      
     } else {
       alert("Gagal memproses analisis AI: " + result.message);
     }
@@ -201,4 +271,4 @@ window.onload = () => {
 // Fungsi untuk menutup pop-up modal peringatan kata
 function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
-} 
+}
