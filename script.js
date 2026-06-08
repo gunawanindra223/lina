@@ -92,11 +92,11 @@ async function kirimJurnal(event) {
       boxBagus.innerHTML = "";
       boxPerbaikan.innerHTML = "";
 
-      // 4. Masukkan struktur animasi berpikir LINA (Menggunakan foto ./lina.png Bapak)
+      // 4. Masukkan struktur animasi berpikir LINA (Menggunakan foto ./lina.png)
       statusLoader.innerHTML = `
         <div class="lina-status-loader">
           <img src="./lina.png" class="lina-avatar-thinking" alt="LINA">
-          <span><i class="fa-solid fa-ellipsis fa-bounce"></i> LINA sedang menulis feedback untukmu...</span>
+          <span><i class="fa-solid fa-ellipsis fa-bounce"></i> LINA sedang menganalisis tulisanmu...</span>
         </div>
       `;
 
@@ -111,8 +111,8 @@ async function kirimJurnal(event) {
         
         // ⚙️ PENGATURAN KECEPATAN (Milidetik) ⚙️
         // Semakin besar angkanya, semakin lambat ketikannya.
-        // 25 - 40 ms adalah kecepatan ideal mengetik AI yang natural.
-        const KECEPATAN_KETIK = 35; 
+        // 20 - 40 ms adalah kecepatan ideal mengetik AI yang natural.
+        const KECEPATAN_KETIK = 20; 
 
         function ketikHuruf() {
           if (indeksKarakter < teksMentah.length) {
