@@ -1,60 +1,62 @@
 // URL Google Apps Script Web App Resmi ASISTEN LINA
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnFQtzINgJX7ntTG3w0psg8B_JAFnXzrwBgJpDnumEFOvfcoMDkukGqYW3DSEc12D/exec";
-
 let currentChart = null;
-
 // Fungsi Menangani Perpindahan Halaman Menu (SPA)
 function switchPage(pageId) {
   document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-  
   document.getElementById('section-' + pageId).classList.add('active');
   document.getElementById('nav-' + pageId).classList.add('active');
-  
   if (pageId === 'dashboard') {
     muatDataDashboard();
   }
 }
 
-// Fungsi Mengubah Mode Gelap / Terang
+// Fungsi Mengubah Mode Gelap / Terang (Dark Mode Toggle)
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  
+
+  // 1. Set atribut tema pada dokumen (tetap mempertahankan sistem warna lama Bapak)
   document.documentElement.setAttribute('data-theme', targetTheme);
   
+  // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
   if (targetTheme === 'dark') {
     document.body.classList.add('dark-theme-active');
   } else {
     document.body.classList.remove('dark-theme-active');
   }
-  
+
+  // 3. Mengubah text label di samping tombol secara dinamis sesuai video
   const labelStatus = document.getElementById('label-status-tema');
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
   }
 
-  localStorage.setItem('lina-theme', targetTheme);
 }
 
 // Fungsi Mengirim Data Jurnal Siswa ke AI & Google Sheets
 async function kirimJurnal(event) {
   event.preventDefault();
-  
+
   // --- LOGIKA VALIDASI MINIMAL 75 KATA ---
   const isiJurnal = document.getElementById('isiJurnal').value.trim();
+  // Menghitung jumlah kata berdasarkan spasi
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
-  
-  if (jumlahKata < 75) {
-    document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
-    document.getElementById('customAlertModal').classList.add('modal-show');
-    return;
-  }
+
+  //  BAGIAN BARU (Menggunakan Pop-Up Kustom)
+if (jumlahKata < 75) {
+  // Isi text jumlah kata anak secara dinamis ke dalam pop-up modal
+  document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
+
+  // Munculkan modal dengan menambahkan class 'modal-show'
+  document.getElementById('customAlertModal').classList.add('modal-show');
+  return; // STOP! Membatalkan pengiriman data
+}
   // ---------------------------------------
 
   const btn = document.getElementById('submitBtn');
   const originalText = btn.innerHTML;
-  
   btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> LINA sedang membaca tulisanmu...`;
   btn.disabled = true;
 
@@ -62,7 +64,7 @@ async function kirimJurnal(event) {
     namaSiswa: document.getElementById('namaSiswa').value,
     judulBuku: document.getElementById('judulBuku').value,
     noWaOrangTua: document.getElementById('waInput').value,
-    isiJurnal: isiJurnal
+    isiJurnal: isiJurnal // Menggunakan isi jurnal yang sudah bersih dari spasi berlebih
   };
 
   try {
@@ -70,69 +72,15 @@ async function kirimJurnal(event) {
       method: "POST",
       body: JSON.stringify(payload)
     });
-    
+
     const result = await response.json();
-    
-if (result.status === 'success') {
-      // 1. Munculkan container feedback utama bawaan HTML
+    if (result.status === 'success') {
+      document.getElementById('txtApresiasi').innerText = result.apresiasi;
+      document.getElementById('txtBagus').innerText = result.bagian_bagus;
+      document.getElementById('txtPerbaikan').innerText = result.bagian_perbaikan;
       document.getElementById('feedbackContainer').style.display = 'block';
-      document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
-
-      // 2. Ambil elemen teks penampung asli
-      const boxApresiasi = document.getElementById('txtApresiasi');
-      const boxBagus = document.getElementById('txtBagus');
-      const boxPerbaikan = document.getElementById('txtPerbaikan');
-
-      // 3. Kosongkan isinya terlebih dahulu sebelum animasi mengetik dimulai
-      boxApresiasi.innerHTML = "";
-      boxBagus.innerHTML = "";
-      boxPerbaikan.innerHTML = "";
-
-      // 4. Fungsi mengetik teks per kalimat yang aman tanpa merusak struktur HTML
-      const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
-        if (!teksMentah) {
-          if (callbackLanjutan) callbackLanjutan();
-          return;
-        }
-
-        let kumpulanKalimat = teksMentah.split('. ');
-        let indeksKalimat = 0;
-
-        function ketik() {
-          if (indeksKalimat < kumpulanKalimat.length) {
-            let kalimatSekarang = kumpulanKalimat[indeksKalimat].trim();
-            if (kalimatSekarang.length > 0) {
-              // Pastikan tanda titik di akhir kalimat tetap terjaga
-              if (indeksKalimat < kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
-                kalimatSekarang += '. ';
-              } else if (indeksKalimat === kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
-                kalimatSekarang += '.';
-              }
-
-              let span = document.createElement('span');
-              span.className = 'fade-in-sentence'; // Efek memunculkan kalimat secara halus
-              span.innerText = kalimatSekarang + " ";
-              elemenTarget.appendChild(span);
-            }
-            indeksKalimat++;
-            setTimeout(ketik, 800); // Kecepatan jeda antar kalimat (0.8 detik)
-          } else {
-            if (callbackLanjutan) callbackLanjutan();
-          }
-        }
-        ketik();
-      };
-
-      // 5. Jalankan animasi mengetik secara berantai (Apresiasi -> Kelebihan -> Perbaikan)
-      jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
-        jalankanKetikTeks(boxBagus, result.bagian_bagus, () => {
-          jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
-        });
-      });
-
-      // 6. Reset form input setelah sukses kirim
       document.getElementById('jurnalForm').reset();
-      
+      document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
     } else {
       alert("Gagal memproses analisis AI: " + result.message);
     }
@@ -147,24 +95,23 @@ if (result.status === 'success') {
 // Fungsi Menarik Data Real-Time & Membangun Dashboard Grafik
 async function muatDataDashboard() {
   const tbody = document.getElementById('leaderboard-data');
-  
   try {
     const response = await fetch(SCRIPT_URL);
     const data = await response.json();
-    
     if (!data || data.length === 0) {
       tbody.innerHTML = `<tr><td colspan="3" class="text-center">Belum ada rekaman data jurnal literasi di spreadsheet.</td></tr>`;
       return;
     }
 
+    // 1. OLAH DATA UNTUK LEADERBOARD & GRAFIK
     const rekapSiswa = {};
     const arraySkorKelas = [];
     const arrayLabelGrafik = [];
-    
     data.forEach((item, index) => {
+      // Data Tren Grafik Kolektif Kelas
       arraySkorKelas.push(Number(item.skorUtama));
       arrayLabelGrafik.push(`Jurnal ${index + 1}`);
-
+      // Data Akumulasi Per Individu Siswa
       if (!rekapSiswa[item.namaSiswa]) {
         rekapSiswa[item.namaSiswa] = { buku: 0, totalSkor: 0 };
       }
@@ -172,12 +119,13 @@ async function muatDataDashboard() {
       rekapSiswa[item.namaSiswa].totalSkor += Number(item.skorUtama);
     });
 
+    // 2. TAMPILKAN MATRIKS PAPAN PERINGKAT (LEADERBOARD)
     tbody.innerHTML = "";
     const listSiswaUrut = Object.keys(rekapSiswa).map(nama => ({
       nama: nama,
       buku: rekapSiswa[nama].buku,
       rataNilai: Math.round(rekapSiswa[nama].totalSkor / rekapSiswa[nama].buku)
-    })).sort((a, b) => b.rataNilai - a.rataNilai);
+    })).sort((a, b) => b.rataNilai - a.rataNilai); // Urutkan berdasarkan kualitas esai tertinggi
 
     listSiswaUrut.forEach(siswa => {
       tbody.innerHTML += `
@@ -189,11 +137,12 @@ async function muatDataDashboard() {
       `;
     });
 
+    // 3. BANGUN GRAFIK TREN KELAS DENGAN CHART.JS
     const ctx = document.getElementById('chartKelas').getContext('2d');
     if (currentChart) {
       currentChart.destroy();
     }
-    
+
     currentChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -217,8 +166,14 @@ async function muatDataDashboard() {
           legend: { display: false }
         },
         scales: {
-          y: { min: 0, max: 100, grid: { color: 'rgba(0, 0, 0, 0.05)' } },
-          x: { grid: { display: false } }
+          y: {
+            min: 0,
+            max: 100,
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          },
+          x: {
+            grid: { display: false }
+          }
         }
       }
     });
@@ -228,16 +183,13 @@ async function muatDataDashboard() {
   }
 }
 
-// Inisialisasi Pengecekan Tema Saat Pertama Kali Membuka Web
+// Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Dibuka
 window.onload = () => {
   muatDataDashboard();
-  
-  const savedTheme = localStorage.getItem('lina-theme') || 'light';
+  // Sinkronisasi tombol kapsul saat refresh halaman
+  const currentTheme = document.documentElement.getAttribute('data-theme');
   const labelStatus = document.getElementById('label-status-tema');
-  
-  document.documentElement.setAttribute('data-theme', savedTheme);
-
-  if (savedTheme === 'dark') {
+  if (currentTheme === 'dark') {
     document.body.classList.add('dark-theme-active');
     if (labelStatus) labelStatus.textContent = 'Mode Gelap';
   } else {
@@ -249,4 +201,4 @@ window.onload = () => {
 // Fungsi untuk menutup pop-up modal peringatan kata
 function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
-}
+} 

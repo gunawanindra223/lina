@@ -116,7 +116,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: var(--bg-card); 
+  background-color: var(--bg-card);
   border: 1px solid var(--border);
   padding: 6px 12px;
   border-radius: 30px;
@@ -413,51 +413,6 @@ input:focus, select:focus, textarea:focus {
   gap: 1.25rem;
 }
 
-/* ==========================================================================
-   STYLING IKON LINA INTERAKTIF (EFEK MENULIS)
-   ========================================================================== */
-
-/* Wadah fleksibel untuk menyandingkan ikon LINA di sebelah kiri teks */
-.lina-chat-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-/* Desain lingkaran foto profil ASISTEN LINA */
-.lina-avatar-mini {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1.5px solid var(--accent);
-  flex-shrink: 0; /* Mencegah gambar mengkerut */
-}
-
-/* Animasi berdenyut halus pada foto profil saat AI sedang mengetik */
-.lina-avatar-mini.lina-typing-active {
-  animation: linaDenyut 1.5s infinite ease-in-out;
-}
-
-@keyframes linaDenyut {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
-  50% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-}
-
-/* Efek kemunculan kalimat yang memudar halus */
-.fade-in-sentence {
-  opacity: 0;
-  animation: linaMenulis 0.6s forwards;
-  display: inline;
-}
-
-@keyframes linaMenulis {
-  from { opacity: 0; transform: translateY(2px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .fb-item h4 {
   font-size: 0.95rem;
   margin-bottom: 0.25rem;
@@ -530,9 +485,9 @@ input:focus, select:focus, textarea:focus {
 
 /* 2. Layar HP & Tablet Tegak (Layar di bawah 850px) */
 @media (max-width: 850px) {
-  .navbar { 
-    flex-direction: column; 
-    gap: 1rem; 
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
     padding: 1.2rem 5%;
     align-items: center;
     text-align: center;
@@ -571,12 +526,12 @@ input:focus, select:focus, textarea:focus {
     width: 100%;
   }
 
-  .dropdown-menu { 
+  .dropdown-menu {
     position: relative !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    box-shadow: none !important; 
+    box-shadow: none !important;
     border: none !important;
     background-color: rgba(0, 0, 0, 0.02) !important;
     margin-top: 0.25rem;
@@ -600,11 +555,11 @@ input:focus, select:focus, textarea:focus {
     margin-top: 0.5rem;
   }
 
-  .grid-dashboard, .grid-form { 
-    grid-template-columns: 1fr; 
+  .grid-dashboard, .grid-form {
+    grid-template-columns: 1fr;
   }
-  .form-grid-two { 
-    grid-template-columns: 1fr; 
+  .form-grid-two {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -761,65 +716,5 @@ textarea#isiJurnal + ::after {
 
 .custom-modal-btn:active {
   transform: scale(0.98);
-}
 
-/* ==========================================================================
-   TAMBAHAN ATURAN SINKRONISASI UNTUK ANIMASI CHAT LINA
-   ========================================================================== */
-
-/* Layout baris respons LINA (Ikon di kiri, teks di kanan) */
-.lina-chat-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 15px;
-  animation: fadeInContainer 0.4s ease-out forwards;
-}
-
-/* Pengaturan Ikon Mini LINA di dalam kotak feedback */
-.lina-avatar-mini {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--primary-color, #2563eb);
-  background-color: #fff;
-  flex-shrink: 0;
-}
-
-/* Kotak teks di sebelah ikon */
-.lina-text-stream {
-  flex-grow: 1;
-  line-height: 1.6;
-  font-size: 1rem;
-  padding-top: 4px;
-}
-
-/* Animasi berdenyut pada foto LINA saat sedang berpikir/mengetik */
-.lina-typing-active {
-  animation: linaPulse 1.2s infinite ease-in-out;
-  border-color: var(--gold, #f59e0b);
-}
-
-/* Animasi memunculkan kalimat demi kalimat secara halus */
-.fade-in-sentence {
-  opacity: 0;
-  animation: fadeInTeks 0.6s ease-out forwards;
-}
-
-/* Keyframes Animasi */
-@keyframes linaPulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
-  50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-}
-
-@keyframes fadeInTeks {
-  from { opacity: 0; transform: translateY(3px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInContainer {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
