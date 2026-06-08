@@ -100,53 +100,50 @@ async function kirimJurnal(event) {
         </div>
       `;
 
-      // 5. Fungsi internal untuk mengetik teks secara halus per kalimat
+   // 5. 🔥 LOGIKA BARU: Fungsi Mengetik Realistis Huruf demi Huruf 🔥
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
         if (!teksMentah) {
           if (callbackLanjutan) callbackLanjutan();
           return;
         }
 
-        let kumpulanKalimat = teksMentah.split('. ');
-        let indeksKalimat = 0;
+        let indeksKarakter = 0;
+        
+        // ⚙️ PENGATURAN KECEPATAN (Milidetik) ⚙️
+        // Semakin besar angkanya, semakin lambat ketikannya.
+        // 25 - 40 ms adalah kecepatan ideal mengetik AI yang natural.
+        const KECEPATAN_KETIK = 35; 
 
-        function ketik() {
-          if (indeksKalimat < kumpulanKalimat.length) {
-            let kalimatSekarang = kumpulanKalimat[indeksKalimat].trim();
-            if (kalimatSekarang.length > 0) {
-              // Pertahankan titik di akhir kalimat agar rapi
-              if (indeksKalimat < kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
-                kalimatSekarang += '. ';
-              } else if (indeksKalimat === kumpulanKalimat.length - 1 && !kalimatSekarang.endsWith('.')) {
-                kalimatSekarang += '.';
-              }
-
-              let span = document.createElement('span');
-              span.className = 'fade-in-sentence';
-              span.innerText = kalimatSekarang + " ";
-              elemenTarget.appendChild(span);
-            }
-            indeksKalimat++;
-            setTimeout(ketik, 900); // Kecepatan memunculkan kalimat (0.9 detik)
+        function ketikHuruf() {
+          if (indeksKarakter < teksMentah.length) {
+            // Tambahkan huruf satu per satu ke dalam kotak HTML
+            elemenTarget.innerHTML += teksMentah.charAt(indeksKarakter);
+            indeksKarakter++;
+            
+            // Jalankan perulangan huruf berikutnya
+            setTimeout(ketikHuruf, KECEPATAN_KETIK);
           } else {
-            if (callbackLanjutan) callbackLanjutan();
+            // Jika teks di kotak ini sudah selesai diketik, beri jeda 500ms sebelum lanjut ke kotak berikutnya
+            setTimeout(() => {
+              if (callbackLanjutan) callbackLanjutan();
+            }, 500);
           }
         }
-        ketik();
+        ketikHuruf();
       };
 
       // 6. Jalankan jeda simulasi berpikir selama 2.5 detik
       setTimeout(() => {
-        // Hapus tulisan status loader berpikir karena LINA sudah siap menuangkan teks
+        // Hapus status loader berpikir karena LINA mulai mengetik
         statusLoader.innerHTML = "";
 
-        // Mulai ketik berantai (Apresiasi -> Kelebihan -> Intervensi Pendampingan)
+        // Mulai ketik berantai secara realistis (Apresiasi -> Kelebihan -> Intervensi)
         jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
           jalankanKetikTeks(boxBagus, result.bagian_bagus, () => {
             jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
           });
         });
-      }, 2500); // Durasi LINA berpikir (2500ms = 2.5 detik)
+      }, 2500); 
 
       // 7. Reset form input jurnal
       document.getElementById('jurnalForm').reset();
@@ -178,10 +175,8 @@ async function muatDataDashboard() {
     const arraySkorKelas = [];
     const arrayLabelGrafik = [];
     data.forEach((item, index) => {
-      // Data Tren Grafik Kolektif Kelas
       arraySkorKelas.push(Number(item.skorUtama));
       arrayLabelGrafik.push(`Jurnal ${index + 1}`);
-      // Data Akumulasi Per Individu Siswa
       if (!rekapSiswa[item.namaSiswa]) {
         rekapSiswa[item.namaSiswa] = { buku: 0, totalSkor: 0 };
       }
@@ -195,7 +190,7 @@ async function muatDataDashboard() {
       nama: nama,
       buku: rekapSiswa[nama].buku,
       rataNilai: Math.round(rekapSiswa[nama].totalSkor / rekapSiswa[nama].buku)
-    })).sort((a, b) => b.rataNilai - a.rataNilai); // Urutkan berdasarkan kualitas esai tertinggi
+    })).sort((a, b) => b.rataNilai - a.rataNilai);
 
     listSiswaUrut.forEach(siswa => {
       tbody.innerHTML += `
@@ -236,14 +231,8 @@ async function muatDataDashboard() {
           legend: { display: false }
         },
         scales: {
-          y: {
-            min: 0,
-            max: 100,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' }
-          },
-          x: {
-            grid: { display: false }
-          }
+          y: { min: 0, max: 100, grid: { color: 'rgba(0, 0, 0, 0.05)' } },
+          x: { grid: { display: false } }
         }
       }
     });
@@ -256,7 +245,6 @@ async function muatDataDashboard() {
 // Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Dibuka
 window.onload = () => {
   muatDataDashboard();
-  // Sinkronisasi tombol kapsul saat refresh halaman
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const labelStatus = document.getElementById('label-status-tema');
   if (currentTheme === 'dark') {
