@@ -2,12 +2,21 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnFQtzINgJX7ntTG3w0psg8B_JAFnXzrwBgJpDnumEFOvfcoMDkukGqYW3DSEc12D/exec";
 let currentChart = null;
 
-// Fungsi Menangani Perpindahan Halaman Menu (SPA)
+// Fungsi Menangani Perpindahan Halaman Menu (SPA) - UPDATE AMAN
 function switchPage(pageId) {
   document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-  document.getElementById('section-' + pageId).classList.add('active');
-  document.getElementById('nav-' + pageId).classList.add('active');
+  
+  const targetSection = document.getElementById('section-' + pageId);
+  if (targetSection) {
+    targetSection.classList.add('active');
+  }
+  
+  const targetNavLink = document.getElementById('nav-' + pageId);
+  if (targetNavLink) {
+    targetNavLink.classList.add('active');
+  }
+
   if (pageId === 'dashboard') {
     muatDataDashboard();
   }
@@ -18,17 +27,14 @@ function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-  // 1. Set atribut tema pada dokumen
   document.documentElement.setAttribute('data-theme', targetTheme);
   
-  // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
   if (targetTheme === 'dark') {
     document.body.classList.add('dark-theme-active');
   } else {
     document.body.classList.remove('dark-theme-active');
   }
 
-  // 3. Mengubah text label di samping tombol secara dinamis
   const labelStatus = document.getElementById('label-status-tema');
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
@@ -39,11 +45,9 @@ function toggleTheme() {
 async function kirimJurnal(event) {
   event.preventDefault();
 
-  // --- LOGIKA VALIDASI MINIMAL 75 KATA ---
   const isiJurnal = document.getElementById('isiJurnal').value.trim();
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
 
-  // Jurnal Kurang Kata (Menggunakan Modal Bawaan Asli Bapak)
   if (jumlahKata < 75) {
     document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
     document.getElementById('customAlertModal').classList.add('modal-show');
@@ -55,7 +59,6 @@ async function kirimJurnal(event) {
   btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> LINA sedang membaca tulisanmu...`;
   btn.disabled = true;
 
-  // STRATEGI TUKAR POSISI: Munculkan Loader LINA Lebih Awal di Sisi Bawah
   const statusLoader = document.getElementById('linaThinkingStatus');
   const boxApresiasi = document.getElementById('txtApresiasi');
   const boxBagus = document.getElementById('txtBagus');
@@ -95,7 +98,6 @@ async function kirimJurnal(event) {
 
     const result = await response.json();
     
-    // === BLOK DATA SUKSES DITERIMA ===
     if (result.status === 'success') {
       
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
@@ -121,7 +123,6 @@ async function kirimJurnal(event) {
         ketikHuruf();
       };
 
-      // Jeda transisi 1 detik agar animasi berdenyut menghilang dengan halus
       setTimeout(() => {
         statusLoader.innerHTML = "";
         jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
@@ -133,19 +134,13 @@ async function kirimJurnal(event) {
 
       document.getElementById('jurnalForm').reset();
       
-    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI (SUDAH DISINKRONKAN) ===
     } else {
       document.getElementById('feedbackContainer').style.display = 'none';
-      
-      // Tembakkan modal error AI memakai class bawaan Bapak (modal-show)
       document.getElementById('linaErrorAiModal').classList.add('modal-show');
     }
 
-  // === MANDIRI & TERISOLASI: MODAL ERROR SINYAL INTERNET (SUDAH DISINKRONKAN) ===
   } catch (error) {
     document.getElementById('feedbackContainer').style.display = 'none';
-    
-    // Tembakkan modal internet memakai class bawaan Bapak (modal-show)
     document.getElementById('linaNetworkModal').classList.add('modal-show');
     
   } finally {
@@ -156,19 +151,13 @@ async function kirimJurnal(event) {
 
 // --- FUNGSI UNTUK MENUTUP MODAL & KEMBALI KE FORM TULISAN JURNAL ---
 function closeErrorAiModal() {
-  // Sembunyikan pop-up error AI menggunakan class modal-show
   document.getElementById('linaErrorAiModal').classList.remove('modal-show');
-  
-  // Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
   document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('isiJurnal').focus();
 }
 
 function closeNetworkModal() {
-  // Sembunyikan pop-up gangguan internet menggunakan class modal-show
   document.getElementById('linaNetworkModal').classList.remove('modal-show');
-  
-  // Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
   document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('isiJurnal').focus();
 }
@@ -184,7 +173,6 @@ async function muatDataDashboard() {
       return;
     }
 
-    // 1. OLAH DATA UNTUK LEADERBOARD & GRAFIK
     const rekapSiswa = {};
     const arraySkorKelas = [];
     const arrayLabelGrafik = [];
@@ -198,7 +186,6 @@ async function muatDataDashboard() {
       rekapSiswa[item.namaSiswa].totalSkor += Number(item.skorUtama);
     });
 
-    // 2. TAMPILKAN MATRIKS PAPAN PERINGKAT (LEADERBOARD)
     tbody.innerHTML = "";
     const listSiswaUrut = Object.keys(rekapSiswa).map(nama => ({
       nama: nama,
@@ -216,7 +203,6 @@ async function muatDataDashboard() {
       `;
     });
 
-    // 3. BANGUN GRAFIK TREN KELAS DENGAN CHART.JS
     const ctx = document.getElementById('chartKelas').getContext('2d');
     if (currentChart) {
       currentChart.destroy();
@@ -256,7 +242,7 @@ async function muatDataDashboard() {
   }
 }
 
-// Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Dibuka
+// Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Buku
 window.onload = () => {
   muatDataDashboard();
   const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -274,3 +260,34 @@ window.onload = () => {
 function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
 }
+
+// --- FUNGSI NAVIGASI NAVBAR HP (HAMBURGER BRAND LOGO) ---
+function toggleMobileMenu(event) {
+  if (window.innerWidth <= 768) {
+    event.stopPropagation(); 
+    const nav = document.getElementById('main-navigation');
+    const overlay = document.getElementById('nav-overlay');
+    
+    nav.classList.toggle('buka-menu');
+    overlay.classList.toggle('aktif');
+  }
+}
+
+function closeMobileMenu() {
+  const nav = document.getElementById('main-navigation');
+  const overlay = document.getElementById('nav-overlay');
+  
+  if (nav && nav.classList.contains('buka-menu')) {
+    nav.classList.remove('buka-menu');
+    overlay.classList.remove('aktif');
+  }
+}
+
+document.addEventListener('click', function(event) {
+  const brandArea = document.querySelector('.brand-area');
+  const nav = document.getElementById('main-navigation');
+  
+  if (nav && !nav.contains(event.target) && brandArea && !brandArea.contains(event.target)) {
+    closeMobileMenu();
+  }
+});

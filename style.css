@@ -937,3 +937,128 @@ textarea#isiJurnal + ::after {
   border: 1px solid rgba(239, 64, 64, 0.2) !important;
   word-break: break-all !important;
 }
+
+/* --- RESPONSIVITAS NAVBAR HP (SMOOTH TRANSITION) --- */
+
+/* Sembunyikan ikon burger secara default di laptop/komputer */
+.lina-burger-icon {
+  display: none;
+  font-size: 1.3rem;
+  margin-left: 12px;
+  color: var(--teks-warna, #333);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+/* Layer hitam transparan saat menu HP aktif */
+.nav-mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 98;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.nav-mobile-overlay.aktif {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- RESPONSIVITAS NAVBAR HP (SMOOTH & ANTI TABRAKAN) --- */
+@media (max-width: 768px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Memisahkan Logo di kiri dan Aksi di kanan */
+    position: relative;
+    padding: 12px 16px;
+    height: 60px; /* Mengunci tinggi navbar agar konsisten */
+    box-sizing: border-box;
+  }
+
+  .brand-area {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+  }
+
+  .lina-burger-icon {
+    display: inline-block;
+  }
+
+  /* Menyembunyikan menu navbar di HP dengan transisi meluncur turun yang smooth */
+  #main-navigation {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--bg-card, #ffffff);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    z-index: 99;
+    
+    /* Efek animasi meluncur dan memudar */
+    opacity: 0;
+    transform: translateY(-15px);
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease;
+  }
+
+  /* Ketika menu HP dipicu aktif via JavaScript */
+  #main-navigation.buka-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    max-height: 600px; /* Batas tinggi bentangan menu vertikal */
+  }
+
+  /* Merapikan daftar tautan menu vertikal di HP */
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  /* Dropdown sub-menu menyesuaikan vertikal di HP */
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.03);
+    padding-left: 15px;
+    opacity: 1;
+    pointer-events: auto;
+    display: none;
+  }
+  
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  /* PERBAIKAN: Tombol sakelar tema diposisikan aman di dalam navbar tanpa menabrak ikon burger */
+  .theme-switch-wrapper {
+    position: static; /* Mengembalikan dari posisi absolute */
+    margin-left: auto; /* Mendorong otomatis ke sisi kanan mendekati ikon burger */
+    margin-right: 12px; /* Memberi jarak aman dengan ikon burger */
+    z-index: 100;
+  }
+}
