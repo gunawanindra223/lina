@@ -43,7 +43,7 @@ async function kirimJurnal(event) {
   const isiJurnal = document.getElementById('isiJurnal').value.trim();
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
 
-  // Jurnal Kurang Kata (Tetap Menggunakan Modal Bawaan Asli Bapak)
+  // Jurnal Kurang Kata (Menggunakan Modal Bawaan Asli Bapak)
   if (jumlahKata < 75) {
     document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
     document.getElementById('customAlertModal').classList.add('modal-show');
@@ -52,7 +52,7 @@ async function kirimJurnal(event) {
 
   const btn = document.getElementById('submitBtn');
   const originalText = btn.innerHTML;
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> sedang membaca tulisanmu...`;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> LINA sedang membaca tulisanmu...`;
   btn.disabled = true;
 
   // STRATEGI TUKAR POSISI: Munculkan Loader LINA Lebih Awal di Sisi Bawah
@@ -133,31 +133,40 @@ async function kirimJurnal(event) {
 
       document.getElementById('jurnalForm').reset();
       
-    // === MANDIRI: MODAL ERROR PROSES AI (ANTI TUMPANG TINDIH) ===
+    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI ===
     } else {
       document.getElementById('feedbackContainer').style.display = 'none';
       
-      // Masukkan teks pesan galat bawaan Google Apps ke penampung khusus
+      // Masukkan teks pesan galat bawaan Google Apps ke penampung khusus lina-code-error
       document.getElementById('modal-error-ai-text').innerHTML = `
         Gagal Proses Analisa AI: <br>
-        <span class="code-block">${result.message}</span>
+        <span class="lina-code-error">${result.message}</span>
       `;
       
-      // Tembakkan modal error khusus AI
-      document.getElementById('errorAiModal').classList.add('modal-show');
+      // Tembakkan modal error khusus AI memakai class baru lina-show-aktif
+      document.getElementById('linaErrorAiModal').classList.add('lina-show-aktif');
     }
 
-  // === MANDIRI: MODAL ERROR SINYAL INTERNET (ANTI TUMPANG TINDIH) ===
+  // === MANDIRI & TERISOLASI: MODAL ERROR SINYAL INTERNET ===
   } catch (error) {
     document.getElementById('feedbackContainer').style.display = 'none';
     
-    // Tembakkan modal khusus gangguan sinyal internet
-    document.getElementById('networkModal').classList.add('modal-show');
+    // Tembakkan modal khusus gangguan sinyal internet memakai class baru lina-show-aktif
+    document.getElementById('linaNetworkModal').classList.add('lina-show-aktif');
     
   } finally {
     btn.innerHTML = originalText;
     btn.disabled = false;
   }
+}
+
+// --- FUNGSI UNTUK MENUTUP MODAL BARU (ANTI-BENTROK) ---
+function closeErrorAiModal() {
+  document.getElementById('linaErrorAiModal').classList.remove('lina-show-aktif');
+}
+
+function closeNetworkModal() {
+  document.getElementById('linaNetworkModal').classList.remove('lina-show-aktif');
 }
 
 // --- FUNGSI BARU UNTUK MENUTUP MODAL MANDIRI ---

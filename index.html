@@ -238,34 +238,33 @@
       </div>
     </div> 
 
-  <!--Pop-Up Gagal Proses AI-->
-    <div id="errorAiModal" class="custom-modal-container">
-    <div class="custom-modal-content error-theme">
-      <div class="modal-body-wrapper">
-        <i class="fa-solid fa-robot modal-icon-main text-danger"></i>
-        <h3 class="modal-title-main text-danger">Gagal Memproses Analisis AI</h3>
+    <div id="linaErrorAiModal" class="lina-modal-overlay">
+    <div class="lina-modal-box lina-theme-danger">
+      <div class="lina-modal-body">
+        <i class="fa-solid fa-robot lina-modal-icon text-danger"></i>
+        <h3 class="lina-modal-title text-danger">Gagal Memproses Analisis AI</h3>
         
-        <div id="modal-error-ai-text" class="modal-description-text">
+        <div id="modal-error-ai-text" class="lina-modal-desc">
           </div>
         
-        <p class="modal-footer-hint">Silakan coba beberapa saat lagi.</p>
-        <button type="button" class="btn-modal-close bg-danger" onclick="closeErrorAiModal()">Mengerti</button>
+        <p class="lina-modal-hint">Silakan coba klik kembali tombol "Kirim Tulisan" beberapa saat lagi.</p>
+        <button type="button" class="lina-modal-btn bg-danger" onclick="closeErrorAiModal()">Mengerti</button>
       </div>
     </div>
   </div>
 
-  <div id="networkModal" class="custom-modal-container">
-    <div class="custom-modal-content warning-theme">
-      <div class="modal-body-wrapper">
-        <i class="fa-solid fa-wifi modal-icon-main text-warning"></i>
-        <h3 class="modal-title-main text-warning">Koneksi Internet Terganggu</h3>
+  <div id="linaNetworkModal" class="lina-modal-overlay">
+    <div class="lina-modal-box lina-theme-warning">
+      <div class="lina-modal-body">
+        <i class="fa-solid fa-wifi lina-modal-icon text-warning"></i>
+        <h3 class="lina-modal-title text-warning">Koneksi Internet Terganggu</h3>
         
-        <p class="modal-description-text">
+        <p class="lina-modal-desc">
           Sinyal internetmu kurang stabil saat mencoba mengirim data jurnal siswa ke server.
         </p>
         
-        <p class="modal-footer-hint italic">Pastikan sinyal internetmu bagus, lalu dicoba kirim kembali ya!</p>
-        <button type="button" class="btn-modal-close bg-warning" onclick="closeNetworkModal()">Tutup</button>
+        <p class="lina-modal-hint lina-italic">Pastikan sinyal internetmu bagus, lalu dicoba kirim kembali ya!</p>
+        <button type="button" class="lina-modal-btn bg-warning" onclick="closeNetworkModal()">Periksa Koneksi</button>
       </div>
     </div>
   </div>
