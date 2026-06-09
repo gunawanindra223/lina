@@ -261,14 +261,14 @@ function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
 }
 
-// --- LOGIKA KENDALI NAVIGASI HP (SINKRONISASI SMOOTH MORPH) ---
+// --- LOGIKA PENGENDALI NAVIGASI HP (FULL-MENU HORIZONTAL MORPHING) ---
+
 function toggleMobileMenu(event) {
   if (window.innerWidth <= 768) {
-    event.stopPropagation(); // Mencegah bubbling klik ke dokumen luar
+    event.stopPropagation();
     const navbar = document.querySelector('.navbar');
     const overlay = document.getElementById('nav-overlay');
     
-    // Aktifkan / Matikan mode morphing menu menyamping
     navbar.classList.toggle('menu-terbuka');
     
     if (navbar.classList.contains('menu-terbuka')) {
@@ -292,7 +292,6 @@ function toggleDropdownMobile(event, dropdownId) {
       menu.classList.remove('buka-sub');
     });
 
-    // Toggle dropdown sasaran
     if (!sudahTerbuka) {
       targetDropdown.classList.add('buka-sub');
     }
@@ -303,25 +302,19 @@ function closeMobileMenu() {
   const navbar = document.querySelector('.navbar');
   const overlay = document.getElementById('nav-overlay');
   
-  if (navbar) {
-    navbar.classList.remove('menu-terbuka');
-  }
-  
-  if (overlay) {
-    overlay.style.display = 'none';
-  }
+  if (navbar) navbar.classList.remove('menu-open'); // Sesuai standarisasi
+  if (navbar) navbar.classList.remove('menu-terbuka');
+  if (overlay) overlay.style.display = 'none';
 
-  // Tutup paksa semua sub-menu tirai emoji yang sedang meluncur ke bawah
   document.querySelectorAll('.dropdown-menu').forEach(menu => {
     menu.classList.remove('buka-sub');
   });
 }
 
-// REVISI 3: Ketika menekan sembarangan area layar, otomatis tertutup smooth kembali ke tengah
+// Menutup menu otomatis jika siswa mengetuk area kosong di mana saja
 document.addEventListener('click', function(event) {
   if (window.innerWidth <= 768) {
     const navbar = document.querySelector('.navbar');
-    // Jika area yang diklik bukan bagian dalam kontainer navbar, tutup menu
     if (navbar && !navbar.contains(event.target)) {
       closeMobileMenu();
     }
