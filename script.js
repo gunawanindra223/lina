@@ -96,7 +96,12 @@ async function kirimJurnal(event) {
       statusLoader.innerHTML = `
         <div class="lina-status-loader">
           <img src="./lina.png" class="lina-avatar-thinking" alt="LINA">
-          <span><i class="fa-solid fa-ellipsis fa-bounce"></i> LINA sedang menganalisis tulisanmu...</span>
+          <div class="thinking-text-wrapper">
+            <span>sedang menganalisa tulisanmu...</span>
+            <div class="wave-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
         </div>
       `;
 
@@ -134,6 +139,7 @@ async function kirimJurnal(event) {
 
       // 6. Jalankan jeda simulasi berpikir selama 2.5 detik
       setTimeout(() => {
+
         // Hapus status loader berpikir karena LINA mulai mengetik
         statusLoader.innerHTML = "";
 
@@ -143,7 +149,7 @@ async function kirimJurnal(event) {
             jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
           });
         });
-      }, 2500); 
+      }, 2000); 
 
       // 7. Reset form input jurnal
       document.getElementById('jurnalForm').reset();

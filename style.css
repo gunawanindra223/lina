@@ -720,7 +720,7 @@ textarea#isiJurnal + ::after {
 }
 
 /* ==========================================================================
-   ANIMASI INDIKATOR BERPIKIR ASISTEN LINA 
+   ANIMASI INDIKATOR BERPIKIR ASISTEN LINA (REVISI)
    ========================================================================== */
 
 /* Wadah indikator status LINA sedang berpikir */
@@ -730,7 +730,7 @@ textarea#isiJurnal + ::after {
   gap: 12px;
   padding: 12px 16px;
   background: rgba(37, 99, 235, 0.05);
-  border-left: 4px solid var(--accent);
+  /* --- REVISI 3: Garis biru border-left di sini sudah DIHAPUS --- */
   border-radius: 4px;
   margin-bottom: 20px;
   font-weight: 500;
@@ -745,16 +745,60 @@ textarea#isiJurnal + ::after {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--accent);
-  animation: linaPulseEffect 1.4s infinite ease-in-out;
+  /* --- REVISI 2: Durasi berdenyut DIPERLAMBAT dari 1.4s menjadi 2s --- */
+  animation: linaPulseEffect 2s infinite ease-in-out;
 }
 
-/* Efek teks mengalir per kalimat */
+/* 🔥 TAMBAHAN UNTUK REVISI 1: Titik Tiga Bergelombang 🔥 */
+.thinking-text-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wave-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.wave-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  opacity: 0.8;
+  animation: waveDotEffect 1.3s infinite ease-in-out;
+}
+
+/* Mengatur jeda ayunan gelombang tiap titik */
+.wave-dots span:nth-child(1) { animation-delay: 0s; }
+.wave-dots span:nth-child(2) { animation-delay: 0.15s; }
+.wave-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+
+/* ✅ TETAP DIPERTAHANKAN: Efek teks mengalir per kalimat Bapak ✅ */
 .fade-in-sentence {
   opacity: 0;
-  animation: fadeInTeksEfek 0.6s ease-out forwards;
+  animation: fadeInTeksEfek 0.3s ease-out forwards;
 }
 
-/* Animasi Keyframes */
+/* ==========================================================================
+   ANIMASI KEYFRAMES
+   ========================================================================== */
+
+/* --- REVISI 1: Keyframe baru untuk menggerakkan titik naik-turun (gelombang) --- */
+@keyframes waveDotEffect {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-5px); /* Jarak tinggi ayunan titik */
+    opacity: 0.3;
+  }
+}
+
 @keyframes linaPulseEffect {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
   50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
@@ -766,6 +810,7 @@ textarea#isiJurnal + ::after {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ✅ TETAP DIPERTAHANKAN: Animasi teks kalimat asli Bapak ✅ */
 @keyframes fadeInTeksEfek {
   from { opacity: 0; transform: translateY(3px); }
   to { opacity: 1; transform: translateY(0); }
