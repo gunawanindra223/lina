@@ -41,42 +41,33 @@ async function kirimJurnal(event) {
 
   // --- LOGIKA VALIDASI MINIMAL 75 KATA ---
   const isiJurnal = document.getElementById('isiJurnal').value.trim();
-  // Menghitung jumlah kata berdasarkan spasi
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
 
-  // BAGIAN BARU (Menggunakan Pop-Up Kustom)
+  // Jurnal Kurang Kata (Tetap Menggunakan Modal Bawaan Asli Bapak)
   if (jumlahKata < 75) {
-    // Isi text jumlah kata anak secara dinamis ke dalam pop-up modal
     document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
-
-    // Munculkan modal dengan menambahkan class 'modal-show'
     document.getElementById('customAlertModal').classList.add('modal-show');
-    return; // STOP! Membatalkan pengiriman data
+    return; 
   }
-  // ---------------------------------------
 
   const btn = document.getElementById('submitBtn');
   const originalText = btn.innerHTML;
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> LINA sedang membaca tulisanmu...`;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> sedang membaca tulisanmu...`;
   btn.disabled = true;
 
-  // === 🌟 STRATEGI TUKAR POSISI: MUNCULKAN ANIMASI LINA DI AWAL PROSES 🌟 ===
-  // 1. Ambil referensi elemen penampung status loader dan kotak teks asli
+  // STRATEGI TUKAR POSISI: Munculkan Loader LINA Lebih Awal di Sisi Bawah
   const statusLoader = document.getElementById('linaThinkingStatus');
   const boxApresiasi = document.getElementById('txtApresiasi');
   const boxBagus = document.getElementById('txtBagus');
   const boxPerbaikan = document.getElementById('txtPerbaikan');
 
-  // 2. Kosongkan semua teks kotak lama sebelum simulasi dimulai
   boxApresiasi.innerHTML = "";
   boxBagus.innerHTML = "";
   boxPerbaikan.innerHTML = "";
 
-  // 3. Tampilkan container feedback utama & scroll secara halus saat ini juga!
   document.getElementById('feedbackContainer').style.display = 'block';
   document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
 
-  // 4. Masukkan struktur animasi berpikir LINA (Akan terus berdenyut selama menunggu server)
   statusLoader.innerHTML = `
     <div class="lina-status-loader">
       <img src="./lina.png" class="lina-avatar-thinking" alt="LINA">
@@ -93,11 +84,10 @@ async function kirimJurnal(event) {
     namaSiswa: document.getElementById('namaSiswa').value,
     judulBuku: document.getElementById('judulBuku').value,
     noWaOrangTua: document.getElementById('waInput').value,
-    isiJurnal: isiJurnal // Menggunakan isi jurnal yang sudah bersih dari spasi berlebih
+    isiJurnal: isiJurnal
   };
 
   try {
-    // Proses fetch berjalan di latar belakang sembari siswa melihat animasi LINA berdenyut di bawah
     const response = await fetch(SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify(payload)
@@ -105,10 +95,9 @@ async function kirimJurnal(event) {
 
     const result = await response.json();
     
-    // === 🌟 BLOK SUKSES DATA DITERIMA 🌟 ===
+    // === BLOK DATA SUKSES DITERIMA ===
     if (result.status === 'success') {
       
-      // Fungsi Mengetik Realistis Huruf demi Huruf
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
         if (!teksMentah) {
           if (callbackLanjutan) callbackLanjutan();
@@ -132,12 +121,9 @@ async function kirimJurnal(event) {
         ketikHuruf();
       };
 
-      // Beri jeda transisi halus 1 detik (1000ms) setelah data siap, baru hilangkan loader dan mulai mengetik
+      // Jeda transisi 1 detik agar animasi berdenyut menghilang dengan halus
       setTimeout(() => {
-        // Hapus status loader berpikir karena LINA mulai mengetik
         statusLoader.innerHTML = "";
-
-        // Mulai ketik berantai secara realistis (Apresiasi -> Kelebihan -> Intervensi)
         jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
           jalankanKetikTeks(boxBagus, result.bagian_bagus, () => {
             jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
@@ -145,51 +131,42 @@ async function kirimJurnal(event) {
         });
       }, 1000); 
 
-      // Reset form input jurnal
       document.getElementById('jurnalForm').reset();
       
-    // === 🌟 REVISI 1: CUSTOM POP-UP GAGAL PROSES ANALISA AI 🌟 ===
+    // === MANDIRI: MODAL ERROR PROSES AI (ANTI TUMPANG TINDIH) ===
     } else {
-      // Sembunyikan container karena proses gagal
       document.getElementById('feedbackContainer').style.display = 'none';
       
-      document.getElementById('modal-warning-text').innerHTML = `
-        <div style="text-align: center; padding: 10px;">
-          <i class="fa-solid fa-robot" style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"></i>
-          <p style="font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: #ef4444;">Gagal Memproses Analisis AI</p>
-          <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-main);">
-            Gagal Proses Analisa AI: <br>
-            <span style="font-family: monospace; background: rgba(239, 64, 64, 0.1); padding: 4px 8px; border-radius: 4px; color: #b91c1c; display: inline-block; margin-top: 5px; font-size: 0.9rem;">${result.message}</span>
-          </p>
-          <p style="font-size: 0.9rem; margin-top: 15px; color: var(--text-muted);">Silakan coba klik kembali tombol "Kirim Tulisan" beberapa saat lagi.</p>
-        </div>
+      // Masukkan teks pesan galat bawaan Google Apps ke penampung khusus
+      document.getElementById('modal-error-ai-text').innerHTML = `
+        Gagal Proses Analisa AI: <br>
+        <span class="code-block">${result.message}</span>
       `;
-      document.getElementById('customAlertModal').classList.add('modal-show');
+      
+      // Tembakkan modal error khusus AI
+      document.getElementById('errorAiModal').classList.add('modal-show');
     }
 
-  // === 🌟 REVISI 2: CUSTOM POP-UP GANGGUAN KONEKSI INTERNET 🌟 ===
+  // === MANDIRI: MODAL ERROR SINYAL INTERNET (ANTI TUMPANG TINDIH) ===
   } catch (error) {
-    // Sembunyikan container karena koneksi terputus
     document.getElementById('feedbackContainer').style.display = 'none';
     
-    document.getElementById('modal-warning-text').innerHTML = `
-      <div style="text-align: center; padding: 10px;">
-        <i class="fa-solid fa-wifi" style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
-        <p style="font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: #f59e0b;">Koneksi Internet Terganggu</p>
-        <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-main);">
-          LINA mendeteksi sinyal internetmu kurang stabil atau terputus saat mencoba mengirim data jurnal siswa ke server.
-        </p>
-        <p style="font-size: 0.9rem; margin-top: 15px; font-style: italic; color: var(--text-muted);">
-          Pastikan sinyal internetmu bagus, lalu dicoba kirim kembali ya!
-        </p>
-      </div>
-    `;
-    document.getElementById('customAlertModal').classList.add('modal-show');
+    // Tembakkan modal khusus gangguan sinyal internet
+    document.getElementById('networkModal').classList.add('modal-show');
     
   } finally {
     btn.innerHTML = originalText;
     btn.disabled = false;
   }
+}
+
+// --- FUNGSI BARU UNTUK MENUTUP MODAL MANDIRI ---
+function closeErrorAiModal() {
+  document.getElementById('errorAiModal').classList.remove('modal-show');
+}
+
+function closeNetworkModal() {
+  document.getElementById('networkModal').classList.remove('modal-show');
 }
 
 // Fungsi Menarik Data Real-Time & Membangun Dashboard Grafik

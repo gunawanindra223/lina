@@ -237,6 +237,38 @@
         <button class="custom-modal-btn" onclick="closeCustomAlert()">Tambahkan Lagi!</button>
       </div>
     </div> 
+
+  <!--Pop-Up Gagal Proses AI-->
+    <div id="errorAiModal" class="custom-modal-container">
+    <div class="custom-modal-content error-theme">
+      <div class="modal-body-wrapper">
+        <i class="fa-solid fa-robot modal-icon-main text-danger"></i>
+        <h3 class="modal-title-main text-danger">Gagal Memproses Analisis AI</h3>
+        
+        <div id="modal-error-ai-text" class="modal-description-text">
+          </div>
+        
+        <p class="modal-footer-hint">Silakan coba beberapa saat lagi.</p>
+        <button type="button" class="btn-modal-close bg-danger" onclick="closeErrorAiModal()">Mengerti</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="networkModal" class="custom-modal-container">
+    <div class="custom-modal-content warning-theme">
+      <div class="modal-body-wrapper">
+        <i class="fa-solid fa-wifi modal-icon-main text-warning"></i>
+        <h3 class="modal-title-main text-warning">Koneksi Internet Terganggu</h3>
+        
+        <p class="modal-description-text">
+          Sinyal internetmu kurang stabil saat mencoba mengirim data jurnal siswa ke server.
+        </p>
+        
+        <p class="modal-footer-hint italic">Pastikan sinyal internetmu bagus, lalu dicoba kirim kembali ya!</p>
+        <button type="button" class="btn-modal-close bg-warning" onclick="closeNetworkModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
