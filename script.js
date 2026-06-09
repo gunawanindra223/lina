@@ -133,14 +133,15 @@ async function kirimJurnal(event) {
 
       document.getElementById('jurnalForm').reset();
       
-    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI ===
+  // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI ===
     } else {
       document.getElementById('feedbackContainer').style.display = 'none';
       
-      // Masukkan teks pesan galat bawaan Google Apps ke penampung khusus lina-code-error
+      // 🌟 GANTI KALIMAT DI SINI AGAR LEBIH RAMAH BAGI SISWA (MENYEMBUNYIKAN TYPEERROR) 🌟
       document.getElementById('modal-error-ai-text').innerHTML = `
-        Gagal Proses Analisa AI: <br>
-        <span class="lina-code-error">${result.message}</span>
+        <span class="lina-code-error" style="font-family: inherit !important; font-size: 1rem !important; line-height: 1.5;">
+          Server LINA sedang mengalami gangguan.
+        </span>
       `;
       
       // Tembakkan modal error khusus AI memakai class baru lina-show-aktif
