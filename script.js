@@ -18,7 +18,7 @@ function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-  // 1. Set atribut tema pada dokumen (tetap mempertahankan sistem warna lama Bapak)
+  // 1. Set atribut tema pada dokumen
   document.documentElement.setAttribute('data-theme', targetTheme);
   
   // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
@@ -28,7 +28,7 @@ function toggleTheme() {
     document.body.classList.remove('dark-theme-active');
   }
 
-  // 3. Mengubah text label di samping tombol secara dinamis sesuai video
+  // 3. Mengubah text label di samping tombol secara dinamis
   const labelStatus = document.getElementById('label-status-tema');
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
@@ -133,18 +133,18 @@ async function kirimJurnal(event) {
 
       document.getElementById('jurnalForm').reset();
       
-  // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI ===
+    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI (REVISI AMAN) ===
     } else {
       document.getElementById('feedbackContainer').style.display = 'none';
       
-      // 🌟 GANTI KALIMAT DI SINI AGAR LEBIH RAMAH BAGI SISWA (MENYEMBUNYIKAN TYPEERROR) 🌟
+      // Mengganti kalimat sistem (TypeError) menjadi ramah anak
       document.getElementById('modal-error-ai-text').innerHTML = `
-        <span class="lina-code-error" style="font-family: inherit !important; font-size: 1rem !important; line-height: 1.5;">
-          Server LINA sedang mengalami gangguan.
+        <span class="lina-code-error" style="font-family: inherit !important; font-size: 1rem !important; line-height: 1.5; border: none !important; background: none !important; color: #b91c1c !important;">
+          Server LINA sedang mengalami kendala teknis.
         </span>
       `;
       
-      // Tembakkan modal error khusus AI memakai class baru lina-show-aktif
+      // Tembakkan modal error khusus AI memakai class lina-show-aktif
       document.getElementById('linaErrorAiModal').classList.add('lina-show-aktif');
     }
 
@@ -152,7 +152,7 @@ async function kirimJurnal(event) {
   } catch (error) {
     document.getElementById('feedbackContainer').style.display = 'none';
     
-    // Tembakkan modal khusus gangguan sinyal internet memakai class baru lina-show-aktif
+    // Tembakkan modal khusus gangguan sinyal internet memakai class lina-show-aktif
     document.getElementById('linaNetworkModal').classList.add('lina-show-aktif');
     
   } finally {
@@ -162,7 +162,6 @@ async function kirimJurnal(event) {
 }
 
 // --- FUNGSI UNTUK MENUTUP MODAL BARU & KEMBALI KE FORM TULISAN JURNAL ---
-
 function closeErrorAiModal() {
   // 1. Sembunyikan pop-up error AI
   document.getElementById('linaErrorAiModal').classList.remove('lina-show-aktif');
@@ -278,7 +277,7 @@ window.onload = () => {
   }
 };
 
-// Fungsi untuk menutup pop-up modal peringatan kata
+// Fungsi untuk menutup pop-up modal peringatan kata kurang dari 75 kata
 function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
 }
