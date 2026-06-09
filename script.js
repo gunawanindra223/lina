@@ -60,6 +60,35 @@ async function kirimJurnal(event) {
   btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> LINA sedang membaca tulisanmu...`;
   btn.disabled = true;
 
+  // === 🌟 STRATEGI TUKAR POSISI: MUNCULKAN ANIMASI LINA DI AWAL PROSES 🌟 ===
+  // 1. Ambil referensi elemen penampung status loader dan kotak teks asli
+  const statusLoader = document.getElementById('linaThinkingStatus');
+  const boxApresiasi = document.getElementById('txtApresiasi');
+  const boxBagus = document.getElementById('txtBagus');
+  const boxPerbaikan = document.getElementById('txtPerbaikan');
+
+  // 2. Kosongkan semua teks kotak lama sebelum simulasi dimulai
+  boxApresiasi.innerHTML = "";
+  boxBagus.innerHTML = "";
+  boxPerbaikan.innerHTML = "";
+
+  // 3. Tampilkan container feedback utama & scroll secara halus saat ini juga!
+  document.getElementById('feedbackContainer').style.display = 'block';
+  document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
+
+  // 4. Masukkan struktur animasi berpikir LINA (Akan terus berdenyut selama menunggu server)
+  statusLoader.innerHTML = `
+    <div class="lina-status-loader">
+      <img src="./lina.png" class="lina-avatar-thinking" alt="LINA">
+      <div class="thinking-text-wrapper">
+        <span>sedang menganalisa tulisanmu</span>
+        <div class="wave-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  `;
+
   const payload = {
     namaSiswa: document.getElementById('namaSiswa').value,
     judulBuku: document.getElementById('judulBuku').value,
@@ -68,6 +97,7 @@ async function kirimJurnal(event) {
   };
 
   try {
+    // Proses fetch berjalan di latar belakang sembari siswa melihat animasi LINA berdenyut di bawah
     const response = await fetch(SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify(payload)
@@ -75,37 +105,10 @@ async function kirimJurnal(event) {
 
     const result = await response.json();
     
-    // === 🌟 PERUBAHAN LOGIKA UTAMA DI SINI (BLOK SUKSES) 🌟 ===
+    // === 🌟 BLOK SUKSES DATA DITERIMA 🌟 ===
     if (result.status === 'success') {
-      // 1. Tampilkan container feedback utama & scroll secara halus
-      document.getElementById('feedbackContainer').style.display = 'block';
-      document.getElementById('feedbackContainer').scrollIntoView({ behavior: 'smooth' });
-
-      // 2. Ambil referensi elemen penampung status loader dan kotak teks asli
-      const statusLoader = document.getElementById('linaThinkingStatus');
-      const boxApresiasi = document.getElementById('txtApresiasi');
-      const boxBagus = document.getElementById('txtBagus');
-      const boxPerbaikan = document.getElementById('txtPerbaikan');
-
-      // 3. Kosongkan semua teks kotak lama sebelum simulasi dimulai
-      boxApresiasi.innerHTML = "";
-      boxBagus.innerHTML = "";
-      boxPerbaikan.innerHTML = "";
-
-      // 4. Masukkan struktur animasi berpikir LINA (Menggunakan foto ./lina.png)
-      statusLoader.innerHTML = `
-        <div class="lina-status-loader">
-          <img src="./lina.png" class="lina-avatar-thinking" alt="LINA">
-          <div class="thinking-text-wrapper">
-            <span>sedang menganalisa tulisanmu...</span>
-            <div class="wave-dots">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // 5. 🔥 LOGIKA BARU: Fungsi Mengetik Realistis Huruf demi Huruf 🔥
+      
+      // Fungsi Mengetik Realistis Huruf demi Huruf
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
         if (!teksMentah) {
           if (callbackLanjutan) callbackLanjutan();
@@ -113,22 +116,14 @@ async function kirimJurnal(event) {
         }
 
         let indeksKarakter = 0;
-        
-        // ⚙️ PENGATURAN KECEPATAN (Milidetik) ⚙️
-        // Semakin besar angkanya, semakin lambat ketikannya.
-        // 20 - 40 ms adalah kecepatan ideal mengetik AI yang natural.
         const KECEPATAN_KETIK = 15; 
 
         function ketikHuruf() {
           if (indeksKarakter < teksMentah.length) {
-            // Tambahkan huruf satu per satu ke dalam kotak HTML
             elemenTarget.innerHTML += teksMentah.charAt(indeksKarakter);
             indeksKarakter++;
-            
-            // Jalankan perulangan huruf berikutnya
             setTimeout(ketikHuruf, KECEPATAN_KETIK);
           } else {
-            // Jika teks di kotak ini sudah selesai diketik, beri jeda 500ms sebelum lanjut ke kotak berikutnya
             setTimeout(() => {
               if (callbackLanjutan) callbackLanjutan();
             }, 500);
@@ -137,9 +132,8 @@ async function kirimJurnal(event) {
         ketikHuruf();
       };
 
-      // 6. Jalankan jeda simulasi berpikir selama 2 detik
+      // Beri jeda transisi halus 1 detik (1000ms) setelah data siap, baru hilangkan loader dan mulai mengetik
       setTimeout(() => {
-
         // Hapus status loader berpikir karena LINA mulai mengetik
         statusLoader.innerHTML = "";
 
@@ -149,13 +143,16 @@ async function kirimJurnal(event) {
             jalankanKetikTeks(boxPerbaikan, result.bagian_perbaikan);
           });
         });
-      }, 2000); 
+      }, 1000); 
 
-      // 7. Reset form input jurnal
+      // Reset form input jurnal
       document.getElementById('jurnalForm').reset();
       
     // === 🌟 REVISI 1: CUSTOM POP-UP GAGAL PROSES ANALISA AI 🌟 ===
     } else {
+      // Sembunyikan container karena proses gagal
+      document.getElementById('feedbackContainer').style.display = 'none';
+      
       document.getElementById('modal-warning-text').innerHTML = `
         <div style="text-align: center; padding: 10px;">
           <i class="fa-solid fa-robot" style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"></i>
@@ -172,6 +169,9 @@ async function kirimJurnal(event) {
 
   // === 🌟 REVISI 2: CUSTOM POP-UP GANGGUAN KONEKSI INTERNET 🌟 ===
   } catch (error) {
+    // Sembunyikan container karena koneksi terputus
+    document.getElementById('feedbackContainer').style.display = 'none';
+    
     document.getElementById('modal-warning-text').innerHTML = `
       <div style="text-align: center; padding: 10px;">
         <i class="fa-solid fa-wifi" style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
