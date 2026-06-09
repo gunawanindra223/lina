@@ -105,7 +105,7 @@ async function kirimJurnal(event) {
         </div>
       `;
 
-   // 5. 🔥 LOGIKA BARU: Fungsi Mengetik Realistis Huruf demi Huruf 🔥
+      // 5. 🔥 LOGIKA BARU: Fungsi Mengetik Realistis Huruf demi Huruf 🔥
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
         if (!teksMentah) {
           if (callbackLanjutan) callbackLanjutan();
@@ -117,7 +117,7 @@ async function kirimJurnal(event) {
         // ⚙️ PENGATURAN KECEPATAN (Milidetik) ⚙️
         // Semakin besar angkanya, semakin lambat ketikannya.
         // 20 - 40 ms adalah kecepatan ideal mengetik AI yang natural.
-        const KECEPATAN_KETIK = 20; 
+        const KECEPATAN_KETIK = 15; 
 
         function ketikHuruf() {
           if (indeksKarakter < teksMentah.length) {
@@ -137,7 +137,7 @@ async function kirimJurnal(event) {
         ketikHuruf();
       };
 
-      // 6. Jalankan jeda simulasi berpikir selama 2.5 detik
+      // 6. Jalankan jeda simulasi berpikir selama 2 detik
       setTimeout(() => {
 
         // Hapus status loader berpikir karena LINA mulai mengetik
@@ -154,11 +154,38 @@ async function kirimJurnal(event) {
       // 7. Reset form input jurnal
       document.getElementById('jurnalForm').reset();
       
+    // === 🌟 REVISI 1: CUSTOM POP-UP GAGAL PROSES ANALISA AI 🌟 ===
     } else {
-      alert("Gagal memproses analisis AI: " + result.message);
+      document.getElementById('modal-warning-text').innerHTML = `
+        <div style="text-align: center; padding: 10px;">
+          <i class="fa-solid fa-robot" style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"></i>
+          <p style="font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: #ef4444;">Gagal Memproses Analisis AI</p>
+          <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-main);">
+            Gagal Proses Analisa AI: <br>
+            <span style="font-family: monospace; background: rgba(239, 64, 64, 0.1); padding: 4px 8px; border-radius: 4px; color: #b91c1c; display: inline-block; margin-top: 5px; font-size: 0.9rem;">${result.message}</span>
+          </p>
+          <p style="font-size: 0.9rem; margin-top: 15px; color: var(--text-muted);">Silakan coba klik kembali tombol "Kirim Tulisan" beberapa saat lagi.</p>
+        </div>
+      `;
+      document.getElementById('customAlertModal').classList.add('modal-show');
     }
+
+  // === 🌟 REVISI 2: CUSTOM POP-UP GANGGUAN KONEKSI INTERNET 🌟 ===
   } catch (error) {
-    alert("Terjadi gangguan koneksi internet saat mengirim data.");
+    document.getElementById('modal-warning-text').innerHTML = `
+      <div style="text-align: center; padding: 10px;">
+        <i class="fa-solid fa-wifi" style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
+        <p style="font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: #f59e0b;">Koneksi Internet Terganggu</p>
+        <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-main);">
+          LINA mendeteksi sinyal internetmu kurang stabil atau terputus saat mencoba mengirim data jurnal siswa ke server.
+        </p>
+        <p style="font-size: 0.9rem; margin-top: 15px; font-style: italic; color: var(--text-muted);">
+          Pastikan sinyal internetmu bagus, lalu dicoba kirim kembali ya!
+        </p>
+      </div>
+    `;
+    document.getElementById('customAlertModal').classList.add('modal-show');
+    
   } finally {
     btn.innerHTML = originalText;
     btn.disabled = false;
