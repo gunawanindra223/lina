@@ -1017,131 +1017,192 @@ textarea#isiJurnal + ::after {
   display: none;
 }
 
-/* --- MEDIA QUERY KHUSUS HP (LEBAR SCREEN <= 768px) --- */
+/* --- REVISI: MORPHING HORIZONTAL NAVBAR DENGAN IKON MINIMALIS (KHUSUS HP) --- */
 @media (max-width: 768px) {
   
-  /* Kondisi Awal: Memaksa Semua Konten Brand Berada di Tengah Atas */
+  .navbar {
+    background-color: var(--bg-card, #ffffff);
+    width: 100%;
+    padding: 10px 14px; /* Sedikit mempersempit padding luar di HP */
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+  }
+
+  /* Kontainer flex awal memaksa posisi semuanya ke tengah */
   .navbar-container {
-    flex-direction: column;
-    justify-content: center;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    width: 100%;
+    position: relative;
   }
 
+  /* Area Brand Default: Berada di tengah screen */
   .brand-area {
-    flex-direction: column;
-    text-align: center;
-    gap: 4px;
-    cursor: pointer;
-  }
-
-  .brand-text {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
   }
 
-  /* Sembunyikan Navigasi Menu Pertama Kali Dibuka */
+  .brand-logo {
+    width: 45px;
+    height: 45px;
+    transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Pembungkus Teks Judul */
+  .brand-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 1;
+    max-height: 50px;
+    overflow: visible;
+    transition: opacity 0.2s ease, max-height 0.25s ease;
+  }
+
+  .brand-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .brand-subtitle {
+    font-size: 0.75rem;
+    color: var(--teks-warna-muted, #666);
+  }
+
+  /* Menyembunyikan menu navigasi, diringkas masuk ke dalam icon LINA */
   #main-navigation {
+    display: flex;
     width: 0;
+    max-width: 0;
     opacity: 0;
     overflow: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease, width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    transform: scale(0.7); /* Efek menyusut saat masuk kembali ke logo */
+    transform-origin: right center; /* Arah hisapan morph menuju kanan */
+    transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  /* Sembunyikan teks label status tema bawaan laptop di HP */
   #label-status-tema {
     display: none !important;
   }
 
-  /* --- KONDISI AKTIF: KETIKA LOGO LINA DIKLIK (MORPHING SIDE BY SIDE) --- */
+  /* --- KONDISI AKTIF (.menu-terbuka): TRANSISI SMOOTH MORPH KECIL & ELEGAN --- */
+  
   .navbar.menu-terbuka .navbar-container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
   }
 
   .navbar.menu-terbuka .brand-area {
     flex-direction: row;
-    text-align: left;
+    width: auto;
+    margin-right: 16px; /* Memberi jarak aman antara foto lina dan rentetan menu */
   }
 
-  .navbar.menu-terbuka .brand-text {
-    align-items: flex-start;
+  /* Teks asisten lina langsung hilang total secara halus */
+  .navbar.menu-terbuka .brand-text-wrapper {
+    opacity: 0;
+    max-height: 0;
+    pointer-events: none;
+    overflow: hidden;
   }
 
+  /* Menu langsung memanjang horizontal dari kanan ke kiri di samping foto LINA */
   .navbar.menu-terbuka #main-navigation {
     width: auto;
+    max-width: 100%;
     opacity: 1;
     pointer-events: auto;
-    position: static;
-    transform: none;
+    transform: scale(1); /* Kembali ke skala normal menu internal HP */
+    flex-grow: 1;
   }
 
-  /* Penataan Baris Menu Horisontal (Hanya Ikon Saja) */
+  /* Penataan Struktur Baris Menu Tautan Horizontal */
   .nav-links {
     display: flex;
     flex-direction: row !important;
     align-items: center;
-    gap: 14px;
+    justify-content: space-between; /* Membagi rata jarak antar ikon di sisa layar */
+    width: 100%;
     padding: 0;
     margin: 0;
   }
 
   .nav-links li {
-    position: relative;
+    list-style: none;
   }
 
+  /* UPDATE: Mengatur ukuran ikon menu agar sedikit lebih kecil, bersih, dan estetik */
   .nav-links a {
-    font-size: 1.25rem;
-    padding: 8px;
+    font-size: 1.05rem; /* Diperkecil dari sebelumnya 1.25rem agar space lebih lega */
+    padding: 8px;      /* Padding disesuaikan agar area sentuh jari tetap aman */
+    color: var(--teks-warna, #333);
     display: flex;
     align-items: center;
-    justify-content: center;
+    transition: color 0.2s ease;
   }
 
+  /* Panah indikator kecil disamping ikon utama */
   .dist-arrow {
-    font-size: 0.7rem;
+    font-size: 0.55rem; /* Diperkecil agar seimbang */
     margin-left: 2px;
   }
 
-  /* Aturan Dropdown Sub-Menu Pelajaran (Meluncur Vertikal Halus) */
+  /* Aturan Dropdown Sub-Menu Tirai Putih (Mengikuti panjang emoji) */
   .dropdown-menu {
     position: absolute;
     top: 45px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--bg-card, #ffffff);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     border-radius: 8px;
-    padding: 6px;
+    padding: 0px 6px;
     display: flex;
-    flex-direction: row; /* Berjejer horizontal untuk emoji */
+    flex-direction: row;
     gap: 12px;
     min-width: max-content;
-    z-index: 1001;
+    z-index: 1010;
     
-    /* Efek animasi tirai */
+    /* Efek transisi tirai meluncur vertikal */
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease, opacity 0.3s ease;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.2s ease;
   }
 
-  /* Pemicu Tampilan Kelas Dropdown Aktif */
+  /* Ketika sub-menu dipicu aktif */
   .dropdown-menu.buka-sub {
-    max-height: 150px;
+    max-height: 60px;
     opacity: 1;
+    padding: 6px 10px;
     overflow: visible;
   }
 
   .dropdown-menu a {
-    font-size: 1.4rem; /* Memperbesar ukuran emoji agar mudah ditekan jari */
-    padding: 6px;
+    font-size: 1.3rem; /* Menjaga ukuran emoji tetap pas dan mudah diklik */
+    padding: 4px;
   }
+}
+
+/* Layer Hitam Transparan Pendukung */
+.nav-mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 995;
+  background: rgba(0, 0, 0, 0.01);
+  display: none;
 }
