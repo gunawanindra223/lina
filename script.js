@@ -160,22 +160,24 @@ async function kirimJurnal(event) {
   }
 }
 
-// --- FUNGSI UNTUK MENUTUP MODAL BARU (ANTI-BENTROK) ---
+// --- FUNGSI UNTUK MENUTUP MODAL BARU & KEMBALI KE FORM TULISAN JURNAL ---
+
 function closeErrorAiModal() {
+  // 1. Sembunyikan pop-up error AI
   document.getElementById('linaErrorAiModal').classList.remove('lina-show-aktif');
+  
+  // 2. Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
+  document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('isiJurnal').focus();
 }
 
 function closeNetworkModal() {
+  // 1. Sembunyikan pop-up gangguan internet
   document.getElementById('linaNetworkModal').classList.remove('lina-show-aktif');
-}
-
-// --- FUNGSI BARU UNTUK MENUTUP MODAL MANDIRI ---
-function closeErrorAiModal() {
-  document.getElementById('errorAiModal').classList.remove('modal-show');
-}
-
-function closeNetworkModal() {
-  document.getElementById('networkModal').classList.remove('modal-show');
+  
+  // 2. Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
+  document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('isiJurnal').focus();
 }
 
 // Fungsi Menarik Data Real-Time & Membangun Dashboard Grafik
