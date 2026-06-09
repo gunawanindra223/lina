@@ -223,52 +223,52 @@
   </main>
 
   <!-- 🚨 Pop-Up Modal Kustom Peringatan Minimal Kata (ASISTEN LINA) -->
-    <div id="customAlertModal" class="custom-modal-overlay">
-      <div class="custom-modal-box">
-        <div class="custom-modal-icon">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
-        <h3 class="custom-modal-title">Wah, Tulisanmu Sedikit Lagi Cukup!</h3>
-        <div class="custom-modal-body">
-          <p id="modal-warning-text">Saat ini tulisanmu baru 0 kata.</p>
-          <p>Yuk, uraikan lagi ringkasan cerita atau opinimu agar <strong>ASISTEN LINA</strong> dapat menganalisis tulisanmu dengan maksimal! ✨</p>
-          <div class="word-badge-info">Syarat minimal: 75 - 100 kata</div>
-        </div>
-        <button class="custom-modal-btn" onclick="closeCustomAlert()">Tambahkan Lagi!</button>
+<div id="customAlertModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+      <div class="custom-modal-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
-    </div> 
-
-<div id="linaErrorAiModal" class="lina-modal-overlay">
-      <div class="lina-modal-box lina-theme-danger">
-        <div class="lina-modal-body">
-          <i class="fa-solid fa-robot lina-modal-icon text-danger"></i>
-          <h3 class="lina-modal-title text-danger">Gagal Memproses</h3>
-          
-          <div id="modal-error-ai-text" class="lina-modal-desc"></div>
-          
-          <p class="lina-modal-hint">Silakan coba beberapa saat lagi.</p>
-          
-          <button type="button" class="lina-modal-btn bg-danger" onclick="closeErrorAiModal()">Tutup</button>
-        </div>
+      <h3 class="custom-modal-title">Wah, Tulisanmu Sedikit Lagi Cukup!</h3>
+      <div class="custom-modal-body">
+        <p id="modal-warning-text">Saat ini tulisanmu baru 0 kata.</p>
+        <p>Yuk, uraikan lagi ringkasan cerita atau opinimu agar <strong>ASISTEN LINA</strong> dapat menganalisis tulisanmu dengan maksimal! ✨</p>
+        <div class="word-badge-info">Syarat minimal: 75 - 100 kata</div>
       </div>
+      <button class="custom-modal-btn" onclick="closeCustomAlert()">Tambahkan Lagi!</button>
     </div>
+  </div> 
 
-    <div id="linaNetworkModal" class="lina-modal-overlay">
-      <div class="lina-modal-box lina-theme-warning">
-        <div class="lina-modal-body">
-          <i class="fa-solid fa-wifi lina-modal-icon text-warning"></i>
-          <h3 class="lina-modal-title text-warning">Koneksi Internet Terganggu</h3>
-          
-          <p class="lina-modal-desc">
-            Sinyal internetmu kurang stabil.
-          </p>
-          
-          <p class="lina-modal-hint lina-italic">Pastikan sinyal internetmu stabil, lalu coba kirim kembali!</p>
-          
-          <button type="button" class="lina-modal-btn bg-warning" onclick="closeNetworkModal()">Tutup</button>
-        </div>
+  <div id="linaErrorAiModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+      <div class="custom-modal-icon" style="color: #ef4444;">
+        <i class="fa-solid fa-robot"></i>
       </div>
+      <h3 class="custom-modal-title">Gagal Memproses Analisis</h3>
+      <div class="custom-modal-body">
+        <p id="modal-error-ai-text">Server LINA sedang mengalami kendala teknis.</p>
+        <p>Coba kembali beberapa saat lagi ya!</p>
+      </div>
+      <button class="custom-modal-btn" style="background-color: #ef4444;" onclick="closeErrorAiModal()">Tutup</button>
     </div>
+  </div>
+
+  <div id="linaNetworkModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+      <div class="custom-modal-icon" style="color: #f59e0b;">
+        <i class="fa-solid fa-wifi"></i>
+      </div>
+      <h3 class="custom-modal-title">Koneksi Internet Terganggu</h3>
+      <div class="custom-modal-body">
+        <p>Sinyal internetmu kurang stabil.</p>
+        <p class="lina-italic" style="font-style: italic; font-size: 0.9rem; margin-top: 8px; color: #6b7280;">Pastikan sinyal internet stabil, lalu coba kirim kembali!</p>
+      </div>
+      <button class="custom-modal-btn" style="background-color: #f59e0b;" onclick="closeNetworkModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
   <script src="script.js"></script>
 </body>
 </html>

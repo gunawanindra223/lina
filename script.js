@@ -133,27 +133,20 @@ async function kirimJurnal(event) {
 
       document.getElementById('jurnalForm').reset();
       
-    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI (REVISI AMAN) ===
+    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI (SUDAH DISINKRONKAN) ===
     } else {
       document.getElementById('feedbackContainer').style.display = 'none';
       
-      // Mengganti kalimat sistem (TypeError) menjadi ramah anak
-      document.getElementById('modal-error-ai-text').innerHTML = `
-        <span class="lina-code-error" style="font-family: inherit !important; font-size: 1rem !important; line-height: 1.5; border: none !important; background: none !important; color: #b91c1c !important;">
-          Server LINA sedang mengalami kendala teknis.
-        </span>
-      `;
-      
-      // Tembakkan modal error khusus AI memakai class lina-show-aktif
-      document.getElementById('linaErrorAiModal').classList.add('lina-show-aktif');
+      // Tembakkan modal error AI memakai class bawaan Bapak (modal-show)
+      document.getElementById('linaErrorAiModal').classList.add('modal-show');
     }
 
-  // === MANDIRI & TERISOLASI: MODAL ERROR SINYAL INTERNET ===
+  // === MANDIRI & TERISOLASI: MODAL ERROR SINYAL INTERNET (SUDAH DISINKRONKAN) ===
   } catch (error) {
     document.getElementById('feedbackContainer').style.display = 'none';
     
-    // Tembakkan modal khusus gangguan sinyal internet memakai class lina-show-aktif
-    document.getElementById('linaNetworkModal').classList.add('lina-show-aktif');
+    // Tembakkan modal internet memakai class bawaan Bapak (modal-show)
+    document.getElementById('linaNetworkModal').classList.add('modal-show');
     
   } finally {
     btn.innerHTML = originalText;
@@ -161,21 +154,21 @@ async function kirimJurnal(event) {
   }
 }
 
-// --- FUNGSI UNTUK MENUTUP MODAL BARU & KEMBALI KE FORM TULISAN JURNAL ---
+// --- FUNGSI UNTUK MENUTUP MODAL & KEMBALI KE FORM TULISAN JURNAL ---
 function closeErrorAiModal() {
-  // 1. Sembunyikan pop-up error AI
-  document.getElementById('linaErrorAiModal').classList.remove('lina-show-aktif');
+  // Sembunyikan pop-up error AI menggunakan class modal-show
+  document.getElementById('linaErrorAiModal').classList.remove('modal-show');
   
-  // 2. Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
+  // Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
   document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('isiJurnal').focus();
 }
 
 function closeNetworkModal() {
-  // 1. Sembunyikan pop-up gangguan internet
-  document.getElementById('linaNetworkModal').classList.remove('lina-show-aktif');
+  // Sembunyikan pop-up gangguan internet menggunakan class modal-show
+  document.getElementById('linaNetworkModal').classList.remove('modal-show');
   
-  // 2. Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
+  // Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
   document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('isiJurnal').focus();
 }
