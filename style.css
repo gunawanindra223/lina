@@ -968,97 +968,180 @@ textarea#isiJurnal + ::after {
   pointer-events: auto;
 }
 
-/* --- RESPONSIVITAS NAVBAR HP (SMOOTH & ANTI TABRAKAN) --- */
+/* --- ARSITEKTUR NAVBAR MINIMALIS HORIZONTAL (SINKRONISASI HP) --- */
+
+/* Struktur Dasar Kontainer Utama Navbar */
+.navbar {
+  background-color: var(--bg-card, #ffffff);
+  width: 100%;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  z-index: 1000;
+  padding: 10px 16px;
+  box-sizing: border-box;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+/* Penataan Awal Area Brand */
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-title {
+  font-weight: 700;
+}
+
+/* Overlay Deteksi Ketukan Luar */
+.nav-mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 998;
+  display: none;
+}
+
+/* --- MEDIA QUERY KHUSUS HP (LEBAR SCREEN <= 768px) --- */
 @media (max-width: 768px) {
-  .navbar {
-    display: flex;
+  
+  /* Kondisi Awal: Memaksa Semua Konten Brand Berada di Tengah Atas */
+  .navbar-container {
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between; /* Memisahkan Logo di kiri dan Aksi di kanan */
-    position: relative;
-    padding: 12px 16px;
-    height: 60px; /* Mengunci tinggi navbar agar konsisten */
-    box-sizing: border-box;
+    gap: 12px;
   }
 
   .brand-area {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: auto;
-  }
-
-  .lina-burger-icon {
-    display: inline-block;
-  }
-
-  /* Menyembunyikan menu navbar di HP dengan transisi meluncur turun yang smooth */
-  #main-navigation {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--bg-card, #ffffff);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    z-index: 99;
-    
-    /* Efek animasi meluncur dan memudar */
-    opacity: 0;
-    transform: translateY(-15px);
-    pointer-events: none;
-    max-height: 0;
-    overflow: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease;
-  }
-
-  /* Ketika menu HP dipicu aktif via JavaScript */
-  #main-navigation.buka-menu {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-    max-height: 600px; /* Batas tinggi bentangan menu vertikal */
-  }
-
-  /* Merapikan daftar tautan menu vertikal di HP */
-  .nav-links {
     flex-direction: column;
-    width: 100%;
-    padding: 8px 0;
+    text-align: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Sembunyikan Navigasi Menu Pertama Kali Dibuka */
+  #main-navigation {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Sembunyikan teks label status tema bawaan laptop di HP */
+  #label-status-tema {
+    display: none !important;
+  }
+
+  /* --- KONDISI AKTIF: KETIKA LOGO LINA DIKLIK (MORPHING SIDE BY SIDE) --- */
+  .navbar.menu-terbuka .navbar-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .navbar.menu-terbuka .brand-area {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .navbar.menu-terbuka .brand-text {
+    align-items: flex-start;
+  }
+
+  .navbar.menu-terbuka #main-navigation {
+    width: auto;
+    opacity: 1;
+    pointer-events: auto;
+    position: static;
+    transform: none;
+  }
+
+  /* Penataan Baris Menu Horisontal (Hanya Ikon Saja) */
+  .nav-links {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
   }
 
   .nav-links li {
-    width: 100%;
+    position: relative;
   }
 
   .nav-links a {
+    font-size: 1.25rem;
+    padding: 8px;
     display: flex;
-    justify-content: space-between;
-    padding: 14px 20px;
-    width: 100%;
-    box-sizing: border-box;
-    border-bottom: 1px solid rgba(0,0,0,0.04);
+    align-items: center;
+    justify-content: center;
   }
 
-  /* Dropdown sub-menu menyesuaikan vertikal di HP */
+  .dist-arrow {
+    font-size: 0.7rem;
+    margin-left: 2px;
+  }
+
+  /* Aturan Dropdown Sub-Menu Pelajaran (Meluncur Vertikal Halus) */
   .dropdown-menu {
-    position: static;
-    box-shadow: none;
-    background: rgba(0, 0, 0, 0.03);
-    padding-left: 15px;
-    opacity: 1;
-    pointer-events: auto;
-    display: none;
-  }
-  
-  .dropdown:hover .dropdown-menu {
-    display: block;
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card, #ffffff);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    flex-direction: row; /* Berjejer horizontal untuk emoji */
+    gap: 12px;
+    min-width: max-content;
+    z-index: 1001;
+    
+    /* Efek animasi tirai */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
   }
 
-  /* PERBAIKAN: Tombol sakelar tema diposisikan aman di dalam navbar tanpa menabrak ikon burger */
-  .theme-switch-wrapper {
-    position: static; /* Mengembalikan dari posisi absolute */
-    margin-left: auto; /* Mendorong otomatis ke sisi kanan mendekati ikon burger */
-    margin-right: 12px; /* Memberi jarak aman dengan ikon burger */
-    z-index: 100;
+  /* Pemicu Tampilan Kelas Dropdown Aktif */
+  .dropdown-menu.buka-sub {
+    max-height: 150px;
+    opacity: 1;
+    overflow: visible;
+  }
+
+  .dropdown-menu a {
+    font-size: 1.4rem; /* Memperbesar ukuran emoji agar mudah ditekan jari */
+    padding: 6px;
   }
 }

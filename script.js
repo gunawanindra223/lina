@@ -261,33 +261,66 @@ function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
 }
 
-// --- FUNGSI NAVIGASI NAVBAR HP (HAMBURGER BRAND LOGO) ---
+// --- KENDALI NAVIGASI MINIMALIS BERBASIS IKON (HORIZONTAL HP) ---
+
 function toggleMobileMenu(event) {
   if (window.innerWidth <= 768) {
-    event.stopPropagation(); 
-    const nav = document.getElementById('main-navigation');
+    event.stopPropagation();
+    const navbar = document.querySelector('.navbar');
     const overlay = document.getElementById('nav-overlay');
     
-    nav.classList.toggle('buka-menu');
-    overlay.classList.toggle('aktif');
+    // Toggle class utama pada header navbar
+    navbar.classList.toggle('menu-terbuka');
+    
+    if (navbar.classList.contains('menu-terbuka')) {
+      overlay.style.display = 'block';
+    } else {
+      closeMobileMenu();
+    }
+  }
+}
+
+function toggleDropdownMobile(event, dropdownId) {
+  if (window.innerWidth <= 768) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Tutup sub-menu lain terlebih dahulu agar tidak bertabrakan
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+      if (menu.id !== dropdownId) {
+        menu.classList.remove('buka-sub');
+      }
+    });
+
+    const targetDropdown = document.getElementById(dropdownId);
+    targetDropdown.classList.toggle('buka-sub');
   }
 }
 
 function closeMobileMenu() {
-  const nav = document.getElementById('main-navigation');
+  const navbar = document.querySelector('.navbar');
   const overlay = document.getElementById('nav-overlay');
   
-  if (nav && nav.classList.contains('buka-menu')) {
-    nav.classList.remove('buka-menu');
-    overlay.classList.remove('aktif');
+  if (navbar) {
+    navbar.classList.remove('menu-terbuka');
   }
+  
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+
+  // Bersihkan semua sub-menu dropdown yang sempat terbuka
+  document.querySelectorAll('.dropdown-menu').forEach(menu => {
+    menu.classList.remove('buka-sub');
+  });
 }
 
+// Interseptor ketukan sembarang area luar di dokumen global
 document.addEventListener('click', function(event) {
-  const brandArea = document.querySelector('.brand-area');
-  const nav = document.getElementById('main-navigation');
-  
-  if (nav && !nav.contains(event.target) && brandArea && !brandArea.contains(event.target)) {
-    closeMobileMenu();
+  if (window.innerWidth <= 768) {
+    const navbar = document.querySelector('.navbar');
+    if (navbar && !navbar.contains(event.target)) {
+      closeMobileMenu();
+    }
   }
 });

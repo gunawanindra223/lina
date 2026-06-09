@@ -12,51 +12,67 @@
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="brand-area" onclick="toggleMobileMenu(event)">
-      <img src="./lina.png" alt="Logo LINA" class="brand-logo">
-      <div class="brand-text">
-        <span class="brand-title">ASISTEN LINA</span>
-        <span class="brand-subtitle">BERBASIS RAPOR MUTU</span>
-      </div>
-      <i class="fa-solid fa-bars lina-burger-icon"></i>
-    </div>
-    
-    <nav id="main-navigation">
-      <ul class="nav-links">
-        <li><a onclick="switchPage('dashboard'); closeMobileMenu()" id="nav-dashboard" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard Kelas</a></li>
-        
-        <li class="dropdown">
-          <a id="nav-ruang-murid" class="dropdown-toggle"><i class="fa-solid fa-graduation-cap"></i> Ruang Murid <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=9844ece3-c34c-4bbf-8419-76e6099dabb4" target="_blank">🧮 Matematika</a></li>
-            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=7cdba1c1-13a6-40d0-97fd-4774c3263a0d" target="_blank">🇮🇩 B. Indonesia</a></li>
-            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=72df5da7-38d6-4993-a568-3927c2fd0681" target="_blank">🌱 IPAS</a></li>
-            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=e005d77a-7349-41ea-b0d6-733eaca39705" target="_blank">🦅 Pancasila</a></li>
-            <li><a href="https://s.id/teacher_indra" target="_blank">🌴 Budaya Melayu Riau</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a id="nav-belajar" class="dropdown-toggle"><i class="fa-solid fa-book-open"></i> Mulai Belajar <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
-          <ul class="dropdown-menu">
-            <li><a onclick="switchPage('belajar'); closeMobileMenu()"><i class="fa-solid fa-pen-to-square"></i> Setor Jurnal Literasi</a></li>
-            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i> Latihan Numerasi</a></li>
-          </ul>
-        </li>
-
-        <li><a onclick="switchPage('tentang'); closeMobileMenu()" id="nav-tentang"><i class="fa-solid fa-circle-info"></i> Petunjuk</a></li>
-      </ul>
-    </nav>
-
-    <div class="theme-switch-wrapper" onclick="toggleTheme()">
-      <span class="theme-switch-text" id="label-status-tema">Mode Terang</span>
-      <div class="switch-pill-track">
-        <div class="switch-circle-thumb">
-          <i class="fa-solid fa-moon icon-bulan"></i>
-          <i class="fa-solid fa-sun icon-matahari"></i>
+<header class="navbar">
+    <div class="navbar-container">
+      
+      <div class="brand-area" onclick="toggleMobileMenu(event)">
+        <img src="./lina.png" alt="Logo LINA" class="brand-logo">
+        <div class="brand-text">
+          <span class="brand-title">ASISTEN LINA</span>
+          <span class="brand-subtitle">BERBASIS RAPOR MUTU</span>
         </div>
       </div>
+      
+      <nav id="main-navigation">
+        <ul class="nav-links">
+          <li>
+            <a onclick="switchPage('dashboard'); closeMobileMenu()" id="nav-dashboard" class="active" title="Dashboard Kelas">
+              <i class="fa-solid fa-square-poll-vertical text-accent"></i>
+            </a>
+          </li>
+          
+          <li class="dropdown">
+            <a id="nav-ruang-murid" class="dropdown-toggle" onclick="toggleDropdownMobile(event, 'dropdown-murid')" title="Ruang Murid">
+              <i class="fa-solid fa-graduation-cap"></i> <i class="fa-solid fa-chevron-down dist-arrow"></i>
+            </a>
+            <ul id="dropdown-murid" class="dropdown-menu">
+              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=9844ece3-c34c-4bbf-8419-76e6099dabb4" target="_blank" onclick="closeMobileMenu()">🧮</a></li>
+              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=7cdba1c1-13a6-40d0-97fd-4774c3263a0d" target="_blank" onclick="closeMobileMenu()">🇮🇩</a></li>
+              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=72df5da7-38d6-4993-a568-3927c2fd0681" target="_blank" onclick="closeMobileMenu()">🌱</a></li>
+              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=e005d77a-7349-41ea-b0d6-733eaca39705" target="_blank" onclick="closeMobileMenu()">🦅</a></li>
+              <li><a href="https://s.id/teacher_indra" target="_blank" onclick="closeMobileMenu()">🌴</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a id="nav-belajar" class="dropdown-toggle" onclick="toggleDropdownMobile(event, 'dropdown-belajar')" title="Mulai Belajar">
+              <i class="fa-solid fa-book-open"></i> <i class="fa-solid fa-chevron-down dist-arrow"></i>
+            </a>
+            <ul id="dropdown-belajar" class="dropdown-menu">
+              <li><a onclick="switchPage('belajar'); closeMobileMenu()" title="Setor Jurnal"><i class="fa-solid fa-pen-to-square"></i></a></li>
+              <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank" onclick="closeMobileMenu()" title="Latihan Numerasi"><i class="fa-solid fa-graduation-cap"></i></a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a onclick="switchPage('tentang'); closeMobileMenu()" id="nav-tentang" title="Petunjuk">
+              <i class="fa-solid fa-circle-info"></i>
+            </a>
+          </li>
+
+          <li>
+            <div class="theme-switch-wrapper" onclick="toggleTheme(event)">
+              <div class="switch-pill-track">
+                <div class="switch-circle-thumb">
+                  <i class="fa-solid fa-moon icon-bulan"></i>
+                  <i class="fa-solid fa-sun icon-matahari"></i>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
     </div>
   </header>
 
