@@ -281,3 +281,87 @@ window.onload = () => {
 function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
 }
+
+// ==========================================================================
+// PATCH 3 - TAMBAHKAN DI PALING BAWAH script.js
+// FUNGSI MOBILE NAVBAR DRAWER
+// ==========================================================================
+
+/**
+ * Buka / tutup drawer sidebar mobile
+ */
+function toggleMobileNav() {
+  const drawer  = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('mobileOverlay');
+  const trigger = document.getElementById('mobileLinaTrigger');
+
+  if (!drawer) return; // guard: elemen tidak ada di desktop
+
+  if (drawer.classList.contains('drawer-open')) {
+    closeMobileNav();
+  } else {
+    drawer.classList.add('drawer-open');
+    overlay.classList.add('overlay-show');
+    trigger.classList.add('menu-open');
+  }
+}
+
+/**
+ * Tutup drawer + semua sub-menu, lalu kembalikan logo ke tengah
+ */
+function closeMobileNav() {
+  const drawer  = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('mobileOverlay');
+  const trigger = document.getElementById('mobileLinaTrigger');
+
+  if (!drawer) return;
+
+  drawer.classList.remove('drawer-open');
+  trigger.classList.remove('menu-open');
+
+  // Tutup semua sub-menu dengan smooth
+  document.querySelectorAll('.mobile-sub-menu').forEach(function(sub) {
+    sub.classList.remove('sub-open');
+  });
+  document.querySelectorAll('.mobile-nav-dropdown').forEach(function(d) {
+    d.classList.remove('sub-active');
+  });
+
+  // Tunggu animasi drawer selesai baru hapus overlay
+  setTimeout(function() {
+    overlay.classList.remove('overlay-show');
+  }, 120);
+}
+
+/**
+ * Toggle sub-menu dropdown di dalam drawer mobile
+ * Hanya satu sub-menu yang bisa terbuka sekaligus
+ */
+function toggleMobileDropdown(dropdownId) {
+  var dropdown = document.getElementById(dropdownId);
+  if (!dropdown) return;
+
+  var subMenu = dropdown.querySelector('.mobile-sub-menu');
+  var isOpen  = subMenu.classList.contains('sub-open');
+
+  // Tutup semua dropdown lain
+  document.querySelectorAll('.mobile-nav-dropdown').forEach(function(d) {
+    d.classList.remove('sub-active');
+    d.querySelector('.mobile-sub-menu').classList.remove('sub-open');
+  });
+
+  // Buka yang diklik (jika sebelumnya tertutup)
+  if (!isOpen) {
+    dropdown.classList.add('sub-active');
+    subMenu.classList.add('sub-open');
+  }
+}
+
+/**
+ * Tutup drawer saat tombol Escape ditekan
+ */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeMobileNav();
+  }
+});

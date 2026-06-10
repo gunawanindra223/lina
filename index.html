@@ -12,19 +12,95 @@
 </head>
 <body>
 
+  <!-- ============================================================
+     PATCH 1 - GANTI SELURUH <header class="navbar"> ... </header>
+     dengan kode di bawah ini
+     ============================================================ -->
+
   <header class="navbar">
-    <div class="brand-area">
+
+    <!-- ===== MOBILE TOP BAR (hanya tampil di HP, max-width 768px) ===== -->
+    <div class="mobile-topbar" id="mobileTopbar">
+      <img src="./lina.png" alt="Logo LINA" class="mobile-lina-trigger" id="mobileLinaTrigger" onclick="toggleMobileNav()">
+    </div>
+
+    <!-- ===== OVERLAY BLUR DI BELAKANG DRAWER ===== -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+    <!-- ===== DRAWER SIDEBAR MOBILE ===== -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="mobile-drawer-inner">
+
+        <!-- Logo Lina di paling atas drawer -->
+        <div class="mobile-drawer-logo">
+          <img src="./lina.png" alt="Logo LINA" class="mobile-drawer-lina-img">
+        </div>
+
+        <nav class="mobile-nav">
+
+          <!-- Dashboard -->
+          <a class="mobile-nav-item" onclick="switchPage('dashboard'); closeMobileNav()">
+            <i class="fa-solid fa-square-poll-vertical text-accent"></i>
+          </a>
+
+          <!-- Ruang Murid (dropdown) -->
+          <div class="mobile-nav-dropdown" id="mobileDropRuang">
+            <a class="mobile-nav-item mobile-has-sub" onclick="toggleMobileDropdown('mobileDropRuang')">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <i class="fa-solid fa-chevron-down mobile-dist-arrow"></i>
+            </a>
+            <div class="mobile-sub-menu" id="subRuangMurid">
+              <a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=9844ece3-c34c-4bbf-8419-76e6099dabb4" target="_blank" onclick="closeMobileNav()">🧮</a>
+              <a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=7cdba1c1-13a6-40d0-97fd-4774c3263a0d" target="_blank" onclick="closeMobileNav()">🇮🇩</a>
+              <a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=72df5da7-38d6-4993-a568-3927c2fd0681" target="_blank" onclick="closeMobileNav()">🌱</a>
+              <a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=e005d77a-7349-41ea-b0d6-733eaca39705" target="_blank" onclick="closeMobileNav()">🦅</a>
+              <a href="https://s.id/teacher_indra" target="_blank" onclick="closeMobileNav()">🌴</a>
+            </div>
+          </div>
+
+          <!-- Mulai Belajar (dropdown) -->
+          <div class="mobile-nav-dropdown" id="mobileDropBelajar">
+            <a class="mobile-nav-item mobile-has-sub" onclick="toggleMobileDropdown('mobileDropBelajar')">
+              <i class="fa-solid fa-book-open"></i>
+              <i class="fa-solid fa-chevron-down mobile-dist-arrow"></i>
+            </a>
+            <div class="mobile-sub-menu" id="subBelajar">
+              <a onclick="switchPage('belajar'); closeMobileNav()"><i class="fa-solid fa-pen-to-square"></i></a>
+              <a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank" onclick="closeMobileNav()"><i class="fa-solid fa-graduation-cap"></i></a>
+            </div>
+          </div>
+
+          <!-- Petunjuk -->
+          <a class="mobile-nav-item" onclick="switchPage('tentang'); closeMobileNav()">
+            <i class="fa-solid fa-circle-info"></i>
+          </a>
+
+          <!-- Theme Toggle -->
+          <div class="mobile-theme-toggle" onclick="toggleTheme()">
+            <div class="switch-pill-track">
+              <div class="switch-circle-thumb">
+                <i class="fa-solid fa-moon icon-bulan"></i>
+                <i class="fa-solid fa-sun icon-matahari"></i>
+              </div>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </div>
+
+    <!-- ===== NAVBAR DESKTOP (laptop & tablet, tidak diubah) ===== -->
+    <div class="brand-area desktop-only">
       <img src="./lina.png" alt="Logo LINA" class="brand-logo">
       <div class="brand-text">
         <span class="brand-title">ASISTEN LINA</span>
         <span class="brand-subtitle">BERBASIS RAPOR MUTU</span>
       </div>
     </div>
-    
-    <nav>
+
+    <nav class="desktop-only">
       <ul class="nav-links">
         <li><a onclick="switchPage('dashboard')" id="nav-dashboard" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard Kelas</a></li>
-        
         <li class="dropdown">
           <a id="nav-ruang-murid" class="dropdown-toggle"><i class="fa-solid fa-graduation-cap"></i> Ruang Murid <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
           <ul class="dropdown-menu">
@@ -35,28 +111,27 @@
             <li><a href="https://s.id/teacher_indra" target="_blank">🌴 Budaya Melayu Riau</a></li>
           </ul>
         </li>
-
         <li class="dropdown">
           <a id="nav-belajar" class="dropdown-toggle"><i class="fa-solid fa-book-open"></i> Mulai Belajar <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
           <ul class="dropdown-menu">
             <li><a onclick="switchPage('belajar')"><i class="fa-solid fa-pen-to-square"></i> Setor Jurnal Literasi</a></li>
-            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i> Latihan Numerasi</a></li>
+            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i> Latihan Numerasi</a></li>
           </ul>
         </li>
-
         <li><a onclick="switchPage('tentang')" id="nav-tentang"><i class="fa-solid fa-circle-info"></i> Petunjuk</a></li>
       </ul>
     </nav>
 
-      <div class="theme-switch-wrapper" onclick="toggleTheme()">
-        <span class="theme-switch-text" id="label-status-tema">Mode Terang</span>
-        <div class="switch-pill-track">
-          <div class="switch-circle-thumb">
-            <i class="fa-solid fa-moon icon-bulan"></i>
-            <i class="fa-solid fa-sun icon-matahari"></i>
-          </div>
+    <div class="theme-switch-wrapper desktop-only" onclick="toggleTheme()">
+      <span class="theme-switch-text" id="label-status-tema">Mode Terang</span>
+      <div class="switch-pill-track">
+        <div class="switch-circle-thumb">
+          <i class="fa-solid fa-moon icon-bulan"></i>
+          <i class="fa-solid fa-sun icon-matahari"></i>
         </div>
       </div>
+    </div>
+
   </header>
 
   <main class="container">
