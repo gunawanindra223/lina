@@ -2,21 +2,12 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnFQtzINgJX7ntTG3w0psg8B_JAFnXzrwBgJpDnumEFOvfcoMDkukGqYW3DSEc12D/exec";
 let currentChart = null;
 
-// Fungsi Menangani Perpindahan Halaman Menu (SPA) - UPDATE AMAN
+// Fungsi Menangani Perpindahan Halaman Menu (SPA)
 function switchPage(pageId) {
   document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-  
-  const targetSection = document.getElementById('section-' + pageId);
-  if (targetSection) {
-    targetSection.classList.add('active');
-  }
-  
-  const targetNavLink = document.getElementById('nav-' + pageId);
-  if (targetNavLink) {
-    targetNavLink.classList.add('active');
-  }
-
+  document.getElementById('section-' + pageId).classList.add('active');
+  document.getElementById('nav-' + pageId).classList.add('active');
   if (pageId === 'dashboard') {
     muatDataDashboard();
   }
@@ -27,14 +18,17 @@ function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
+  // 1. Set atribut tema pada dokumen
   document.documentElement.setAttribute('data-theme', targetTheme);
   
+  // 2. Sinkronisasi class body untuk mengaktifkan animasi geser kapsul CSS
   if (targetTheme === 'dark') {
     document.body.classList.add('dark-theme-active');
   } else {
     document.body.classList.remove('dark-theme-active');
   }
 
+  // 3. Mengubah text label di samping tombol secara dinamis
   const labelStatus = document.getElementById('label-status-tema');
   if (labelStatus) {
     labelStatus.textContent = targetTheme === 'dark' ? 'Mode Gelap' : 'Mode Terang';
@@ -45,9 +39,11 @@ function toggleTheme() {
 async function kirimJurnal(event) {
   event.preventDefault();
 
+  // --- LOGIKA VALIDASI MINIMAL 75 KATA ---
   const isiJurnal = document.getElementById('isiJurnal').value.trim();
   const jumlahKata = isiJurnal ? isiJurnal.split(/\s+/).filter(kata => kata.length > 0).length : 0;
 
+  // Jurnal Kurang Kata (Menggunakan Modal Bawaan Asli Bapak)
   if (jumlahKata < 75) {
     document.getElementById('modal-warning-text').innerHTML = `Saat ini tulisanmu baru <span style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">${jumlahKata}</span> kata.`;
     document.getElementById('customAlertModal').classList.add('modal-show');
@@ -59,6 +55,7 @@ async function kirimJurnal(event) {
   btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> LINA sedang membaca tulisanmu...`;
   btn.disabled = true;
 
+  // STRATEGI TUKAR POSISI: Munculkan Loader LINA Lebih Awal di Sisi Bawah
   const statusLoader = document.getElementById('linaThinkingStatus');
   const boxApresiasi = document.getElementById('txtApresiasi');
   const boxBagus = document.getElementById('txtBagus');
@@ -98,6 +95,7 @@ async function kirimJurnal(event) {
 
     const result = await response.json();
     
+    // === BLOK DATA SUKSES DITERIMA ===
     if (result.status === 'success') {
       
       const jalankanKetikTeks = (elemenTarget, teksMentah, callbackLanjutan) => {
@@ -123,6 +121,7 @@ async function kirimJurnal(event) {
         ketikHuruf();
       };
 
+      // Jeda transisi 1 detik agar animasi berdenyut menghilang dengan halus
       setTimeout(() => {
         statusLoader.innerHTML = "";
         jalankanKetikTeks(boxApresiasi, result.apresiasi, () => {
@@ -134,14 +133,27 @@ async function kirimJurnal(event) {
 
       document.getElementById('jurnalForm').reset();
       
+    // === MANDIRI & TERISOLASI: MODAL ERROR PROSES AI (REVISI AMAN) ===
     } else {
       document.getElementById('feedbackContainer').style.display = 'none';
-      document.getElementById('linaErrorAiModal').classList.add('modal-show');
+      
+      // Mengganti kalimat sistem (TypeError) menjadi ramah anak
+      document.getElementById('modal-error-ai-text').innerHTML = `
+        <span class="lina-code-error" style="font-family: inherit !important; font-size: 1rem !important; line-height: 1.5; border: none !important; background: none !important; color: #b91c1c !important;">
+          Server LINA sedang mengalami kendala teknis.
+        </span>
+      `;
+      
+      // Tembakkan modal error khusus AI memakai class lina-show-aktif
+      document.getElementById('linaErrorAiModal').classList.add('lina-show-aktif');
     }
 
+  // === MANDIRI & TERISOLASI: MODAL ERROR SINYAL INTERNET ===
   } catch (error) {
     document.getElementById('feedbackContainer').style.display = 'none';
-    document.getElementById('linaNetworkModal').classList.add('modal-show');
+    
+    // Tembakkan modal khusus gangguan sinyal internet memakai class lina-show-aktif
+    document.getElementById('linaNetworkModal').classList.add('lina-show-aktif');
     
   } finally {
     btn.innerHTML = originalText;
@@ -149,15 +161,21 @@ async function kirimJurnal(event) {
   }
 }
 
-// --- FUNGSI UNTUK MENUTUP MODAL & KEMBALI KE FORM TULISAN JURNAL ---
+// --- FUNGSI UNTUK MENUTUP MODAL BARU & KEMBALI KE FORM TULISAN JURNAL ---
 function closeErrorAiModal() {
-  document.getElementById('linaErrorAiModal').classList.remove('modal-show');
+  // 1. Sembunyikan pop-up error AI
+  document.getElementById('linaErrorAiModal').classList.remove('lina-show-aktif');
+  
+  // 2. Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
   document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('isiJurnal').focus();
 }
 
 function closeNetworkModal() {
-  document.getElementById('linaNetworkModal').classList.remove('modal-show');
+  // 1. Sembunyikan pop-up gangguan internet
+  document.getElementById('linaNetworkModal').classList.remove('lina-show-aktif');
+  
+  // 2. Otomatis fokus dan arahkan layar kembali ke kotak input isi jurnal siswa
   document.getElementById('isiJurnal').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('isiJurnal').focus();
 }
@@ -173,6 +191,7 @@ async function muatDataDashboard() {
       return;
     }
 
+    // 1. OLAH DATA UNTUK LEADERBOARD & GRAFIK
     const rekapSiswa = {};
     const arraySkorKelas = [];
     const arrayLabelGrafik = [];
@@ -186,6 +205,7 @@ async function muatDataDashboard() {
       rekapSiswa[item.namaSiswa].totalSkor += Number(item.skorUtama);
     });
 
+    // 2. TAMPILKAN MATRIKS PAPAN PERINGKAT (LEADERBOARD)
     tbody.innerHTML = "";
     const listSiswaUrut = Object.keys(rekapSiswa).map(nama => ({
       nama: nama,
@@ -203,6 +223,7 @@ async function muatDataDashboard() {
       `;
     });
 
+    // 3. BANGUN GRAFIK TREN KELAS DENGAN CHART.JS
     const ctx = document.getElementById('chartKelas').getContext('2d');
     if (currentChart) {
       currentChart.destroy();
@@ -242,7 +263,7 @@ async function muatDataDashboard() {
   }
 }
 
-// Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Buku
+// Inisialisasi Penarikan Dashboard Saat Aplikasi Pertama Kali Dibuka
 window.onload = () => {
   muatDataDashboard();
   const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -260,63 +281,3 @@ window.onload = () => {
 function closeCustomAlert() {
   document.getElementById('customAlertModal').classList.remove('modal-show');
 }
-
-// --- LOGIKA PENGENDALI NAVIGASI HP (FULL-MENU HORIZONTAL MORPHING) ---
-
-function toggleMobileMenu(event) {
-  if (window.innerWidth <= 768) {
-    event.stopPropagation();
-    const navbar = document.querySelector('.navbar');
-    const overlay = document.getElementById('nav-overlay');
-    
-    navbar.classList.toggle('menu-terbuka');
-    
-    if (navbar.classList.contains('menu-terbuka')) {
-      if (overlay) overlay.style.display = 'block';
-    } else {
-      closeMobileMenu();
-    }
-  }
-}
-
-function toggleDropdownMobile(event, dropdownId) {
-  if (window.innerWidth <= 768) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    const targetDropdown = document.getElementById(dropdownId);
-    const sudahTerbuka = targetDropdown.classList.contains('buka-sub');
-
-    // Tutup sub-menu lain terlebih dahulu agar tidak saling menumpuk
-    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-      menu.classList.remove('buka-sub');
-    });
-
-    if (!sudahTerbuka) {
-      targetDropdown.classList.add('buka-sub');
-    }
-  }
-}
-
-function closeMobileMenu() {
-  const navbar = document.querySelector('.navbar');
-  const overlay = document.getElementById('nav-overlay');
-  
-  if (navbar) navbar.classList.remove('menu-open'); // Sesuai standarisasi
-  if (navbar) navbar.classList.remove('menu-terbuka');
-  if (overlay) overlay.style.display = 'none';
-
-  document.querySelectorAll('.dropdown-menu').forEach(menu => {
-    menu.classList.remove('buka-sub');
-  });
-}
-
-// Menutup menu otomatis jika siswa mengetuk area kosong di mana saja
-document.addEventListener('click', function(event) {
-  if (window.innerWidth <= 768) {
-    const navbar = document.querySelector('.navbar');
-    if (navbar && !navbar.contains(event.target)) {
-      closeMobileMenu();
-    }
-  }
-});

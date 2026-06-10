@@ -12,71 +12,52 @@
 </head>
 <body>
 
-<header class="navbar">
-    <div class="navbar-container">
-      
-      <div class="brand-area" onclick="toggleMobileMenu(event)">
-        <img src="./lina.png" alt="Logo LINA" class="brand-logo">
-        <div class="brand-text-wrapper">
-          <span class="brand-title">ASISTEN LINA</span>
-          <span class="brand-subtitle">BERBASIS RAPOR MUTU</span>
+  <header class="navbar">
+    <div class="brand-area">
+      <img src="./lina.png" alt="Logo LINA" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-title">ASISTEN LINA</span>
+        <span class="brand-subtitle">BERBASIS RAPOR MUTU</span>
+      </div>
+    </div>
+    
+    <nav>
+      <ul class="nav-links">
+        <li><a onclick="switchPage('dashboard')" id="nav-dashboard" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard Kelas</a></li>
+        
+        <li class="dropdown">
+          <a id="nav-ruang-murid" class="dropdown-toggle"><i class="fa-solid fa-graduation-cap"></i> Ruang Murid <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=9844ece3-c34c-4bbf-8419-76e6099dabb4" target="_blank">🧮 Matematika</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=7cdba1c1-13a6-40d0-97fd-4774c3263a0d" target="_blank">🇮🇩 B. Indonesia</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=72df5da7-38d6-4993-a568-3927c2fd0681" target="_blank">🌱 IPAS</a></li>
+            <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=e005d77a-7349-41ea-b0d6-733eaca39705" target="_blank">🦅 Pancasila</a></li>
+            <li><a href="https://s.id/teacher_indra" target="_blank">🌴 Budaya Melayu Riau</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a id="nav-belajar" class="dropdown-toggle"><i class="fa-solid fa-book-open"></i> Mulai Belajar <i class="fa-solid fa-chevron-down dist-arrow"></i></a>
+          <ul class="dropdown-menu">
+            <li><a onclick="switchPage('belajar')"><i class="fa-solid fa-pen-to-square"></i> Setor Jurnal Literasi</a></li>
+            <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank"><i class="fa-solid fa-graduation-cap"></i> Latihan Numerasi</a></li>
+          </ul>
+        </li>
+
+        <li><a onclick="switchPage('tentang')" id="nav-tentang"><i class="fa-solid fa-circle-info"></i> Petunjuk</a></li>
+      </ul>
+    </nav>
+
+      <div class="theme-switch-wrapper" onclick="toggleTheme()">
+        <span class="theme-switch-text" id="label-status-tema">Mode Terang</span>
+        <div class="switch-pill-track">
+          <div class="switch-circle-thumb">
+            <i class="fa-solid fa-moon icon-bulan"></i>
+            <i class="fa-solid fa-sun icon-matahari"></i>
+          </div>
         </div>
       </div>
-      
-      <nav id="main-navigation">
-        <ul class="nav-links">
-          <li>
-            <a onclick="switchPage('dashboard'); closeMobileMenu()" id="nav-dashboard" class="active" title="Dashboard Kelas">
-              <i class="fa-solid fa-square-poll-vertical text-accent"></i>
-            </a>
-          </li>
-          
-          <li class="dropdown">
-            <a id="nav-ruang-murid" class="dropdown-toggle" onclick="toggleDropdownMobile(event, 'dropdown-murid')" title="Ruang Murid">
-              <i class="fa-solid fa-graduation-cap"></i> <i class="fa-solid fa-chevron-down dist-arrow"></i>
-            </a>
-            <ul id="dropdown-murid" class="dropdown-menu">
-              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=9844ece3-c34c-4bbf-8419-76e6099dabb4" target="_blank" onclick="closeMobileMenu()">🧮</a></li>
-              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=7cdba1c1-13a6-40d0-97fd-4774c3263a0d" target="_blank" onclick="closeMobileMenu()">🇮🇩</a></li>
-              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=72df5da7-38d6-4993-a568-3927c2fd0681" target="_blank" onclick="closeMobileMenu()">🌱</a></li>
-              <li><a href="https://murid.kemendikdasmen.go.id/sumber-belajar?subjectId=e005d77a-7349-41ea-b0d6-733eaca39705" target="_blank" onclick="closeMobileMenu()">🦅</a></li>
-              <li><a href="https://s.id/teacher_indra" target="_blank" onclick="closeMobileMenu()">🌴</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a id="nav-belajar" class="dropdown-toggle" onclick="toggleDropdownMobile(event, 'dropdown-belajar')" title="Mulai Belajar">
-              <i class="fa-solid fa-book-open"></i> <i class="fa-solid fa-chevron-down dist-arrow"></i>
-            </a>
-            <ul id="dropdown-belajar" class="dropdown-menu">
-              <li><a onclick="switchPage('belajar'); closeMobileMenu()" title="Setor Jurnal"><i class="fa-solid fa-pen-to-square"></i></a></li>
-              <li><a href="https://script.google.com/macros/s/AKfycbzBxpGJsQCl1XVIP2nmprWFFL9avY3LlbGJ0cLYdXFPIrnXSs_aHw0jjCylUjiWKLwm3w/exec" target="_blank" onclick="closeMobileMenu()" title="Latihan Numerasi"><i class="fa-solid fa-graduation-cap"></i></a></li>
-            </ul>
-          </li>
-
-          <li>
-            <a onclick="switchPage('tentang'); closeMobileMenu()" id="nav-tentang" title="Petunjuk">
-              <i class="fa-solid fa-circle-info"></i>
-            </a>
-          </li>
-
-          <li>
-            <div class="theme-switch-wrapper" onclick="toggleTheme(event)">
-              <div class="switch-pill-track">
-                <div class="switch-circle-thumb">
-                  <i class="fa-solid fa-moon icon-bulan"></i>
-                  <i class="fa-solid fa-sun icon-matahari"></i>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </nav>
-
-    </div>
   </header>
-
-  <div id="nav-overlay" class="nav-mobile-overlay" onclick="closeMobileMenu()"></div>
 
   <main class="container">
     
@@ -242,49 +223,52 @@
   </main>
 
   <!-- 🚨 Pop-Up Modal Kustom Peringatan Minimal Kata (ASISTEN LINA) -->
-<div id="customAlertModal" class="custom-modal-overlay">
-    <div class="custom-modal-box">
-      <div class="custom-modal-icon">
-        <i class="fa-solid fa-triangle-exclamation"></i>
+    <div id="customAlertModal" class="custom-modal-overlay">
+      <div class="custom-modal-box">
+        <div class="custom-modal-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="custom-modal-title">Wah, Tulisanmu Sedikit Lagi Cukup!</h3>
+        <div class="custom-modal-body">
+          <p id="modal-warning-text">Saat ini tulisanmu baru 0 kata.</p>
+          <p>Yuk, uraikan lagi ringkasan cerita atau opinimu agar <strong>ASISTEN LINA</strong> dapat menganalisis tulisanmu dengan maksimal! ✨</p>
+          <div class="word-badge-info">Syarat minimal: 75 - 100 kata</div>
+        </div>
+        <button class="custom-modal-btn" onclick="closeCustomAlert()">Tambahkan Lagi!</button>
       </div>
-      <h3 class="custom-modal-title">Wah, Tulisanmu Sedikit Lagi Cukup!</h3>
-      <div class="custom-modal-body">
-        <p id="modal-warning-text">Saat ini tulisanmu baru 0 kata.</p>
-        <p>Yuk, uraikan lagi ringkasan cerita atau opinimu agar <strong>ASISTEN LINA</strong> dapat menganalisis tulisanmu dengan maksimal! ✨</p>
-        <div class="word-badge-info">Syarat minimal: 75 - 100 kata</div>
-      </div>
-      <button class="custom-modal-btn" onclick="closeCustomAlert()">Tambahkan Lagi!</button>
-    </div>
-  </div> 
+    </div> 
 
-  <div id="linaErrorAiModal" class="custom-modal-overlay">
-    <div class="custom-modal-box">
-      <div class="custom-modal-icon" style="color: #ef4444;">
-        <i class="fa-solid fa-robot"></i>
+<div id="linaErrorAiModal" class="lina-modal-overlay">
+      <div class="lina-modal-box lina-theme-danger">
+        <div class="lina-modal-body">
+          <i class="fa-solid fa-robot lina-modal-icon text-danger"></i>
+          <h3 class="lina-modal-title text-danger">Gagal Memproses</h3>
+          
+          <div id="modal-error-ai-text" class="lina-modal-desc"></div>
+          
+          <p class="lina-modal-hint">Silakan coba beberapa saat lagi.</p>
+          
+          <button type="button" class="lina-modal-btn bg-danger" onclick="closeErrorAiModal()">Tutup</button>
+        </div>
       </div>
-      <h3 class="custom-modal-title">Gagal Memproses Analisis</h3>
-      <div class="custom-modal-body">
-        <p id="modal-error-ai-text">Server LINA sedang mengalami kendala teknis.</p>
-        <p>Coba kembali beberapa saat lagi ya!</p>
-      </div>
-      <button class="custom-modal-btn" style="background-color: #ef4444;" onclick="closeErrorAiModal()">Tutup</button>
     </div>
-  </div>
 
-  <div id="linaNetworkModal" class="custom-modal-overlay">
-    <div class="custom-modal-box">
-      <div class="custom-modal-icon" style="color: #f59e0b;">
-        <i class="fa-solid fa-wifi"></i>
+    <div id="linaNetworkModal" class="lina-modal-overlay">
+      <div class="lina-modal-box lina-theme-warning">
+        <div class="lina-modal-body">
+          <i class="fa-solid fa-wifi lina-modal-icon text-warning"></i>
+          <h3 class="lina-modal-title text-warning">Koneksi Internet Terganggu</h3>
+          
+          <p class="lina-modal-desc">
+            Sinyal internetmu kurang stabil.
+          </p>
+          
+          <p class="lina-modal-hint lina-italic">Pastikan sinyal internetmu stabil, lalu coba kirim kembali!</p>
+          
+          <button type="button" class="lina-modal-btn bg-warning" onclick="closeNetworkModal()">Tutup</button>
+        </div>
       </div>
-      <h3 class="custom-modal-title">Koneksi Internet Terganggu</h3>
-      <div class="custom-modal-body">
-        <p>Sinyal internetmu kurang stabil.</p>
-        <p class="lina-italic" style="font-style: italic; font-size: 0.9rem; margin-top: 8px; color: #6b7280;">Pastikan sinyal internet stabil, lalu coba kirim kembali!</p>
-      </div>
-      <button class="custom-modal-btn" style="background-color: #f59e0b;" onclick="closeNetworkModal()">Tutup</button>
     </div>
-  </div>
-
   <script src="script.js"></script>
 </body>
 </html>
