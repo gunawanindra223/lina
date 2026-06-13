@@ -1,224 +1,224 @@
+/* ═══════════════════════════════════════════════════════════════
+   ASISTEN LINA — style.css
+   Urutan section:
+   1.  Variabel & Reset
+   2.  Base (body, container, animasi)
+   3.  Navbar desktop
+   4.  Dropdown menu desktop
+   5.  Theme toggle (dark/light switch)
+   6.  Cards & grid
+   7.  Tabel
+   8.  Form
+   9.  Feedback & loader LINA
+   10. Halaman Petunjuk
+   11. Modal peringatan kata
+   12. Modal error AI & jaringan
+   13. Leaderboard berwarna + tombol reset
+   14. Tombol mode guru
+   15. Modal PIN guru
+   16. Ornamen Batik Melayu Riau
+   17. Mobile: drawer sidebar  (≤ 768px)
+   18. Tablet fix              (769px – 850px)
+   19. Sembunyikan elemen mobile di desktop  (≥ 769px)
+   20. Responsif grid & tabel  (≤ 850px, ≤ 1024px)
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ───────────────────────────────────────────────────────────────
+   1. VARIABEL & RESET
+   ─────────────────────────────────────────────────────────────── */
+
 :root {
-  --bg-app: #f8fafc;
-  --bg-card: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --accent: #2563eb;
+  --bg-app     : #f8fafc;
+  --bg-card    : #ffffff;
+  --text-main  : #1e293b;
+  --text-muted : #64748b;
+  --accent     : #2563eb;
   --accent-hover: #1d4ed8;
-  --border: #e2e8f0;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --gold: #d97706;
+  --border     : #e2e8f0;
+  --shadow     : 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --gold       : #d97706;
 }
 
 [data-theme="dark"] {
-  --bg-app: #0f172a;
-  --bg-card: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --accent: #3b82f6;
+  --bg-app     : #0f172a;
+  --bg-card    : #1e293b;
+  --text-main  : #f8fafc;
+  --text-muted : #94a3b8;
+  --accent     : #3b82f6;
   --accent-hover: #60a5fa;
-  --border: #334155;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --border     : #334155;
+  --shadow     : 0 4px 6px -1px rgb(0 0 0 / 0.3);
 }
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-
-  /* Hilangkan kotak abu-abu kaku saat di-tap pada HP & Tablet */
-  -webkit-tap-highlight-color: transparent !important;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-  -webkit-touch-callout: none;
-  outline: none !important;
+  margin    : 0;
+  padding   : 0;
+  -webkit-tap-highlight-color : transparent !important;
+  -webkit-touch-callout       : none;
+  outline                     : none !important;
 }
+
+
+/* ───────────────────────────────────────────────────────────────
+   2. BASE
+   ─────────────────────────────────────────────────────────────── */
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family     : 'Plus Jakarta Sans', sans-serif;
   background-color: var(--bg-app);
-  color: var(--text-main);
-  transition: background-color 0.3s, color 0.3s;
-  line-height: 1.5;
+  color           : var(--text-main);
+  transition      : background-color 0.3s, color 0.3s;
+  line-height     : 1.5;
 }
 
-/* NAVBAR STYLE */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 5%;
-  background-color: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow);
+.container {
+  max-width: 1200px;
+  margin   : 2rem auto;
+  padding  : 0 1.5rem;
+}
+
+.page-section {
+  display  : none;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.page-section.active {
+  display: block;
+}
+
+.text-center  { text-align: center; }
+.text-accent  { color: var(--accent); }
+.text-gold    { color: var(--gold); }
+.hidden       { display: none !important; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   3. NAVBAR DESKTOP
+   ─────────────────────────────────────────────────────────────── */
+
+/* Wrapper sticky agar navbar bisa sticky sekaligus pakai ::after absolut */
+.navbar-sticky-wrapper {
   position: sticky;
-  top: 0;
-  z-index: 100;
+  top     : 0;
+  z-index : 100;
+}
+
+.navbar {
+  display         : flex;
+  justify-content : space-between;
+  align-items     : center;
+  padding         : 1rem 5%;
+  background-color: var(--bg-card);
+  border-bottom   : none;
+  box-shadow      : var(--shadow);
+  /* relative diperlukan agar ::after (strip batik) bisa absolute di dalamnya */
+  position        : relative;
 }
 
 .brand-area {
-  display: flex;
+  display    : flex;
   align-items: center;
-  gap: 0.75rem;
+  gap        : 0.75rem;
 }
 
 .brand-logo {
-  width: 44px;
-  height: 44px;
+  width        : 44px;
+  height       : 44px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--accent);
+  object-fit   : cover;
+  border       : 2px solid var(--accent);
 }
 
 .brand-text {
-  display: flex;
+  display       : flex;
   flex-direction: column;
 }
 
 .brand-title {
-  font-weight: 700;
-  font-size: 1.15rem;
+  font-weight   : 700;
+  font-size     : 1.15rem;
   letter-spacing: -0.025em;
 }
 
 .brand-subtitle {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size : 0.75rem;
+  color     : var(--text-muted);
   font-weight: 500;
 }
 
 .nav-links {
-  display: flex;
+  display    : flex;
   align-items: center;
-  gap: 1.5rem;
-  list-style: none;
+  gap        : 1.5rem;
+  list-style : none;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
+  color          : var(--text-muted);
+  font-weight    : 600;
+  font-size      : 0.95rem;
+  cursor         : pointer;
+  padding        : 0.5rem 0.75rem;
+  border-radius  : 6px;
+  transition     : all 0.2s;
+  display        : inline-flex;
+  align-items    : center;
 }
 
-.nav-links a:hover, .nav-links a.active {
-  color: var(--accent);
+.nav-links a:hover,
+.nav-links a.active {
+  color           : var(--accent);
   background-color: rgba(37, 99, 235, 0.08);
 }
 
-/* Togle tema gelap terang */
-.theme-switch-wrapper {
-  display: flex;
+.navbar-right-group {
+  display    : flex;
   align-items: center;
-  gap: 10px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-  border-radius: 30px;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-
-  /* 🌟 Tambahan untuk menghilangkan kotak abu-abu di HP & Tablet 🌟 */
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
+  gap        : 0.5rem;
+  flex-shrink: 0;
 }
 
-.theme-switch-text {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-main);
-}
 
-/* Jalur Lintasan Kapsul (Track) */
-.switch-pill-track {
-  width: 44px;
-  height: 24px;
-  background-color: #cbd5e1; /* Warna saat Mode Terang */
-  border-radius: 15px;
-  position: relative;
-  transition: background-color 0.3s ease;
-}
+/* ───────────────────────────────────────────────────────────────
+   4. DROPDOWN MENU DESKTOP
+   ─────────────────────────────────────────────────────────────── */
 
-/* Lingkaran Penggeser Dalam (Thumb) */
-.switch-circle-thumb {
-  width: 18px;
-  height: 18px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.7rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Default Tampilan Icon */
-.switch-circle-thumb .icon-matahari {
-  color: #f97316; /* Warna Oranye Matahari */
-  display: block;
-}
-.switch-circle-thumb .icon-bulan {
-  color: #f59e0b; /* Warna Kuning Bulan */
-  display: none;
-}
-
-/* SINKRONISASI AKTIVASI DATA-THEME DARK */
-[data-theme="dark"] .switch-pill-track {
-  background-color: #3b82f6; /* Track berubah jadi biru di mode gelap */
-}
-
-[data-theme="dark"] .switch-circle-thumb {
-  transform: translateX(20px); /* Bulatan bergeser 20px ke kanan */
-}
-
-[data-theme="dark"] .switch-circle-thumb .icon-matahari {
-  display: none;
-}
-
-[data-theme="dark"] .switch-circle-thumb .icon-bulan {
-  display: block;
-}
-
-/* KUNCI FIX MENU DROPDOWN MELAYANG */
 .dropdown {
   position: relative;
 }
 
 .dropdown-toggle {
-  display: inline-flex !important;
+  display    : inline-flex !important;
   align-items: center !important;
-  gap: 0.4rem !important;
+  gap        : 0.4rem !important;
 }
 
 .dist-arrow {
-  font-size: 0.7rem !important;
+  font-size : 0.7rem !important;
   transition: transform 0.2s;
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
+  position        : absolute;
+  top             : 100%;
+  left            : 0;
   background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  list-style: none;
-  padding: 0.5rem 0;
-  min-width: 240px;
-  display: none;
-  z-index: 1000;
+  border          : 1px solid var(--border);
+  border-radius   : 8px;
+  box-shadow      : var(--shadow);
+  list-style      : none;
+  padding         : 0.5rem 0;
+  min-width       : 240px;
+  display         : none;
+  z-index         : 1000;
 }
 
 .dropdown-menu li {
@@ -226,24 +226,23 @@ body {
 }
 
 .dropdown-menu li a {
-  color: var(--text-main) !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.6rem;
-  padding: 0.7rem 1rem !important;
-  font-weight: 500 !important;
-  font-size: 0.9rem !important;
-  border-radius: 0 !important;
+  color           : var(--text-main) !important;
+  display         : flex !important;
+  align-items     : center !important;
+  gap             : 0.6rem;
+  padding         : 0.7rem 1rem !important;
+  font-weight     : 500 !important;
+  font-size       : 0.9rem !important;
+  border-radius   : 0 !important;
   background-color: transparent !important;
-  text-decoration: none;
+  text-decoration : none;
 }
 
 .dropdown-menu li a:hover {
   background-color: rgba(37, 99, 235, 0.08) !important;
-  color: var(--accent) !important;
+  color           : var(--accent) !important;
 }
 
-/* TRIGGER HOVER SINKRON */
 .dropdown:hover .dropdown-menu {
   display: block;
 }
@@ -252,20 +251,103 @@ body {
   transform: rotate(180deg);
 }
 
-/* LAYOUT CONTAINER */
-.container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+
+/* ───────────────────────────────────────────────────────────────
+   5. THEME TOGGLE (dark / light switch)
+   ─────────────────────────────────────────────────────────────── */
+
+.theme-switch-wrapper {
+  display         : flex;
+  align-items     : center;
+  gap             : 10px;
+  background-color: var(--bg-card);
+  border          : 1px solid var(--border);
+  padding         : 6px 12px;
+  border-radius   : 30px;
+  cursor          : pointer;
+  user-select     : none;
+  box-shadow      : var(--shadow);
+  transition      : all 0.3s ease;
 }
 
-.page-section {
-  display: none;
-  animation: fadeIn 0.4s ease-in-out;
+.theme-switch-text {
+  font-size  : 0.85rem;
+  font-weight: 600;
+  color      : var(--text-main);
 }
 
-.page-section.active {
-  display: block;
+.switch-pill-track {
+  width           : 44px;
+  height          : 24px;
+  background-color: #cbd5e1;
+  border-radius   : 15px;
+  position        : relative;
+  transition      : background-color 0.3s ease;
+}
+
+.switch-circle-thumb {
+  width           : 18px;
+  height          : 18px;
+  background-color: #ffffff;
+  border-radius   : 50%;
+  position        : absolute;
+  top             : 3px;
+  left            : 3px;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  font-size       : 0.7rem;
+  box-shadow      : 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition      : transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.switch-circle-thumb .icon-matahari { color: #f97316; display: block; }
+.switch-circle-thumb .icon-bulan    { color: #f59e0b; display: none; }
+
+[data-theme="dark"] .switch-pill-track       { background-color: #3b82f6; }
+[data-theme="dark"] .switch-circle-thumb     { transform: translateX(20px); }
+[data-theme="dark"] .switch-circle-thumb .icon-matahari { display: none; }
+[data-theme="dark"] .switch-circle-thumb .icon-bulan    { display: block; }
+
+
+/* ───────────────────────────────────────────────────────────────
+   6. CARDS & GRID
+   ─────────────────────────────────────────────────────────────── */
+
+.card {
+  background-color: var(--bg-card);
+  border          : 1px solid var(--border);
+  border-radius   : 12px;
+  padding         : 1.5rem;
+  box-shadow      : var(--shadow);
+  /* Untuk ornamen batik garis emas atas */
+  border-top      : 3px solid transparent;
+  background-clip : padding-box;
+  position        : relative;
+}
+
+.grid-dashboard,
+.grid-form {
+  display              : grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap                  : 1.5rem;
+}
+
+.chart-container {
+  position: relative;
+  height  : 320px;
+  width   : 100%;
+}
+
+.card-header h3 {
+  font-size    : 1.1rem;
+  margin-bottom: 1.25rem;
+  font-weight  : 600;
+  display      : flex;
+  align-items  : center;
+  gap          : 0.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
 }
 
 .section-header {
@@ -273,8 +355,8 @@ body {
 }
 
 .section-header h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size    : 1.75rem;
+  font-weight  : 700;
   margin-bottom: 0.25rem;
 }
 
@@ -282,98 +364,71 @@ body {
   color: var(--text-muted);
 }
 
-.text-accent { color: var(--accent); }
-.text-gold { color: var(--gold); }
 
-/* CARDS & GRID */
-.card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-}
+/* ───────────────────────────────────────────────────────────────
+   7. TABEL
+   ─────────────────────────────────────────────────────────────── */
 
-.grid-dashboard, .grid-form {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 1.5rem;
-}
-
-.chart-container {
-  position: relative;
-  height: 320px;
-  width: 100%;
-}
-
-.card-header h3 {
-  font-size: 1.1rem;
-  margin-bottom: 1.25rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.75rem;
-}
-
-/* TABLE STYLING */
 .table-wrapper {
-  overflow-x: auto;
-  max-height: 320px;
+  overflow-x : auto;
+  max-height : 320px;
 }
 
 table {
-  width: 100%;
+  width          : 100%;
   border-collapse: collapse;
 }
 
 th, td {
-  padding: 0.75rem 1rem;
-  text-align: left;
+  padding      : 0.75rem 1rem;
+  text-align   : left;
   border-bottom: 1px solid var(--border);
-  font-size: 0.9rem;
+  font-size    : 0.9rem;
 }
 
 th {
   background-color: rgba(0, 0, 0, 0.02);
-  color: var(--text-muted);
-  font-weight: 600;
+  color           : var(--text-muted);
+  font-weight     : 600;
 }
 
 [data-theme="dark"] th {
   background-color: rgba(255, 255, 255, 0.02);
 }
 
-/* FORM STYLING */
+
+/* ───────────────────────────────────────────────────────────────
+   8. FORM
+   ─────────────────────────────────────────────────────────────── */
+
 .form-group {
   margin-bottom: 1.25rem;
 }
 
 .form-grid-two {
-  display: grid;
+  display              : grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap                  : 1rem;
 }
 
 label {
-  display: block;
-  font-size: 0.88rem;
-  font-weight: 600;
+  display     : block;
+  font-size   : 0.88rem;
+  font-weight : 600;
   margin-bottom: 0.5rem;
 }
 
 input, select, textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  width           : 100%;
+  padding         : 0.75rem;
+  border          : 1px solid var(--border);
+  border-radius   : 8px;
   background-color: var(--bg-app);
-  color: var(--text-main);
-  font-family: inherit;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.2s;
+  color           : var(--text-main);
+  font-family     : inherit;
+  font-size       : 0.9rem;
+  outline         : none;
+  transition      : border-color 0.2s;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -382,61 +437,170 @@ input:focus, select:focus, textarea:focus {
 
 .btn-primary {
   background-color: var(--accent);
-  color: #ffffff;
-  border: none;
-  padding: 0.85rem 1.5rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
+  color           : #ffffff;
+  border          : none;
+  padding         : 0.85rem 1.5rem;
+  font-weight     : 600;
+  border-radius   : 8px;
+  cursor          : pointer;
+  width           : 100%;
+  font-size       : 0.95rem;
+  transition      : background-color 0.2s;
 }
 
-.btn-primary:hover {
-  background-color: var(--accent-hover);
+.btn-primary:hover    { background-color: var(--accent-hover); }
+.btn-primary:disabled { background-color: var(--text-muted); cursor: not-allowed; }
+
+/* Petunjuk minimal kata di bawah textarea */
+textarea#isiJurnal {
+  margin-bottom: 0.25rem;
 }
 
-.btn-primary:disabled {
-  background-color: var(--text-muted);
-  cursor: not-allowed;
+.form-group:has(textarea#isiJurnal)::after {
+  content     : "💡 Tulis minimal 75 – 100 kata";
+  display     : block;
+  font-size   : 0.78rem;
+  color       : var(--text-muted);
+  font-weight : 500;
+  margin-top  : 0.4rem;
+  font-style  : italic;
 }
 
-/* FEEDBACK BOX */
+
+/* ───────────────────────────────────────────────────────────────
+   9. FEEDBACK & LOADER LINA
+   ─────────────────────────────────────────────────────────────── */
+
 .feedback-card {
   border-left: 5px solid var(--accent);
 }
 
 .feedback-body {
-  display: flex;
+  display       : flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap           : 1.25rem;
 }
 
 .fb-item h4 {
-  font-size: 0.95rem;
+  font-size  : 0.95rem;
   margin-bottom: 0.25rem;
-  display: flex;
+  display    : flex;
   align-items: center;
-  gap: 0.4rem;
+  gap        : 0.4rem;
 }
 
 .fb-item p {
-  color: var(--text-main);
-  font-size: 0.92rem;
+  color      : var(--text-main);
+  font-size  : 0.92rem;
   line-height: 1.6;
 }
 
 .text-success h4 { color: #16a34a; }
-.text-info h4 { color: #2563eb; }
+.text-info h4    { color: #2563eb; }
 .text-warning h4 { color: #ca8a04; }
+
+/* Warna ikon sparkles di feedback header */
+.text-magic { color: #7c3aed; }
+
+/* Header kartu feedback */
+.feedback-header h3 {
+  font-size    : 1rem;
+  font-weight  : 700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  display      : flex;
+  align-items  : center;
+  gap          : 0.5rem;
+}
+
+/* Loader: LINA sedang berpikir */
+.lina-status-loader {
+  display      : flex;
+  align-items  : center;
+  gap          : 12px;
+  padding      : 12px 16px;
+  background   : rgba(37, 99, 235, 0.05);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-weight  : 500;
+  color        : var(--text-main);
+  animation    : fadeInStatus 0.3s ease-out forwards;
+}
+
+.lina-avatar-thinking {
+  width        : 32px;
+  height       : 32px;
+  border-radius: 50%;
+  object-fit   : cover;
+  border       : 2px solid var(--accent);
+  animation    : linaPulseEffect 2s infinite ease-in-out;
+}
+
+.thinking-text-wrapper {
+  display    : flex;
+  align-items: center;
+  gap        : 8px;
+}
+
+.wave-dots {
+  display: inline-flex;
+  gap    : 5px;
+}
+
+.wave-dots span {
+  display         : inline-block;
+  width           : 6px;
+  height          : 6px;
+  border-radius   : 50%;
+  background-color: var(--accent);
+  opacity         : 0.8;
+  animation       : waveDotEffect 1.3s infinite ease-in-out;
+}
+
+.wave-dots span:nth-child(1) { animation-delay: 0s; }
+.wave-dots span:nth-child(2) { animation-delay: 0.15s; }
+.wave-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+.fade-in-sentence {
+  opacity  : 0;
+  animation: fadeInTeksEfek 0.3s ease-out forwards;
+}
+
+/* Keyframes */
+@keyframes waveDotEffect {
+  0%, 100% { transform: translateY(0);    opacity: 0.8; }
+  50%      { transform: translateY(-5px); opacity: 0.3; }
+}
+
+@keyframes linaPulseEffect {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  50%  { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
+@keyframes fadeInStatus {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInTeksEfek {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   10. HALAMAN PETUNJUK
+   ─────────────────────────────────────────────────────────────── */
 
 .tentang-card p {
   margin-bottom: 1rem;
-  line-height: 1.7;
+  line-height  : 1.7;
 }
 
-.about-list {
+.about-list,
+.about-list2 {
   margin: 1rem 0 1.5rem 1.5rem;
 }
 
@@ -444,157 +608,14 @@ input:focus, select:focus, textarea:focus {
   margin-bottom: 0.5rem;
 }
 
-.text-center { text-align: center; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ==========================================================================
-   PERBAIKAN TOTAL RESPONSIF DINAMIS & DROPDOWN LAYAR KECIL
-   ========================================================================== */
-
-/* 1. Layar Sedang/Tanggung (Laptop Kecil & Tablet - max 1024px) */
-@media (max-width: 1024px) {
-  .navbar {
-    padding: 0.8rem 3%;
-  }
-  .brand-logo {
-    width: 36px;
-    height: 36px;
-  }
-  .brand-title {
-    font-size: 1rem;
-  }
-  .brand-subtitle {
-    font-size: 0.65rem;
-  }
-  .nav-links {
-    gap: 0.5rem;
-  }
-  .nav-links a {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.6rem;
-  }
-  button#theme-toggle {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.78rem;
-  }
-}
-
-/* 2. Layar HP & Tablet Tegak (Layar di bawah 850px) */
-@media (max-width: 850px) {
-  .navbar {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.2rem 5%;
-    align-items: center;
-    text-align: center;
-  }
-
-  .brand-area {
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .brand-text {
-    align-items: center;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5rem;
-    padding: 0;
-  }
-
-  .nav-links li {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .nav-links a {
-    width: 100%;
-    justify-content: center;
-    padding: 0.6rem;
-  }
-
-  .dropdown {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .dropdown-menu {
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    box-shadow: none !important;
-    border: none !important;
-    background-color: rgba(0, 0, 0, 0.02) !important;
-    margin-top: 0.25rem;
-    border-radius: 6px;
-    padding: 0;
-  }
-
-  [data-theme="dark"] .dropdown-menu {
-    background-color: rgba(255, 255, 255, 0.02) !important;
-  }
-
-  .dropdown-menu li a {
-    justify-content: center !important;
-    padding: 0.6rem !important;
-    font-size: 0.88rem !important;
-  }
-
-  button#theme-toggle {
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.5rem;
-  }
-
-  .grid-dashboard, .grid-form {
-    grid-template-columns: 1fr;
-  }
-  .form-grid-two {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* PETUNJUK JUMLAH KATA PADA KOTAK JURNAL */
-textarea#isiJurnal {
-  margin-bottom: 0.25rem;
-}
-
-textarea#isiJurnal + ::after {
-  display: none;
-}
-
-.form-group:has(textarea#isiJurnal) {
-  position: relative;
-}
-
-.form-group:has(textarea#isiJurnal)::after {
-  content: "💡 Tulis minimal 75 - 100 kata";
-  display: block;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-weight: 500;
-  margin-top: 0.4rem;
-  font-style: italic;
-}
-
-/* Pengaturan gambar alur lokal milik bapak */
 .alur-gambar-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1.5rem 0;
-  padding: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.02); /* Bingkai latar transparan tipis */
-  border-radius: 8px;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  margin          : 1.5rem 0;
+  padding         : 0.5rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius   : 8px;
 }
 
 [data-theme="dark"] .alur-gambar-wrapper {
@@ -602,79 +623,78 @@ textarea#isiJurnal + ::after {
 }
 
 .alur-img-lokal {
-  max-width: 100%;    /* Gambar otomatis responsif tidak melebihi kotak */
-  height: auto;       /* Menjaga rasio gambar agar tidak gepeng */
-  max-height: 380px;  /* Batas tinggi maksimal agar pas dipandang mata */
+  max-width : 100%;
+  height    : auto;
+  max-height: 380px;
   object-fit: contain;
   border-radius: 15px;
 }
 
-/* 🚨 STYLING CUSTOM POP-UP MODAL */
+
+/* ───────────────────────────────────────────────────────────────
+   11. MODAL PERINGATAN KATA
+   ─────────────────────────────────────────────────────────────── */
+
 .custom-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position        : fixed;
+  inset           : 0;
   background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px); /* Efek blur estetik pada latar belakang dashboard */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  backdrop-filter : blur(4px);
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  z-index         : 9999;
+  opacity         : 0;
+  pointer-events  : none;
+  transition      : opacity 0.3s ease;
 }
 
-/* Membuka modal */
 .custom-modal-overlay.modal-show {
-  opacity: 1;
+  opacity       : 1;
   pointer-events: auto;
 }
 
 .custom-modal-box {
-  background-color: var(--bg-card, #ffffff);
-  color: var(--text-main, #1e293b);
-  padding: 2rem;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 460px;
-  text-align: center;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--border, #e2e8f0);
-  transform: scale(0.85);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-color: var(--bg-card);
+  color           : var(--text-main);
+  padding         : 2rem;
+  border-radius   : 16px;
+  width           : 90%;
+  max-width       : 460px;
+  text-align      : center;
+  box-shadow      : 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border          : 1px solid var(--border);
+  transform       : scale(0.85);
+  transition      : transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .custom-modal-overlay.modal-show .custom-modal-box {
   transform: scale(1);
 }
 
-/* Icon Peringatan */
 .custom-modal-icon {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(217, 119, 6, 0.1); /* Kuning transparan */
-  color: var(--gold, #d97706);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.8rem;
-  margin: 0 auto 1.25rem auto;
+  width           : 60px;
+  height          : 60px;
+  background-color: rgba(217, 119, 6, 0.1);
+  color           : var(--gold);
+  border-radius   : 50%;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  font-size       : 1.8rem;
+  margin          : 0 auto 1.25rem;
 }
 
 .custom-modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size    : 1.25rem;
+  font-weight  : 700;
   margin-bottom: 0.75rem;
 }
 
 .custom-modal-body {
-  font-size: 0.95rem;
-  color: var(--text-muted, #64748b);
-  line-height: 1.6;
+  font-size    : 0.95rem;
+  color        : var(--text-muted);
+  line-height  : 1.6;
   margin-bottom: 1.5rem;
 }
 
@@ -682,336 +702,602 @@ textarea#isiJurnal + ::after {
   margin-bottom: 0.5rem;
 }
 
-/* Badge Syarat Kata */
 .word-badge-info {
-  display: inline-block;
-  background-color: var(--bg-app, #f8fafc);
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--accent, #2563eb);
-  margin-top: 0.75rem;
-  border: 1px dashed var(--border, #e2e8f0);
+  display         : inline-block;
+  background-color: var(--bg-app);
+  padding         : 0.4rem 1rem;
+  border-radius   : 20px;
+  font-size       : 0.8rem;
+  font-weight     : 600;
+  color           : var(--accent);
+  margin-top      : 0.75rem;
+  border          : 1px dashed var(--border);
 }
 
-/* Tombol Oke */
 .custom-modal-btn {
-  background-color: var(--accent, #2563eb);
-  color: #ffffff;
-  border: none;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 2px;
-  cursor: pointer;
-  width: 50%;
-  transition: background-color 0.2s, transform 0.1s;
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
-}
-
-.custom-modal-btn:hover {
-  background-color: var(--accent-hover, #1d4ed8);
-}
-
-.custom-modal-btn:active {
-  transform: scale(0.98);
-
-}
-
-/* ==========================================================================
-   ANIMASI INDIKATOR BERPIKIR ASISTEN LINA (REVISI)
-   ========================================================================== */
-
-/* Wadah indikator status LINA sedang berpikir */
-.lina-status-loader {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: rgba(37, 99, 235, 0.05);
-  /* --- REVISI 3: Garis biru border-left di sini sudah DIHAPUS --- */
-  border-radius: 4px;
-  margin-bottom: 20px;
-  font-weight: 500;
-  color: var(--text-main);
-  animation: fadeInStatus 0.3s ease-out forwards;
-}
-
-/* Pengaturan Ikon LINA Mini yang berdenyut halus */
-.lina-avatar-thinking {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--accent);
-  /* --- REVISI 2: Durasi berdenyut DIPERLAMBAT dari 1.4s menjadi 2s --- */
-  animation: linaPulseEffect 2s infinite ease-in-out;
-}
-
-/* 🔥 TAMBAHAN UNTUK REVISI 1: Titik Tiga Bergelombang 🔥 */
-.thinking-text-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.wave-dots {
-  display: inline-flex;
-  gap: 5px;
-}
-
-.wave-dots span {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
   background-color: var(--accent);
-  opacity: 0.8;
-  animation: waveDotEffect 1.3s infinite ease-in-out;
+  color           : #ffffff;
+  border          : none;
+  padding         : 0.75rem 2rem;
+  font-size       : 1rem;
+  font-weight     : 600;
+  border-radius   : 8px;
+  cursor          : pointer;
+  width           : 50%;
+  transition      : background-color 0.2s, transform 0.1s;
+  box-shadow      : 0 4px 6px -1px rgba(37, 99, 235, 0.2);
 }
 
-/* Mengatur jeda ayunan gelombang tiap titik */
-.wave-dots span:nth-child(1) { animation-delay: 0s; }
-.wave-dots span:nth-child(2) { animation-delay: 0.15s; }
-.wave-dots span:nth-child(3) { animation-delay: 0.3s; }
+.custom-modal-btn:hover  { background-color: var(--accent-hover); }
+.custom-modal-btn:active { transform: scale(0.98); }
 
 
-/* ✅ TETAP DIPERTAHANKAN: Efek teks mengalir per kalimat Bapak ✅ */
-.fade-in-sentence {
-  opacity: 0;
-  animation: fadeInTeksEfek 0.3s ease-out forwards;
-}
+/* ───────────────────────────────────────────────────────────────
+   12. MODAL ERROR AI & JARINGAN
+   ─────────────────────────────────────────────────────────────── */
 
-/* ==========================================================================
-   ANIMASI KEYFRAMES
-   ========================================================================== */
-
-/* --- REVISI 1: Keyframe baru untuk menggerakkan titik naik-turun (gelombang) --- */
-@keyframes waveDotEffect {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(-5px); /* Jarak tinggi ayunan titik */
-    opacity: 0.3;
-  }
-}
-
-@keyframes linaPulseEffect {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
-  50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-}
-
-@keyframes fadeInStatus {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ✅ TETAP DIPERTAHANKAN: Animasi teks kalimat asli Bapak ✅ */
-@keyframes fadeInTeksEfek {
-  from { opacity: 0; transform: translateY(3px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ==========================================================================
-   ARSITEKTUR CSS MODAL ASISTEN LINA (ANTI-BENTROK & ISOLASI TOTAL)
-   ========================================================================== */
-
-/* Lapisan Gelap Belakang Modal */
 .lina-modal-overlay {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: rgba(0, 0, 0, 0.6) !important;
+  position      : fixed !important;
+  inset         : 0 !important;
+  background    : rgba(0, 0, 0, 0.6) !important;
   backdrop-filter: blur(5px) !important;
-  display: flex !important;
-  align-items: center !important;
+  display       : flex !important;
+  align-items   : center !important;
   justify-content: center !important;
-  z-index: 99999 !important; /* Berdiri di atas elemen apa pun */
-  opacity: 0;
+  z-index       : 99999 !important;
+  opacity       : 0;
   pointer-events: none;
-  transition: opacity 0.3s ease-in-out;
+  transition    : opacity 0.3s ease-in-out;
 }
 
-/* Pemicu Tampil Modal */
 .lina-modal-overlay.lina-show-aktif {
-  opacity: 1 !important;
+  opacity       : 1 !important;
   pointer-events: auto !important;
 }
 
-/* Kotak Box Putih Utama */
 .lina-modal-box {
-  background: var(--bg-card, #ffffff) !important;
+  background   : var(--bg-card) !important;
   border-radius: 16px !important;
-  padding: 30px !important;
-  width: 90% !important;
-  max-width: 440px !important;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25) !important;
-  transform: scale(0.8);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding      : 30px !important;
+  width        : 90% !important;
+  max-width    : 440px !important;
+  box-shadow   : 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+  transform    : scale(0.8);
+  transition   : transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .lina-modal-overlay.lina-show-aktif .lina-modal-box {
   transform: scale(1) !important;
 }
 
-/* Konten Internal */
 .lina-modal-body {
-  display: flex !important;
+  display       : flex !important;
   flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
+  align-items   : center !important;
+  text-align    : center !important;
 }
 
-.lina-modal-icon {
-  font-size: 3.5rem !important;
-  margin-bottom: 15px !important;
-  display: block !important;
-}
+.lina-modal-icon  { font-size: 3.5rem !important; margin-bottom: 15px !important; display: block !important; }
+.lina-modal-title { font-size: 1.3rem !important; font-weight: 700 !important; margin: 0 0 15px !important; line-height: 1.4 !important; }
+.lina-modal-desc  { font-size: 0.98rem !important; line-height: 1.6 !important; color: var(--text-main) !important; margin-bottom: 15px !important; }
+.lina-modal-hint  { font-size: 0.88rem !important; color: var(--text-muted) !important; margin-bottom: 25px !important; }
 
-.lina-modal-title {
-  font-size: 1.3rem !important;
-  font-weight: 700 !important;
-  margin-top: 0 !important;
-  margin-bottom: 15px !important;
-  line-height: 1.4 !important;
-}
+.lina-modal-hint.lina-italic { font-style: italic !important; }
 
-.lina-modal-desc {
-  font-size: 0.98rem !important;
-  line-height: 1.6 !important;
-  color: var(--text-main, #333333) !important;
-  margin-bottom: 15px !important;
-}
-
-.lina-modal-hint {
-  font-size: 0.88rem !important;
-  color: var(--text-muted, #666666) !important;
-  margin-bottom: 25px !important;
-}
-
-.lina-modal-hint.lina-italic {
-  font-style: italic !important;
-}
-
-/* Tombol Penutup Mutlak */
 .lina-modal-btn {
-  border: none !important;
-  color: #ffffff !important;
-  padding: 12px 30px !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
+  border       : none !important;
+  color        : #ffffff !important;
+  padding      : 12px 30px !important;
+  font-size    : 1rem !important;
+  font-weight  : 600 !important;
   border-radius: 8px !important;
-  cursor: pointer !important;
-  width: 100% !important;
-  display: block !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
-  transition: opacity 0.2s ease !important;
+  cursor       : pointer !important;
+  width        : 100% !important;
+  display      : block !important;
+  box-shadow   : 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  transition   : opacity 0.2s ease !important;
 }
 
-.lina-modal-btn:hover {
-  opacity: 0.9 !important;
-}
+.lina-modal-btn:hover { opacity: 0.9 !important; }
 
-/* Skema Pewarnaan */
 .text-danger { color: #ef4444 !important; }
-.bg-danger { background-color: #ef4444 !important; }
-.text-warning { color: #f59e0b !important; }
-.bg-warning { background-color: #f59e0b !important; }
+.bg-danger   { background-color: #ef4444 !important; }
+.text-warning{ color: #f59e0b !important; }
+.bg-warning  { background-color: #f59e0b !important; }
 
-/* Tampilan Kotak Kode Error */
 .lina-theme-danger .lina-code-error {
-  font-family: monospace !important;
-  background: rgba(239, 64, 64, 0.08) !important;
-  padding: 8px 12px !important;
+  font-family : monospace !important;
+  background  : rgba(239, 64, 64, 0.08) !important;
+  padding     : 8px 12px !important;
   border-radius: 6px !important;
-  color: #b91c1c !important;
-  display: inline-block !important;
-  margin-top: 10px !important;
-  font-size: 0.88rem !important;
-  border: 1px solid rgba(239, 64, 64, 0.2) !important;
-  word-break: break-all !important;
+  color       : #b91c1c !important;
+  display     : inline-block !important;
+  margin-top  : 10px !important;
+  font-size   : 0.88rem !important;
+  border      : 1px solid rgba(239, 64, 64, 0.2) !important;
+  word-break  : break-all !important;
 }
 
-/* ==========================================================================
-   PATCH 2 - TAMBAHKAN DI PALING BAWAH style.css
-   MOBILE NAVBAR DRAWER SIDEBAR (max-width: 768px = layar HP)
-   ========================================================================== */
 
-/* --- Sembunyikan navbar desktop di layar HP --- */
+/* ───────────────────────────────────────────────────────────────
+   13. LEADERBOARD BERWARNA + TOMBOL RESET
+   ─────────────────────────────────────────────────────────────── */
+
+/* Header kartu grafik: judul kiri, tombol reset kanan */
+.chart-card-header {
+  display        : flex !important;
+  align-items    : center !important;
+  justify-content: space-between !important;
+  flex-wrap      : nowrap !important;
+  gap            : 0.5rem;
+}
+
+.btn-reset-wrapper {
+  flex-shrink: 0;
+}
+
+.btn-reset-chart {
+  display    : inline-flex;
+  align-items: center;
+  gap        : 0.4rem;
+  padding    : 0.38rem 0.85rem;
+  border     : 1.5px solid var(--accent);
+  background : transparent;
+  color      : var(--accent);
+  font-size  : 0.82rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor     : pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition : background-color 0.2s ease, color 0.2s ease,
+               transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-reset-chart:hover {
+  background-color: var(--accent);
+  color           : #ffffff;
+  box-shadow      : 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-reset-chart:active { transform: scale(0.96); }
+
+.btn-reset-chart i {
+  font-size : 0.78rem;
+  transition: transform 0.4s ease;
+}
+
+.btn-reset-chart:hover i { transform: rotate(-180deg); }
+
+/* Leaderboard table */
+.leaderboard-table {
+  width          : 100%;
+  border-collapse: collapse;
+  table-layout   : fixed;
+}
+
+.leaderboard-table .col-rank { width: 36px; }
+.leaderboard-table .col-nama { width: auto; }
+.leaderboard-table .col-buku { width: 58px; text-align: center; }
+.leaderboard-table .col-skor { width: 58px; text-align: center; }
+
+.leaderboard-table th {
+  padding         : 0.55rem 0.6rem;
+  font-size       : 0.78rem;
+  color           : var(--text-muted);
+  font-weight     : 600;
+  background-color: rgba(37, 99, 235, 0.04);
+  border-bottom   : 2px solid var(--border);
+  white-space     : nowrap;
+}
+
+.leaderboard-table td {
+  padding       : 0.6rem;
+  font-size     : 0.88rem;
+  border-bottom : 1px solid var(--border);
+  vertical-align: middle;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+}
+
+/* Baris podium berwarna */
+.leaderboard-table tbody tr.rank-1 { background: linear-gradient(90deg, rgba(255, 215, 0, 0.12) 0%, transparent 100%); }
+.leaderboard-table tbody tr.rank-2 { background: linear-gradient(90deg, rgba(192, 192, 192, 0.13) 0%, transparent 100%); }
+.leaderboard-table tbody tr.rank-3 { background: linear-gradient(90deg, rgba(205, 127, 50, 0.12) 0%, transparent 100%); }
+
+[data-theme="dark"] .leaderboard-table tbody tr.rank-1 { background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%); }
+[data-theme="dark"] .leaderboard-table tbody tr.rank-2 { background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, transparent 100%); }
+[data-theme="dark"] .leaderboard-table tbody tr.rank-3 { background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, transparent 100%); }
+
+.leaderboard-table tbody tr:hover {
+  background-color: rgba(37, 99, 235, 0.04);
+  transition      : background-color 0.15s ease;
+}
+
+.rank-badge {
+  display        : inline-flex;
+  align-items    : center;
+  justify-content: center;
+  width          : 26px;
+  height         : 26px;
+  border-radius  : 50%;
+  font-size      : 1.05rem;
+  line-height    : 1;
+}
+
+.rank-number {
+  display         : inline-flex;
+  align-items     : center;
+  justify-content : center;
+  width           : 22px;
+  height          : 22px;
+  border-radius   : 50%;
+  font-size       : 0.72rem;
+  font-weight     : 700;
+  color           : var(--text-muted);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .rank-number {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.skor-chip {
+  display      : inline-block;
+  padding      : 0.22rem 0.55rem;
+  border-radius: 20px;
+  font-weight  : 700;
+  font-size    : 0.85rem;
+  white-space  : nowrap;
+}
+
+.skor-chip.skor-tinggi { background: rgba(37, 99, 235, 0.1);  color: var(--accent); }
+.skor-chip.skor-sedang { background: rgba(217, 119, 6, 0.1);  color: var(--gold); }
+.skor-chip.skor-rendah { background: rgba(100, 116, 139, 0.1); color: var(--text-muted); }
+
+.nama-siswa-cell {
+  font-weight: 600;
+  font-size  : 0.85rem;
+  line-height: 1.3;
+  word-break : break-word;
+}
+
+.jurnal-chip {
+  display        : inline-flex;
+  align-items    : center;
+  justify-content: center;
+  gap            : 2px;
+  font-size      : 0.78rem;
+  font-weight    : 600;
+  color          : var(--text-muted);
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   14. TOMBOL MODE GURU
+   ─────────────────────────────────────────────────────────────── */
+
+.btn-mode-guru {
+  display        : inline-flex;
+  align-items    : center;
+  justify-content: center;
+  width          : 34px;
+  height         : 34px;
+  background     : none;
+  border         : 1px solid var(--border);
+  border-radius  : 8px;
+  cursor         : pointer;
+  color          : var(--text-muted);
+  font-size      : 0.9rem;
+  flex-shrink    : 0;
+  transition     : color 0.2s ease, border-color 0.2s ease,
+                   background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-mode-guru:hover {
+  color           : var(--accent);
+  border-color    : var(--accent);
+  background-color: rgba(37, 99, 235, 0.06);
+}
+
+.btn-mode-guru.guru-aktif {
+  color           : var(--accent);
+  border-color    : var(--accent);
+  background-color: rgba(37, 99, 235, 0.08);
+  box-shadow      : 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   15. MODAL PIN GURU
+   ─────────────────────────────────────────────────────────────── */
+
+.modal-guru-overlay {
+  display         : none;
+  position        : fixed;
+  inset           : 0;
+  background      : rgba(0, 0, 0, 0.45);
+  backdrop-filter : blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index         : 9999;
+  align-items     : center;
+  justify-content : center;
+  padding         : 1rem;
+  box-sizing      : border-box;
+}
+
+.modal-guru-box {
+  background  : var(--bg-card);
+  border      : 1px solid var(--border);
+  border-radius: 16px;
+  padding     : 2rem 2rem 1.5rem;
+  width       : 100%;
+  max-width   : 320px;
+  box-shadow  : 0 20px 60px rgba(0, 0, 0, 0.22);
+  text-align  : center;
+  box-sizing  : border-box;
+  animation   : modalFadeIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.88) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.modal-guru-icon {
+  width           : 52px;
+  height          : 52px;
+  background      : rgba(37, 99, 235, 0.1);
+  border-radius   : 50%;
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  margin          : 0 auto 1rem;
+  font-size       : 1.4rem;
+  color           : var(--accent);
+}
+
+.modal-guru-title {
+  font-size  : 1rem;
+  font-weight: 700;
+  margin     : 0 0 0.3rem;
+  color      : var(--text-main);
+}
+
+.modal-guru-desc {
+  font-size: 0.82rem;
+  color    : var(--text-muted);
+  margin   : 0 0 1.2rem;
+}
+
+.modal-guru-input {
+  width          : 100%;
+  padding        : 0.6rem 0.9rem;
+  border         : 1.5px solid var(--border);
+  border-radius  : 10px;
+  background     : var(--bg-app);
+  color          : var(--text-main);
+  font-size      : 1.1rem;
+  text-align     : center;
+  letter-spacing : 0.3em;
+  font-family    : monospace;
+  outline        : none;
+  box-sizing     : border-box;
+  transition     : border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-guru-input:focus {
+  border-color: var(--accent);
+  box-shadow  : 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.modal-guru-error {
+  display    : none;
+  color      : #dc2626;
+  font-size  : 0.8rem;
+  margin     : 0.5rem 0 0;
+  line-height: 1.4;
+}
+
+.modal-guru-actions {
+  display   : flex;
+  gap       : 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.btn-modal-batal,
+.btn-modal-masuk {
+  flex         : 1;
+  padding      : 0.55rem;
+  border-radius: 10px;
+  font-size    : 0.88rem;
+  font-weight  : 600;
+  cursor       : pointer;
+  font-family  : inherit;
+  transition   : opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-modal-batal {
+  border    : 1.5px solid var(--border);
+  background: transparent;
+  color     : var(--text-muted);
+}
+
+.btn-modal-batal:hover { background-color: rgba(0, 0, 0, 0.04); }
+
+.btn-modal-masuk {
+  border    : none;
+  background: var(--accent);
+  color     : #ffffff;
+}
+
+.btn-modal-masuk:hover  { opacity: 0.88; }
+.btn-modal-masuk:active { transform: scale(0.97); }
+
+@media (max-width: 360px) {
+  .modal-guru-box   { padding: 1.5rem 1.25rem 1.2rem; border-radius: 12px; }
+  .modal-guru-input { font-size: 1rem; }
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   16. ORNAMEN BATIK MELAYU RIAU
+   ─────────────────────────────────────────────────────────────── */
+
+/* Strip tri-warna di bawah navbar */
+.navbar::after {
+  content   : '';
+  position  : absolute;
+  bottom    : 0;
+  left      : 0;
+  right     : 0;
+  height    : 6px;
+  background: linear-gradient(90deg,
+    #cc2929 0%,    #cc2929 33.3%,
+    #d4a017 33.3%, #d4a017 66.6%,
+    #1a7a3c 66.6%, #1a7a3c 100%
+  );
+  opacity: 0.85;
+}
+
+.navbar::before {
+  content        : '';
+  position       : absolute;
+  bottom         : -8px;
+  left           : 0;
+  right          : 0;
+  height         : 8px;
+  background     : linear-gradient(to bottom, rgba(0, 0, 0, 0.06), transparent);
+  pointer-events : none;
+  z-index        : 1;
+}
+
+/* Divider batik antar section */
+.batik-divider {
+  width      : 100%;
+  overflow   : hidden;
+  line-height: 0;
+  margin     : 0.5rem 0 1.5rem;
+}
+
+.batik-divider svg {
+  display: block;
+  width  : 100%;
+}
+
+/* Pola pucuk rebung di section-header */
+.section-header {
+  position     : relative;
+  padding      : 1.25rem 1rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+  overflow     : hidden;
+}
+
+.section-header::before {
+  content           : '';
+  position          : absolute;
+  inset             : 0;
+  background-image  : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%23b8860b' stroke-width='0.8' opacity='0.13'%3E%3Cpolygon points='30,4 54,52 6,52'/%3E%3Cpolygon points='30,14 47,47 13,47'/%3E%3Cpolygon points='30,24 41,42 19,42'/%3E%3Crect x='26' y='26' width='8' height='8' transform='rotate(45 30 30)'/%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='54' cy='6' r='3'/%3E%3Ccircle cx='6' cy='54' r='3'/%3E%3Ccircle cx='54' cy='54' r='3'/%3E%3Cline x1='3' y1='6' x2='9' y2='6'/%3E%3Cline x1='6' y1='3' x2='6' y2='9'/%3E%3Cline x1='51' y1='6' x2='57' y2='6'/%3E%3Cline x1='54' y1='3' x2='54' y2='9'/%3E%3Cline x1='3' y1='54' x2='9' y2='54'/%3E%3Cline x1='6' y1='51' x2='6' y2='57'/%3E%3Cline x1='51' y1='54' x2='57' y2='54'/%3E%3Cline x1='54' y1='51' x2='54' y2='57'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat : repeat;
+  background-size   : 60px 60px;
+  pointer-events    : none;
+  border-radius     : 10px;
+}
+
+/* Garis emas tipis di atas setiap card */
+.card::before {
+  content      : '';
+  position     : absolute;
+  top          : -3px;
+  left         : 0;
+  right        : 0;
+  height       : 3px;
+  border-radius: 12px 12px 0 0;
+  background   : linear-gradient(90deg,
+    transparent            0%,
+    rgba(184, 134, 11, 0)  10%,
+    rgba(184, 134, 11, .35) 30%,
+    rgba(184, 134, 11, .55) 50%,
+    rgba(184, 134, 11, .35) 70%,
+    rgba(184, 134, 11, 0)  90%,
+    transparent            100%
+  );
+}
+
+/* Dark mode: turunkan intensitas ornamen */
+[data-theme="dark"] .section-header::before { opacity: 0.65; filter: invert(1) hue-rotate(20deg); }
+[data-theme="dark"] .card::before           { opacity: 0.5; }
+[data-theme="dark"] .navbar::after          { opacity: 0.55; }
+
+
+/* ───────────────────────────────────────────────────────────────
+   17. MOBILE: DRAWER SIDEBAR  (≤ 768px)
+   ─────────────────────────────────────────────────────────────── */
+
 @media (max-width: 768px) {
 
-  .desktop-only {
-    display: none !important;
-  }
+  .desktop-only { display: none !important; }
 
-  /* Navbar jadi bar tipis fixed di atas, tinggi 60px */
-  .navbar {
-    padding: 0 !important;
-    height: 60px !important;
+  /* Wrapper jadi fixed di mobile agar navbar menempel di atas */
+  .navbar-sticky-wrapper {
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: center !important;
+    top     : 0 !important;
+    left    : 0 !important;
+    right   : 0 !important;
+    z-index : 500 !important;
+  }
+
+  .navbar {
+    padding         : 0 !important;
+    height          : 60px !important;
+    display         : flex !important;
+    flex-direction  : row !important;
+    align-items     : center !important;
+    justify-content : center !important;
     background-color: var(--bg-card) !important;
-    border-bottom: 1px solid var(--border) !important;
-    box-shadow: var(--shadow) !important;
-    z-index: 500 !important;
-    overflow: visible !important;
+    border-bottom   : 1px solid var(--border) !important;
+    box-shadow      : var(--shadow) !important;
+    overflow        : visible !important;
   }
 
-  /* Dorong konten utama ke bawah agar tidak tertutup navbar */
-  .container {
-    margin-top: 70px;
-  }
+  .container { margin-top: 70px; }
 
-  /* ---- MOBILE TOP BAR ---- */
+  /* Top bar mobile */
   .mobile-topbar {
-    display: flex;
-    align-items: center;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    width: 100%;
-    height: 60px;
+    width          : 100%;
+    height         : 60px;
   }
 
-  /* Gambar Lina sebagai tombol trigger */
   .mobile-lina-trigger {
-    width: 44px;
-    height: 44px;
+    width        : 44px;
+    height       : 44px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.3s ease;
+    object-fit   : cover;
+    border       : 2px solid var(--accent);
+    cursor       : pointer;
+    transition   : transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   }
 
   .mobile-lina-trigger.menu-open {
-    transform: scale(1.1);
+    transform : scale(1.1);
     box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.2);
   }
 
-  /* ---- OVERLAY BURAM ---- */
+  /* Overlay buram */
   .mobile-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(3px);
+    display         : none;
+    position        : fixed;
+    inset           : 0;
+    background      : rgba(0, 0, 0, 0.4);
+    backdrop-filter : blur(3px);
     -webkit-backdrop-filter: blur(3px);
-    z-index: 600;
-    opacity: 0;
-    transition: opacity 0.35s ease;
+    z-index         : 600;
+    opacity         : 0;
+    transition      : opacity 0.35s ease;
   }
 
   .mobile-overlay.overlay-show {
@@ -1019,180 +1305,189 @@ textarea#isiJurnal + ::after {
     opacity: 1;
   }
 
-  /* ---- DRAWER SIDEBAR ---- */
+  /* Drawer sidebar */
   .mobile-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100dvh; /* dynamic viewport height untuk HP */
-    width: 76px;
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    height          : 100dvh;
+    width           : 76px;
     background-color: var(--bg-card);
-    border-right: 1px solid var(--border);
-    box-shadow: 6px 0 24px rgba(0, 0, 0, 0.18);
-    z-index: 700;
-    transform: translateX(-100%);
-    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
+    border-right    : 1px solid var(--border);
+    box-shadow      : 6px 0 24px rgba(0, 0, 0, 0.18);
+    z-index         : 700;
+    transform       : translateX(-100%);
+    transition      : transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y      : auto;
+    overflow-x      : hidden;
+    scrollbar-width : none;
   }
 
-  .mobile-drawer::-webkit-scrollbar {
-    display: none;
-  }
+  .mobile-drawer::-webkit-scrollbar { display: none; }
 
-  .mobile-drawer.drawer-open {
-    transform: translateX(0);
-  }
+  .mobile-drawer.drawer-open { transform: translateX(0); }
 
   .mobile-drawer-inner {
-    display: flex;
+    display       : flex;
     flex-direction: column;
-    align-items: center;
-    padding: 14px 0 28px;
-    min-height: 100%;
+    align-items   : center;
+    padding       : 14px 0 28px;
+    min-height    : 100%;
   }
 
-  /* Logo Lina di atas drawer */
   .mobile-drawer-logo {
-    width: 100%;
-    display: flex;
+    width         : 100%;
+    display       : flex;
     justify-content: center;
-    padding: 6px 0 14px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 10px;
+    padding       : 6px 0 14px;
+    border-bottom : 1px solid var(--border);
+    margin-bottom : 10px;
   }
 
   .mobile-drawer-lina-img {
-    width: 42px;
-    height: 42px;
+    width        : 42px;
+    height       : 42px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent);
+    object-fit   : cover;
+    border       : 2px solid var(--accent);
   }
 
-  /* ---- MOBILE NAV ITEMS ---- */
+  /* Nav items */
   .mobile-nav {
-    display: flex;
+    display       : flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 3px;
-    padding: 0 9px;
+    align-items   : center;
+    width         : 100%;
+    gap           : 3px;
+    padding       : 0 9px;
   }
 
-  /* Item tunggal (icon saja) */
   .mobile-nav-item {
-    display: flex;
-    align-items: center;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    gap: 3px;
-    width: 52px;
-    height: 48px;
-    border-radius: 10px;
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    cursor: pointer;
+    gap            : 3px;
+    width          : 52px;
+    height         : 48px;
+    border-radius  : 10px;
+    font-size      : 1.2rem;
+    color          : var(--text-muted);
+    cursor         : pointer;
     text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: background-color 0.22s ease,
-                color 0.22s ease,
-                transform 0.15s ease;
+    transition     : background-color 0.22s ease, color 0.22s ease, transform 0.15s ease;
   }
 
   .mobile-nav-item:hover,
   .mobile-nav-item:active {
     background-color: rgba(37, 99, 235, 0.1);
-    color: var(--accent);
+    color           : var(--accent);
   }
 
-  /* Chevron kecil di item dropdown */
+  #btnModeGuruMobile {
+    background: none;
+    border    : none;
+    padding   : 0;
+  }
+
+  #btnModeGuruMobile.guru-aktif {
+    color           : var(--accent);
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+
   .mobile-dist-arrow {
-    font-size: 0.52rem !important;
+    font-size : 0.52rem !important;
     transition: transform 0.3s ease;
-    opacity: 0.55;
+    opacity   : 0.55;
     margin-left: 1px;
   }
 
-  /* ---- MOBILE DROPDOWN WRAPPER ---- */
+  /* Dropdown mobile */
   .mobile-nav-dropdown {
-    width: 100%;
-    display: flex;
+    width         : 100%;
+    display       : flex;
     flex-direction: column;
-    align-items: center;
+    align-items   : center;
   }
 
-  /* Sub-menu berjejer ke bawah (icon/emoji) */
   .mobile-sub-menu {
-    display: flex;
+    display       : flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    width: 52px;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    /* Background putih navbar TIDAK ikut memanjang karena elemen ini
-       adalah div biasa di dalam drawer, bukan bagian dari <header> */
-    transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.28s ease;
+    align-items   : center;
+    gap           : 2px;
+    width         : 52px;
+    max-height    : 0;
+    overflow      : hidden;
+    opacity       : 0;
+    transition    : max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
   }
 
   .mobile-sub-menu.sub-open {
     max-height: 400px;
-    opacity: 1;
+    opacity   : 1;
   }
 
-  /* Icon/emoji dalam sub-menu */
   .mobile-sub-menu a {
-    display: flex;
-    align-items: center;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    width: 46px;
-    height: 42px;
-    border-radius: 8px;
-    font-size: 1.3rem;
+    width          : 46px;
+    height         : 42px;
+    border-radius  : 8px;
+    font-size      : 1.3rem;
     text-decoration: none;
-    color: var(--text-main);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background-color 0.2s ease,
-                transform 0.15s ease;
+    color          : var(--text-main);
+    cursor         : pointer;
+    transition     : background-color 0.2s ease, transform 0.15s ease;
   }
 
   .mobile-sub-menu a:hover,
   .mobile-sub-menu a:active {
     background-color: rgba(37, 99, 235, 0.1);
-    transform: scale(1.08);
+    transform       : scale(1.08);
   }
 
-  /* Chevron berputar saat sub-menu terbuka */
   .mobile-nav-dropdown.sub-active .mobile-dist-arrow {
     transform: rotate(180deg);
-    opacity: 1;
+    opacity  : 1;
   }
 
-  /* ---- THEME TOGGLE DI DALAM DRAWER ---- */
+  /* Theme toggle di drawer */
   .mobile-theme-toggle {
-    display: flex;
-    align-items: center;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    margin-top: 14px;
-    width: 52px;
-    height: 48px;
-    border-radius: 10px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background-color 0.22s ease;
+    margin-top     : 14px;
+    width          : 52px;
+    height         : 48px;
+    border-radius  : 10px;
+    cursor         : pointer;
+    transition     : background-color 0.22s ease;
   }
 
   .mobile-theme-toggle:hover {
     background-color: rgba(37, 99, 235, 0.08);
   }
 
+} /* end @media ≤ 768px */
+
+
+/* ───────────────────────────────────────────────────────────────
+   18. TABLET FIX  (769px – 850px)
+   ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 850px) and (min-width: 769px) {
+  .navbar        { flex-wrap: nowrap; gap: 0.5rem; padding: 0.8rem 3%; }
+  .brand-text    { display: none; }
+  .nav-links a   { font-size: 0.8rem; padding: 0.4rem 0.5rem; }
+  .theme-switch-text { display: none; }
+  .btn-mode-guru { width: 30px; height: 30px; font-size: 0.82rem; }
 }
 
-/* --- Sembunyikan elemen mobile di tablet & desktop --- */
+
+/* ───────────────────────────────────────────────────────────────
+   19. SEMBUNYIKAN ELEMEN MOBILE DI DESKTOP  (≥ 769px)
+   ─────────────────────────────────────────────────────────────── */
+
 @media (min-width: 769px) {
   .mobile-topbar,
   .mobile-overlay,
@@ -1201,21 +1496,82 @@ textarea#isiJurnal + ::after {
   }
 }
 
-/* --- Fix tablet (769px - 850px): navbar horizontal tetap tapi lebih ringkas --- */
-@media (max-width: 850px) and (min-width: 769px) {
+
+/* ───────────────────────────────────────────────────────────────
+   20. RESPONSIF GRID & TABEL
+   ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .navbar          { padding: 0.8rem 3%; }
+  .brand-logo      { width: 36px; height: 36px; }
+  .brand-title     { font-size: 1rem; }
+  .brand-subtitle  { font-size: 0.65rem; }
+  .nav-links       { gap: 0.5rem; }
+  .nav-links a     { font-size: 0.85rem; padding: 0.4rem 0.6rem; }
+  .leaderboard-table .col-buku { width: 52px; }
+  .leaderboard-table .col-skor { width: 52px; }
+}
+
+@media (max-width: 850px) {
   .navbar {
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-    padding: 0.8rem 3%;
+    flex-direction: column;
+    gap           : 1rem;
+    padding       : 1.2rem 5%;
+    align-items   : center;
+    text-align    : center;
   }
-  .brand-text {
-    display: none;
+
+  .brand-area    { flex-direction: column; gap: 0.4rem; }
+  .brand-text    { align-items: center; }
+
+  .nav-links {
+    flex-direction: column;
+    width         : 100%;
+    gap           : 0.5rem;
+    padding       : 0;
   }
+
+  .nav-links li {
+    width          : 100%;
+    display        : flex;
+    justify-content: center;
+  }
+
   .nav-links a {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.5rem;
+    width          : 100%;
+    justify-content: center;
+    padding        : 0.6rem;
   }
-  .theme-switch-text {
-    display: none;
+
+  .dropdown { flex-direction: column; width: 100%; }
+
+  .dropdown-menu {
+    position        : relative !important;
+    top             : 0 !important;
+    left            : 0 !important;
+    width           : 100% !important;
+    box-shadow      : none !important;
+    border          : none !important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    margin-top      : 0.25rem;
+    border-radius   : 6px;
+    padding         : 0;
   }
+
+  [data-theme="dark"] .dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+  }
+
+  .dropdown-menu li a {
+    justify-content: center !important;
+    padding        : 0.6rem !important;
+    font-size      : 0.88rem !important;
+  }
+
+  .grid-dashboard,
+  .grid-form      { grid-template-columns: 1fr; }
+  .form-grid-two  { grid-template-columns: 1fr; }
+
+  .leaderboard-table .col-buku { width: 60px; }
+  .leaderboard-table .col-skor { width: 60px; }
 }
